@@ -268,6 +268,7 @@ int	main(int argc, char **argv, char **env)
 		data.num_error = 0;
 		data.home_dir = getenv("HOME"); // obeedril for ft_cd.c
 		line = readline("\033[1;36m MiMiShell > \033[0m");
+
 		if (line == NULL)
 		{
 			write (1, "\033[1AMiMishell exit\n", 20);
