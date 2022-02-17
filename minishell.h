@@ -35,9 +35,9 @@ typedef struct s_arg
 typedef struct s_cmd
 {
 	char	*str;
-	t_arg	*arg;
+	t_arg	*arg; // не использовать
 	char 	**array_arg;
-	int		num_arg;
+	int		num_arg; // не использовать
 	int		num_array_arg;
 }				t_cmd;
 
@@ -67,5 +67,9 @@ int		ms_error(int *error, char *str);
 //void	check_first_arg(t_data *data); // obeedril will add later
 void	ms_cd(char *arg_way, t_data *data, int i); // obeedril for ms_cd.c
 void	ms_pwd(void); // obeedril for ms_pwd.c
+void	ms_exit(t_data *data, char *exit_arg, int i); // obeedril for ms_exit.c
+int		ms_record_array(t_data *data);
+int		ms_get_signal(void); // obeedril for signal
+void	rl_replace_line (const char *text, int clear_undo); // obeedril for readline
 
 #endif

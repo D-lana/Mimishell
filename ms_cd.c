@@ -6,7 +6,7 @@
 /*   By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/14 16:58:28 by obeedril          #+#    #+#             */
-/*   Updated: 2022/02/16 20:42:02 by obeedril         ###   ########.fr       */
+/*   Updated: 2022/02/17 14:43:46 by obeedril         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,17 +20,26 @@ static void	rewrite_dir(t_data *data)
 	data->cur_dir = getcwd(cwd, sizeof(cwd));
 }
 
-static void	minus(t_data *data)
+static void	minus(char *arg_way, t_data *data, int i)
 {
 	char	cwd[256];
 
-	if (data->prev_dir == NULL)
-		printf("Mimishell: cd: OLDPWD not set\n");
+	if (arg_way[i + 1] == '\0')
+	{
+		if (data->prev_dir == NULL)
+			printf("Mimishell: cd: OLDPWD not set\n");
+		else
+		{
+			data->cur_dir = getcwd(cwd, sizeof(cwd));
+			chdir(data->prev_dir);
+			rewrite_dir(data);
+		}
+	}
 	else
 	{
-		data->cur_dir = getcwd(cwd, sizeof(cwd));
-		chdir(data->prev_dir);
-		rewrite_dir(data);
+		data->num_error = 1;
+		printf("Mimishell: cd: -%c: invalid option\n", arg_way[i + 1]);
+		printf("cd: usage: cd [-L|-P] [dir]\n");
 	}
 }
 
@@ -85,8 +94,8 @@ void	ms_cd(char *arg_way, t_data *data, int i)
 		else
 			tilda_slesh_dir(arg_way, data, 0);
 	}
-	else if (arg_way[i] == '-' && arg_way[i + 1] == '\0')
-		minus(data);
+	else if (arg_way[i] == '-') // && arg_way[i + 1] == '\0')
+		minus(arg_way, data, 0);
 	else
 	{
 		data->cur_dir = getcwd(cwd, sizeof(cwd));
