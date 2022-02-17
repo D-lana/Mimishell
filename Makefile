@@ -1,6 +1,8 @@
 NAME		=	minishell
 
-SRCS		=	minishell_01.c ms_count_and_record_cmd.c ms_our_cmd.c ms_malloc.c ms_found_env_variable.c proba.c\
+SRCS		=	minishell.c ms_count_and_record_cmd.c ms_our_cmd.c ms_malloc.c \
+				ms_found_env_variable.c proba.c ms_record_array.c ms_quotation_marks.c \
+				ms_found_redirect.c \
 
 OBJS		=	${SRCS:.c=.o}
 

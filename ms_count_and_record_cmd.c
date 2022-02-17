@@ -13,21 +13,12 @@ int ms_record_one_str(char **str, char *line, int *start, int *num)
 	qm_d = 1;
 	while (line[(*start) + size] != '\0' && line[(*start) + size] != '|')
 	{
-		if (line[(*start) + size] == DOUBLE_Q_MARK)
-		{
+		if (line[(*start) + size] == DOUBLE_Q_MARK  && qm_o == 1)
 			qm_d = qm_d * (-1);
-			//printf("qm_d = %d", qm_d);
-		}
-		if (line[(*start) + size] == ONE_Q_MARK)
-		{
+		if (line[(*start) + size] == ONE_Q_MARK  && qm_d == 1)
 			qm_o = qm_o * (-1);
-			//printf("qm_o = %d", qm_o);
-		}
 		if (line[(*start) + size + 1] == '|' && (qm_o == -1 || qm_d == -1))
-		{
 			size++;
-			//printf("YE\n");
-		}
 		size++;
 	}
 	ms_malloc_str(str, size);
@@ -64,9 +55,9 @@ int ms_count_and_record_cmd(t_data *data, char *line)
 	}
 	while (line[i] != '\0')
 	{
-		if (line[i] == DOUBLE_Q_MARK)
+		if (line[i] == DOUBLE_Q_MARK && qm_o == 1)
 			qm_d = qm_d * (-1);
-		if (line[i] == ONE_Q_MARK)
+		if (line[i] == ONE_Q_MARK && qm_d == 1)
 			qm_o = qm_o * (-1);
 		if (line[i] == '|' &&  qm_o == 1 && qm_d == 1)
 		{

@@ -1,27 +1,38 @@
 #include "minishell.h"
 
-void	ms_free_str(char **tmp_str);
+void	ms_free_str(char **str);
 void	ms_malloc_str(char **name, int size);
 void	ms_malloc_arg(t_arg **arg, int size);
 void	ms_malloc_cmd(t_cmd **cmd, int size);
+void	ms_malloc_array(char ***array, int size);
 
-void	ms_free_str(char **tmp_str) // ms_free_str(&str);
+void	ms_free_str(char **str) // ms_free_str(&str);
 {
 	char *tmp;
 
-	tmp = *tmp_str;
+	tmp = *str;
 	if (tmp)
 	{
 		free(tmp);
 		tmp = NULL;
 	}
-	*tmp_str = tmp;
+	*str = tmp;
 }
 
 void	ms_malloc_str(char **name, int size) // ms_malloc_str(&str, size);
 {
 	(*name) = malloc(sizeof(char) * (size + 1));
 	if ((*name) == NULL)
+	{
+		write(2, "Mimisell: Allocation memory error\n", 35);
+		exit(EXIT_FAILURE);
+	}
+}
+
+void	ms_malloc_array(char ***array, int size) // ms_malloc_array(array, size);
+{
+	(*array) = (char **)malloc(sizeof(char *) * (size + 1));
+	if ((*array) == NULL)
 	{
 		write(2, "Mimisell: Allocation memory error\n", 35);
 		exit(EXIT_FAILURE);
