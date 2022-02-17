@@ -269,19 +269,17 @@ int	main(int argc, char **argv, char **env)
 	{
 		data.num_error = 0;
 		line = readline("\033[1;36m MiMiShell > \033[0m");
-
-		 if (line == NULL)
-        {
-            write (1, "\033[1AMimishell$ exit\n", 20);
-            exit(EXIT_SUCCESS);
-        }
+		if (line == NULL)
+		{
+			printf("\033[1;36m MiMiShell >\033[0A"); 
+			printf("\033[1;0m exit\n\033[0m");
+			exit(EXIT_SUCCESS);
+		}
 		ms_separator(&data, line);
-		ms_record_massiv(&data);
-		//check_first_arg(&data);
+		ms_record_array(&data); // dlana add ms_record_array.c
 		ms_our_cmd(&data, env);
 		data.num_prev_error = data.num_error;
 		add_history(line);
-		if (line)
-			free(line);
+		ms_free_str(&line);
 	}
 }
