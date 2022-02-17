@@ -212,7 +212,6 @@ void ms_count_arg_for_array(t_cmd *cmd)
 			cmd->num_array_arg++;
 		i++;
 	}
-	printf("cmd->num_array_arg=%d\n", cmd->num_array_arg);
 }
 
 int ms_connect_arg_for_array(t_cmd *cmd)
@@ -230,13 +229,11 @@ int ms_connect_arg_for_array(t_cmd *cmd)
 		while (cmd->arg[i].str[x] != '\0')
 		{
 			x++;
-			printf("x=%d\n", x);
 		}
 		i++;
 		size_str += x;
 		x = 0;
 	}
-	printf("size_str=%d\n", size_str);
 	return(0);
 }
 
@@ -261,6 +258,7 @@ int	main(int argc, char **argv, char **env)
 	t_data data;
 	char *line;
 
+	data.prev_dir = NULL; // for ft_cd.c
 	if (argc < 1 || argv == NULL)
 		exit(1);
 	i = 0;
@@ -268,11 +266,13 @@ int	main(int argc, char **argv, char **env)
 	while (1)
 	{
 		data.num_error = 0;
+		data.home_dir = getenv("HOME"); // obeedril for ft_cd.c
 		line = readline("\033[1;36m MiMiShell > \033[0m");
 		if (line == NULL)
 		{
 			printf("\033[1;36m MiMiShell >\033[0A"); 
 			printf("\033[1;0m exit\n\033[0m");
+
 			exit(EXIT_SUCCESS);
 		}
 		ms_separator(&data, line);
@@ -282,4 +282,5 @@ int	main(int argc, char **argv, char **env)
 		add_history(line);
 		ms_free_str(&line);
 	}
+	// free (data->prev_dir) ???? // obeedril for ms_cd.c
 }

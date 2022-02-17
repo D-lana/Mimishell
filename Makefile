@@ -1,6 +1,6 @@
 NAME		=	minishell
 
-SRCS		=	minishell_01.c ms_count_and_record_cmd.c ms_our_cmd.c ms_malloc.c ms_found_env_variable.c proba.c ms_record_array.c\
+SRCS		=	minishell_01.c ms_count_and_record_cmd.c ms_our_cmd.c ms_malloc.c ms_found_env_variable.c  ms_record_array.c ms_cd.c ms_pwd.c\
 
 OBJS		=	${SRCS:.c=.o}
 
@@ -14,8 +14,8 @@ CC			=	gcc
 
 CFLAGS		=	-Wall -Werror -Wextra -I
 
-RLL			=	-lreadline -L ~/.brew/Cellar/readline/8.1.2/lib \
-				-I~/.brew/Cellar/readline/8.1.2/include
+RLL			=	-lreadline -L ~/.brew/Cellar/readline/8.1.1/lib \
+				-I~/.brew/Cellar/readline/8.1.1/include
 
 RM			=	rm -f
 

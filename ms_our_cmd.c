@@ -11,13 +11,12 @@ int	ms_our_cmd(t_data *data, char **env)
 	int i;
 
 	i = 0;
-	///return(0); ////////////////////////////////////!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	if (data->num_error != 0)
 		return(-1);
 	if(ft_strncmp(data->cmd[i].arg[0].str, "pwd\0", 3) == 0)
-		write(1, "its pwd!\n", 10);
+		ms_pwd(); // obeedril changes
 	else if(ft_strncmp(data->cmd[i].arg[0].str, "cd\0", 3) == 0)
-		write(1, "its cd!\n", 9);
+		ms_cd(data->cmd[i].arg[1].str, data, 0); //obeedril changes // исправить на array_arg[1]
 	else if(ft_strncmp(data->cmd[i].arg[0].str, "echo\0", 5) == 0)
 		ms_echo(data, 0);
 	else if(ft_strncmp(data->cmd[i].arg[0].str, "exit\0", 5) == 0)

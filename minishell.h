@@ -47,6 +47,9 @@ typedef struct s_data
 	int		num_cmd;
 	int		num_error;
 	int		num_prev_error;
+	char	*prev_dir; // obeedril for ms_cd.c
+	char	*cur_dir; // obeedril for ms_cd.c
+	char	*home_dir; // obeedril for ms_cd.c
 }				t_data;
 
 int ms_count_and_record_cmd(t_data *data, char *line);
@@ -61,6 +64,8 @@ int		ms_found_env_variable(int err, t_cmd *cmd);
 void	ms_replase_key_to_value(char **str, char *key, const char *value, int start);
 void	ms_record_char(char **result, const char *str, int *r, int *s);
 int		ms_error(int *error, char *str);
-void check_first_arg(t_data *data);
+//void	check_first_arg(t_data *data); // obeedril will add later
+void	ms_cd(char *arg_way, t_data *data, int i); // obeedril for ms_cd.c
+void	ms_pwd(void); // obeedril for ms_pwd.c
 
 #endif
