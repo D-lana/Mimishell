@@ -13,14 +13,15 @@ int	ms_our_cmd(t_data *data, char **env)
 	i = 0;
 	if (data->num_error != 0)
 		return(-1);
-	if(ft_strncmp(data->cmd[i].arg[0].str, "pwd\0", 3) == 0)
+	if(ft_strncmp(data->cmd[i].array_arg[0], "pwd\0", 3) == 0)
 		ms_pwd(); // obeedril changes
-	else if(ft_strncmp(data->cmd[i].arg[0].str, "cd\0", 3) == 0)
-		ms_cd(data->cmd[i].arg[1].str, data, 0); //obeedril changes // исправить на array_arg[1]
+	else if(ft_strncmp(data->cmd[i].array_arg[0], "cd\0", 3) == 0)
+		ms_cd(data->cmd[i].array_arg[1], data, 0); //obeedril changes // исправить на array_arg[1]
 	else if(ft_strncmp(data->cmd[i].arg[0].str, "echo\0", 5) == 0)
 		ms_echo(data, 0);
-	else if(ft_strncmp(data->cmd[i].arg[0].str, "exit\0", 5) == 0)
-		write(1, "its exit!\n", 11);
+	else if(ft_strncmp(data->cmd[i].array_arg[0], "exit\0", 5) == 0)
+		ms_exit(data, data->cmd[i].array_arg[1], 0); // obeedril 
+		//write(1, "its exit!\n", 11);
 	else if(ft_strncmp(data->cmd[i].arg[0].str, "env\0", 4) == 0)
 		ms_env(env);	
 	else if(ft_strncmp(data->cmd[i].arg[0].str, "export\0", 7) == 0)

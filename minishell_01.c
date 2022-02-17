@@ -265,6 +265,7 @@ int	main(int argc, char **argv, char **env)
 	data.num_prev_error = 0;
 	while (1)
 	{
+		ms_get_signal(); // obeedril for ms_get_signal.c
 		data.num_error = 0;
 		data.home_dir = getenv("HOME"); // obeedril for ft_cd.c
 		line = readline("\033[1;36m MiMiShell > \033[0m");
