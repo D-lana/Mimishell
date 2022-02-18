@@ -59,7 +59,6 @@ void	ms_connect_arg_for_array(t_cmd *cmd)
 		if (cmd->arg[y].space == YES || (y + 1) == cmd->num_arg)
 		{
 			len = ms_record_arg(cmd, &cmd->array_arg[y_arr], &start, len);
-			//printf("cmd->array_arg[y_arr]=%s\n", cmd->array_arg[y_arr]);
 			y_arr++;
 		}
 		y++;
