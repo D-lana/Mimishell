@@ -6,7 +6,7 @@
 /*   By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/14 16:58:28 by obeedril          #+#    #+#             */
-/*   Updated: 2022/02/17 14:43:46 by obeedril         ###   ########.fr       */
+/*   Updated: 2022/02/18 14:51:06 by obeedril         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ void	ms_cd(char *arg_way, t_data *data, int i)
 		else
 			tilda_slesh_dir(arg_way, data, 0);
 	}
-	else if (arg_way[i] == '-') // && arg_way[i + 1] == '\0')
+	else if (arg_way[i] == '-')
 		minus(arg_way, data, 0);
 	else
 	{

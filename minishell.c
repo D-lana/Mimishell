@@ -163,93 +163,43 @@ int ms_count_arg_divided_qm(t_cmd *cmd, t_data *data)
 
 int ms_separator(t_data *data, char *line)
 {
-	int	i;
-
-	i = 0;
-	ms_count_and_record_cmd(data, line);
-	if (data->num_error != 0)
-		return(-1);
-	while (i < data->num_cmd)
-	{
-		ms_count_arg_divided_qm(&data->cmd[i], data);
-		if(data->num_error == 0)
-			ms_create_struct_without_qm(&data->cmd[i]);
-		if(data->num_error == 0)
-			ms_found_env_variable(data->num_prev_error, &data->cmd[i]);
-		printf("%d\n", data->cmd[i].num_arg);
-		i++;
-	}
-	i = 0;
-	int j = 0;
-	if(data->num_error == 0) ////////////// распечатка, убрать)
-	{
-		while (i < data->num_cmd)
-		{
-			while (j < data->cmd[i].num_arg) 
-			{		
-				printf("%s", data->cmd[i].arg[j].str);
-				if(data->cmd[i].arg[j].space == YES)
-					printf(" ");
-				j++;
-			}
-			i++;
-			j = 0;
-		}
-		printf("\n");////////////
-	} 
-	return (0);
-}
-
-void ms_count_arg_for_array(t_cmd *cmd)
-{
-	int i;
-
-	i = 0;
-	cmd->num_array_arg = 1;
-	while (i < cmd->num_arg)
-	{
-		if (cmd->arg[i].space == YES)
-			cmd->num_array_arg++;
-		i++;
-	}
-}
-
-int ms_connect_arg_for_array(t_cmd *cmd)
-{
-	int i;
-	int x;
-	int size_str;
-
-	i = 0;
-	x = 0;
-	size_str = 0;
-	cmd->array_arg = (char **)malloc(sizeof(char *) * (cmd->num_array_arg + 1));
-	while (i < cmd->num_arg && cmd->arg[i].space != YES)
-	{
-		while (cmd->arg[i].str[x] != '\0')
-		{
-			x++;
-		}
-		i++;
-		size_str += x;
-		x = 0;
-	}
-	return(0);
-}
-
-int ms_record_massiv(t_data *data)
-{
-	int	i;
-
-	i = 0;
-	while (i < data->num_cmd)
-	{
-		ms_count_arg_for_array(&data->cmd[i]);
-		ms_connect_arg_for_array(&data->cmd[i]);
-		//data->cmd[i].array_arg
-		i++;
-	}
-	return(0);
+    int i;
+    i = 0;
+    ms_count_and_record_cmd(data, line);
+    if (data->num_error != 0)
+        return(-1);
+    while (i < data->num_cmd)
+    {
+        if(data->num_error == 0)
+            ms_found_redirect(&data->cmd[i], data);
+        if(data->num_error == 0)
+            ms_count_arg_divided_qm(&data->cmd[i], data);
+        if(data->num_error == 0)
+            ms_create_struct_without_qm(&data->cmd[i]);
+        if(data->num_error == 0)
+            ms_found_env_variable(data->num_prev_error, &data->cmd[i]);
+        //printf("%d\n", data->cmd[i].num_arg);
+        i++;
+    }
+    i = 0;
+    int j = 0;
+    if(data->num_error == 0) ////////////// распечатка, убрать)
+    {
+        while (i < data->num_cmd)
+        {
+            while (j < data->cmd[i].num_arg)
+            {
+                //printf("%s", data->cmd[i].arg[j].str);
+                if(data->cmd[i].arg[j].space == YES)
+                   printf(" ");
+                j++;
+            }
+            i++;
+            j = 0;
+        }
+      //  printf("\n");////////////
+    }
+    return (0);
 }
 
 int	main(int argc, char **argv, char **env)
@@ -268,16 +218,17 @@ int	main(int argc, char **argv, char **env)
 		ms_get_signal(); // obeedril for ms_get_signal.c
 		data.num_error = 0;
 		data.home_dir = getenv("HOME"); // obeedril for ft_cd.c
-		line = readline("\033[1;36m MiMiShell > \033[0m");
+		line = readline("\033[1;36mMiMiShell > \033[0m");
 		if (line == NULL)
 		{
-			printf("\033[1;36m MiMiShell >\033[0A"); 
+			printf("\033[1;36m\bMiMiShell >\033[0A"); 
 			printf("\033[1;0m exit\n\033[0m");
 
 			exit(EXIT_SUCCESS);
 		}
 		ms_separator(&data, line);
 		ms_record_array(&data); // dlana add ms_record_array.c
+		check_first_arg(&data); // obeedril add for check first argument
 		ms_our_cmd(&data, env);
 		data.num_prev_error = data.num_error;
 		add_history(line);
