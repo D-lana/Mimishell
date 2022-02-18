@@ -82,7 +82,7 @@ int		ms_found_env_variable(int err, t_cmd *cmd);
 void	ms_replase_key_to_value(char **str, char *key, const char *value, int start);
 void	ms_record_char(char **result, const char *str, int *r, int *s);
 int		ms_error(int *error, char *str);
-void	check_first_arg(t_data *data); // obeedril added for check a first agr
+void	ms_check_first_arg(t_data *data); // obeedril added for check a first agr
 void	ms_cd(char *arg_way, t_data *data, int i); // obeedril for ms_cd.c
 void	ms_pwd(void); // obeedril for ms_pwd.c
 void	ms_exit(t_data *data, int num_array_arg, char *exit_arg); // obeedril for ms_exit.c
@@ -92,5 +92,6 @@ void	rl_replace_line (const char *text, int clear_undo); // obeedril for readlin
 void    ms_malloc_array(char ***array, int size);
 int		ms_found_redirect(t_cmd *cmd, t_data *data);
 void	ms_record_str(char **file, char *str, int start, int size_str);
+
 
 #endif

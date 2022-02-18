@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_first_arg.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dlana <dlana@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/14 16:49:32 by obeedril          #+#    #+#             */
-/*   Updated: 2022/02/18 17:16:23 by obeedril         ###   ########.fr       */
+/*   Updated: 2022/02/18 18:56:40 by dlana            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static int	check_str(t_data *data, char **arr_p, int i, int n)
 	char	*str_way;
 
 	find_cmd = 0;
-	if (data->cmd[n].redir)
+	if (data->cmd[n].redir[0])
 	{
 		write (1, "Redirect!\n", 10);
 		return (-1);
