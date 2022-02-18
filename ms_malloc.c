@@ -5,6 +5,16 @@ void	ms_malloc_str(char **name, int size);
 void	ms_malloc_arg(t_arg **arg, int size);
 void	ms_malloc_cmd(t_cmd **cmd, int size);
 
+void    ms_malloc_array(char ***array, int size) // ms_malloc_array(array, size);
+{
+    (*array) = (char **)malloc(sizeof(char *) * (size + 1));
+    if ((*array) == NULL)
+    {
+        write(2, "Mimisell: Allocation memory error\n", 35);
+        exit(EXIT_FAILURE);
+    }
+}
+
 void	ms_free_str(char **tmp_str) // ms_free_str(&str);
 {
 	char *tmp;
