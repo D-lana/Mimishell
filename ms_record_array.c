@@ -1,24 +1,23 @@
 #include "minishell.h"
 
-int		ms_record_array(t_data *data);
+void	ms_record_array(t_data *data);
 void	ms_count_arg_for_array(t_cmd *cmd);
 void	ms_connect_arg_for_array(t_cmd *cmd);
 int		ms_record_arg(t_cmd *cmd, char **str, int *i, int len);
 
-int	ms_record_array(t_data *data)
+void	ms_record_array(t_data *data)
 {
 	int	i;
 
 	i = 0;
-	if (data->num_error != 0)
-		return(-1);
+	if (data->num_error != 0 || data->empty_str == YES)
+		return ;
 	while (i < data->num_cmd)
 	{
 		ms_count_arg_for_array(&data->cmd[i]);
 		ms_connect_arg_for_array(&data->cmd[i]);
 		i++;
 	}
-	return(0);
 }
 
 void	ms_count_arg_for_array(t_cmd *cmd)
@@ -33,7 +32,6 @@ void	ms_count_arg_for_array(t_cmd *cmd)
 			cmd->num_array_arg++;
 		i++;
 	}
-	//printf("cmd->num_array_arg=%d\n", cmd->num_array_arg);
 }
 
 void	ms_connect_arg_for_array(t_cmd *cmd)
@@ -56,7 +54,7 @@ void	ms_connect_arg_for_array(t_cmd *cmd)
 			x++;
 		len += x;
 		x = 0;
-		if (cmd->arg[y].space == YES || (y + 1) == cmd->num_arg)
+		if ((cmd->arg[y].space == YES && cmd->arg[y].empty_key == NO) || (y + 1) == cmd->num_arg)
 		{
 			len = ms_record_arg(cmd, &cmd->array_arg[y_arr], &start, len);
 			y_arr++;

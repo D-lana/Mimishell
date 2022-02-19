@@ -3,6 +3,7 @@ NAME		=	minishell
 SRCS		=	minishell.c ms_count_and_record_cmd.c ms_our_cmd.c ms_malloc.c \
 				ms_found_env_variable.c  ms_record_array.c ms_cd.c ms_pwd.c \
 				ms_get_signal.c ms_exit.c ms_found_redirect.c ms_check_first_arg.c \
+				ms_quotation_marks.c \
 
 OBJS		=	${SRCS:.c=.o}
 
@@ -16,14 +17,13 @@ CC			=	gcc
 
 CFLAGS		=	-Wall -Werror -Wextra -I
 
-RLL			=	-lreadline -L ~/.brew/Cellar/readline/8.1.1/lib \
-				-I~/.brew/Cellar/readline/8.1.1/include
+RLL			=	-lreadline -L ~/.brew/Cellar/readline/8.1.2/lib \
+				-I~/.brew/Cellar/readline/8.1.2/include
 
 RM			=	rm -f
 
 %.o: %.c	Makefile minishell.h
 			$(CC) $(CFLAGS)$(LIBDIR) -Iincludes -c $< -o $@
-#-Iincludes
 
 $(NAME):	$(LIBFT_LIB) $(OBJS)
 			@ $(CC) $(CFLAGS)$(LIBDIR) $(OBJS) -o $(NAME) $(LIB) $(RLL)

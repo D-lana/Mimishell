@@ -13,21 +13,9 @@ int ms_record_one_str(char **str, char *line, int *start, int *num)
 	qm_d = 1;
 	while (line[(*start) + size] != '\0' && line[(*start) + size] != '|')
 	{
-		if (line[(*start) + size] == DOUBLE_Q_MARK)
-		{
-			qm_d = qm_d * (-1);
-			//printf("qm_d = %d", qm_d);
-		}
-		if (line[(*start) + size] == ONE_Q_MARK)
-		{
-			qm_o = qm_o * (-1);
-			//printf("qm_o = %d", qm_o);
-		}
+		ms_switch_qm(line, (*start) + size, &qm_o, &qm_d);
 		if (line[(*start) + size + 1] == '|' && (qm_o == -1 || qm_d == -1))
-		{
 			size++;
-			//printf("YE\n");
-		}
 		size++;
 	}
 	ms_malloc_str(str, size);
@@ -38,8 +26,6 @@ int ms_record_one_str(char **str, char *line, int *start, int *num)
 	}
 	(*str)[i] = '\0';
 	(*num)++;
-	//if (line[(*start) + i] == '|' && line[(*start) + i + 1] == '\0')
-		//return(ms_error(ERR_PIPE)); //// возможно сюда нужно добавить предложение для ввода > и чтение с командной строки
 	if (line[(*start) + i] == '|') 
 		i++;
 	(*start) = (*start) + i;
@@ -57,6 +43,10 @@ int ms_count_and_record_cmd(t_data *data, char *line)
 	qm_o = 1;
 	qm_d = 1;
 	data->num_cmd = 1;
+	while (line[i] == ' ' && line[i] != '\0')
+		i++;
+	if (line[i] == '\0')
+		return(data->empty_str = YES);
 	if (line[i] == '|')
 	{
 		data->num_error = ERR_TOKEN;
@@ -64,13 +54,9 @@ int ms_count_and_record_cmd(t_data *data, char *line)
 	}
 	while (line[i] != '\0')
 	{
-		if (line[i] == DOUBLE_Q_MARK)
-			qm_d = qm_d * (-1);
-		if (line[i] == ONE_Q_MARK)
-			qm_o = qm_o * (-1);
+		ms_switch_qm(line, i, &qm_o, &qm_d);
 		if (line[i] == '|' &&  qm_o == 1 && qm_d == 1)
 		{
-			//printf("qm = %d, %d", qm_d, qm_o);
 			i++;
 			if (line[i] == ' ')
 			{
@@ -90,10 +76,7 @@ int ms_count_and_record_cmd(t_data *data, char *line)
 	i = 0;
 	num = 0;
 	while (line[i] != '\0')
-	{
 		ms_record_one_str(&data->cmd[num].str, line, &i, &num);
-		//printf("line[i] = %c\n", line[i]);
-	}
 	//printf("data->num_cmd = %d\n", data->num_cmd);
 	//i = 0;
 	// while (i < data->num_cmd) ////////////// распечатка, убрать)
