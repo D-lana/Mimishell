@@ -1,5 +1,13 @@
 #include "minishell.h"
 
+void ms_switch_qm(char *s, int i, int *qm_o, int *qm_d)
+{
+	if (s[i] == DOUBLE_Q_MARK && (*qm_o) == 1)
+		(*qm_d) = (*qm_d) * (-1);
+	if (s[i] == ONE_Q_MARK &&  (*qm_d) == 1)
+		(*qm_o) = (*qm_o) * (-1);
+}
+
 int	ms_cut_quotation_marks(char *str, t_arg *arg, int i)
 {
 	int c;
@@ -73,7 +81,7 @@ void	ms_create_struct_without_qm(t_cmd *cmd)
 				{
 					cmd->arg[num_arg].space = NO;
 					i = ms_record_args_without_qm(cmd->str, &cmd->arg[num_arg], i);
-					num_arg++; //printf("stroka = %s", cmd->arg[num_arg].str);
+					num_arg++;
 				}
 				else 
 					i++;
@@ -87,15 +95,15 @@ int ms_check_quotation_marks(t_cmd *cmd, int i, t_data *data)
 	char q_m;
 
 	q_m = cmd->str[i];
-	i++;//printf("%c", cmd->str[i]);
+	i++;
 	while (cmd->str[i] != q_m && cmd->str[i] != '\0')
 		i++;
 	if (cmd->str[i] == q_m)
 		cmd->num_arg++;
 	else
 	{
-		data->num_error = ERR_Q_MARK;
-		return((ms_error(&data->num_error, NULL)));
+		data->num_error = ERR_TOKEN;
+		return((ms_error(&data->num_error, &cmd->str[i - 1])));
 	}
 	return (i + 1);
 }

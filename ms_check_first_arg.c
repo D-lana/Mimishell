@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_first_arg.c                                  :+:      :+:    :+:   */
+/*   ms_check_first_arg.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dlana <dlana@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/14 16:49:32 by obeedril          #+#    #+#             */
-/*   Updated: 2022/02/18 18:56:40 by dlana            ###   ########.fr       */
+/*   Updated: 2022/02/19 12:21:02 by dlana            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,15 +56,15 @@ static int	check_str(t_data *data, char **arr_p, int i, int n)
 			}
 			else
 				find_cmd++;
-			free (str_way);
-			free (str_slesh);
+			free(str_way);
+			free(str_slesh);
 			i++;
 		}
 		return (find_cmd);
 	}
 }
 
-void	check_first_arg(t_data *data)
+void	ms_check_first_arg(t_data *data)
 {
 	const char	*p;
 	char		**arr_p;
@@ -74,6 +74,8 @@ void	check_first_arg(t_data *data)
 
 	i = 0;
 	n = 0;
+	if (data->num_error != 0 || data->empty_str == YES)
+		return ;
 	p = getenv("PATH");
 	arr_p = ft_split(p, ':');
 	while (n < data->num_cmd)

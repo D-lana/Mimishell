@@ -11,7 +11,7 @@ int	ms_our_cmd(t_data *data, char **env)
 	int i;
 
 	i = 0;
-	if (data->num_error != 0)
+	if (data->num_error != 0 || data->empty_str == YES)
 		return(-1);
 	if(ft_strncmp(data->cmd[i].array_arg[0], "pwd\0", 3) == 0)
 		ms_pwd(); // obeedril changes
@@ -39,23 +39,21 @@ void	ms_echo(t_data *data, int i)
 
 	j = 1;
 	n = NO;
-	while (j < data->cmd[i].num_arg) ////////////// распечатка, убрать)
+	while (j < data->cmd[i].num_array_arg)
 	{		
-		if (j == 1 && ft_strncmp(data->cmd[i].arg[j].str, "-n\0", 3) == 0)
+		if (j == 1 && ft_strncmp(data->cmd[i].array_arg[j], "-n\0", 3) == 0)
 		{
 			n = YES;
 			j++;
 		}
-		printf("%s", data->cmd[i].arg[j].str);
-		if(data->cmd[i].arg[j].space == YES)
-			printf(" ");
+		if (data->cmd[i].array_arg[j] != NULL)
+			printf("%s ", data->cmd[i].array_arg[j]);
 		j++;
 	}
-	j = 1;
-	if (n == YES)
-		printf("\b");
-	else
+	if (n != YES)
 		printf("\n");
+	else
+		printf("\b");
 }
 
 void	ms_env(t_data *data, char **env)
@@ -65,9 +63,6 @@ void	ms_env(t_data *data, char **env)
 	
 	y = 0;
 	x = 0;
-	//t_data *new = data;
-	//const char *env;
-	//env = getenv("All");
 	while (env[y] != 0)
 		y++;
 	ms_malloc_array(&data->our_env, y);
