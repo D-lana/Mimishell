@@ -6,7 +6,7 @@
 /*   By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 17:12:25 by obeedril          #+#    #+#             */
-/*   Updated: 2022/02/21 19:41:30 by obeedril         ###   ########.fr       */
+/*   Updated: 2022/02/22 14:24:15 by obeedril         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	ms_execve(t_cmd *cmd, char **env, t_data *data)
 	int status;
 	int termsig;
 	int	exit_st;
+	
 	
 	termsig = 0;
 	if ((pid = fork()) == -1)

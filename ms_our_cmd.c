@@ -28,7 +28,8 @@ int	ms_our_cmd(t_data *data, char **env)
 	else if(ft_strncmp(data->cmd[i].arg[0].str, "unset\0", 6) == 0)
 		write(1, "its unset!\n", 12);
 	else
-		write(1, "its not my cmd!\n", 17);	
+		ms_execve(data->cmd, env, data);
+		// write(1, "its not my cmd!\n", 17);	
 	return(0);
 }
 

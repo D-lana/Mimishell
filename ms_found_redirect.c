@@ -28,14 +28,6 @@ int ms_error_parse_redir(t_data *data, char *s, int i)
 	return (0);
 }
 
-void ms_switch_qm(char *s, int i, int *qm_o, int *qm_d)
-{
-	if (s[i] == DOUBLE_Q_MARK && (*qm_o) == 1)
-		(*qm_d) = (*qm_d) * (-1);
-	if (s[i] == ONE_Q_MARK &&  (*qm_d) == 1)
-		(*qm_o) = (*qm_o) * (-1);
-}
-
 void	ms_init_emum_redir(t_cmd *cmd, int *i_orig, int num_redir)
 {
 	int i;
@@ -62,19 +54,6 @@ void	ms_init_emum_redir(t_cmd *cmd, int *i_orig, int num_redir)
 	}
 	i++;
 	(*i_orig) = i;
-}
-
-void ms_record_str(char **file, char *str, int start, int size_str)
-{
-	int i;
-
-	i = 0;
-	while(i < size_str)
-	{
-		(*file)[i] = str[start + i];
-		i++;
-	}
-	(*file)[i] = '\0';
 }
 
 void	ms_record_redir_and_file(t_cmd *cmd, int i, int num_redir, t_data *d)

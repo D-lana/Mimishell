@@ -7,6 +7,7 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include "libft.h"
+#include <fcntl.h>
 
 //int global_err;
 
@@ -34,6 +35,7 @@ typedef struct s_arg
 	int				q_m;
 	int				space;
 	int				redir;
+	int				empty_key;
 
 }				t_arg;
 
@@ -46,6 +48,8 @@ typedef struct s_cmd
 	char	**file; // имя файла
 	int		num_arg; // не использовать
 	int		num_array_arg;
+	char	*way_cmd;
+	int		fd[2];
 }				t_cmd;
 
 typedef struct s_tmp
@@ -68,6 +72,7 @@ typedef struct s_data
 	char	*prev_dir; // obeedril for ms_cd.c
 	char	*cur_dir; // obeedril for ms_cd.c
 	char	*home_dir; // obeedril for ms_cd.c
+	int		empty_str;
 }				t_data;
 
 int ms_count_and_record_cmd(t_data *data, char *line);
@@ -79,10 +84,13 @@ void	ms_malloc_cmd(t_cmd **cmd, int size);
 
 int		ms_our_cmd(t_data *data, char **env);
 int		ms_found_env_variable(int err, t_cmd *cmd);
-void	ms_replase_key_to_value(char **str, char *key, const char *value, int start);
-void	ms_record_char(char **result, const char *str, int *r, int *s);
+void	ms_replase_key_to_value(char **str, char *key, char *value, int start);
+void	ms_create_struct_without_qm(t_cmd *cmd); // dlana
+void	ms_switch_qm(char *s, int i, int *qm_o, int *qm_d); // dlana
+int		ms_count_arg_divided_qm(t_cmd *cmd, t_data *data); // dlana
+void	ms_record_char(char **result, char *str, int *r, int *s);
 int		ms_error(int *error, char *str);
-void	check_first_arg(t_data *data); // obeedril added for check a first agr
+void	ms_check_first_arg(t_data *data); // obeedril added for check a first agr
 void	ms_cd(char *arg_way, t_data *data, int i); // obeedril for ms_cd.c
 void	ms_pwd(void); // obeedril for ms_pwd.c
 void	ms_exit(t_data *data, int num_array_arg, char *exit_arg); // obeedril for ms_exit.c
@@ -92,5 +100,8 @@ void	rl_replace_line (const char *text, int clear_undo); // obeedril for readlin
 void    ms_malloc_array(char ***array, int size);
 int		ms_found_redirect(t_cmd *cmd, t_data *data);
 void	ms_record_str(char **file, char *str, int start, int size_str);
+void	ms_execve(t_cmd *cmd, char **env, t_data *data);
+void	ms_signal_ctrl_d(char *line); // dlana relocate
+void	ms_execution(t_data *data, t_cmd **cmd, char **env); //obeedril added
 
 #endif

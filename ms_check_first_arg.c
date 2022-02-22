@@ -6,7 +6,7 @@
 /*   By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/14 16:49:32 by obeedril          #+#    #+#             */
-/*   Updated: 2022/02/21 16:48:10 by obeedril         ###   ########.fr       */
+/*   Updated: 2022/02/22 14:24:04 by obeedril         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ static char	*add_slesh(char **arr_p, int i, int j)
 	str_slesh[j + 1] = '\0';
 	return (str_slesh);
 }
+
 
 static int	check_str(t_data *data, char **arr_p, int i, int n)
 {
