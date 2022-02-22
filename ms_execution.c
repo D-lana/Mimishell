@@ -6,7 +6,7 @@
 /*   By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 13:00:12 by obeedril          #+#    #+#             */
-/*   Updated: 2022/02/22 14:11:42 by obeedril         ###   ########.fr       */
+/*   Updated: 2022/02/22 14:45:33 by obeedril         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void ms_execution(t_data *data, t_cmd **cmd, char **env)
 	printf("stdio[1] = %d\n", stdio[1]);
 	ms_open_file(cmd[i]);
 	ms_redirect(cmd[i]);
-	ms_our_cmd(data, env);
+	ms_our_cmd(data);
 	if (dup2(stdio[1], 1) == -1) // return 1;
 	 	perror("dup2 ");
 	if (dup2(stdio[0], 0) == -1) // return 0;

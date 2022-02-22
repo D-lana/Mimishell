@@ -48,7 +48,6 @@ typedef struct s_cmd
 	int		num_arg; // не использовать
 	int		num_array_arg;
 	char	*way_cmd;
-	int		fd[2];
 }				t_cmd;
 
 typedef struct s_tmp
@@ -77,7 +76,7 @@ typedef struct s_data
 	int		num_prev_error;
 	t_env	*env;
 	int		num_env;
-	//char    **our_env; // dlana
+	char    **our_env; // dlana
 	char	*prev_dir; // obeedril for ms_cd.c
 	char	*cur_dir; // obeedril for ms_cd.c
 	char	*home_dir; // obeedril for ms_cd.c
@@ -122,7 +121,7 @@ void	ms_malloc_env(t_env **env, int size);
 
 void	rl_replace_line (const char *text, int clear_undo); // obeedril for readline
 
-void	ms_execution(t_data *data, t_cmd **cmd, char **env); //obeedril added
+//void	ms_execution(t_data *data, t_cmd **cmd, char **env); //obeedril added
 
 
 #endif
