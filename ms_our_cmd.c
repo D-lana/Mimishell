@@ -33,10 +33,7 @@ int	ms_our_cmd(t_data *data)
 			return(0);
 	}
 	else
-	{
-		//printf("%s\n", data->cmd[i].array_arg[0]);
-		write(1, "its not my cmd!\n", 17);
-	}	
+		ms_execve(data->cmd, env, data);
 	return(0);
 }
 

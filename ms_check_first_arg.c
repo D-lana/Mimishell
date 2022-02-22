@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_check_first_arg.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlana <dlana@student.42.fr>                +#+  +:+       +#+        */
+/*   By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/14 16:49:32 by obeedril          #+#    #+#             */
-/*   Updated: 2022/02/19 19:46:13 by dlana            ###   ########.fr       */
+/*   Updated: 2022/02/22 14:24:04 by obeedril         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,15 @@
 static char	*add_slesh(char **arr_p, int i, int j)
 {
 	char	*str_slesh;
-
-	ms_malloc_str(&str_slesh, ft_strlen(arr_p[i] + 1));
+	str_slesh = NULL;
+	ms_malloc_str(&str_slesh, ft_strlen(arr_p[i]) + 1);
 	while (arr_p[i][j] != '\0')
 	{
 		str_slesh[j] = arr_p[i][j];
 		j++;
-		if (arr_p[i][j] == '\0')
-		{
-			str_slesh[j] = '/';
-			str_slesh[j + 1] = '\0';
-		}
 	}
+	str_slesh[j] = '/';
+	str_slesh[j + 1] = '\0';
 	return (str_slesh);
 }
 
@@ -37,27 +34,26 @@ static int	check_str(t_data *data, char **arr_p, int i, int n)
 	char	*str_way;
 
 	find_cmd = 0;
+	str_way = NULL;
 	if (data->cmd[n].redir[0])
-	{
-		write (1, "Redirect!\n", 10);
-		return (0);
-	}
+		return (0); // break ; ?????
 	else
 	{
 		while (arr_p[i])
 		{
 			str_slesh = add_slesh(arr_p, i, 0);
-			str_way = ft_strjoin(&str_slesh[0], data->cmd[n].array_arg[0]);
+			str_way = ft_strjoin(str_slesh, data->cmd[n].array_arg[0]);
+			ms_free_str(&str_slesh); // change
 			if (!access (str_way, 1))
 			{
-				find_cmd = -1;
-				// записать в структуру cmd путь, чтобы использовать в execve(адрес, массив, env)
+				find_cmd = -1; // нашла команду
+				data->cmd[n].way_cmd = str_way;
 				break ;
 			}
 			else
 				find_cmd++;
-			ms_free_str(&str_way);
-			ms_free_str(&str_slesh);
+
+			ms_free_str(&str_way); // changed free
 			i++;
 		}
 		return (find_cmd);
@@ -74,6 +70,7 @@ void	ms_check_first_arg(t_data *data)
 
 	i = 0;
 	n = 0;
+	find_cmd = 0;
 	if (data->num_error != 0 || data->empty_str == YES)
 		return ;
 	p = getenv("PATH");
@@ -86,8 +83,7 @@ void	ms_check_first_arg(t_data *data)
 			data->num_error = ERR_CMD;
 			printf("Mimishell: %s: command not found\n",
 				data->cmd[n].array_arg[0]);
-			break ;
-		} 
+		}
 		n++;
 	}
 }

@@ -7,6 +7,7 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include "libft.h"
+#include <fcntl.h>
 
 typedef enum e_value
 {
@@ -46,6 +47,8 @@ typedef struct s_cmd
 	int		fd[2];
 	int		num_arg; // не использовать
 	int		num_array_arg;
+	char	*way_cmd;
+	int		fd[2];
 }				t_cmd;
 
 typedef struct s_tmp
@@ -88,18 +91,17 @@ void	ms_create_struct_without_qm(t_cmd *cmd); // dlana
 void	ms_switch_qm(char *s, int i, int *qm_o, int *qm_d); // dlana
 int		ms_found_env_variable(int err, t_cmd *cmd);
 void	ms_replase_key_to_value(char **str, int key, char *value, int start);
-
 void	ms_record_array(t_data *data);
-
 void	ms_init_env(t_data *data, char **env); // dlana
 
-
 int		ms_our_cmd(t_data *data);
+
 void	ms_cd(char *arg_way, t_data *data, int i); // obeedril for ms_cd.c
 void	ms_pwd(void); // obeedril for ms_pwd.c
 void	ms_exit(t_data *data, int num_array_arg, char *exit_arg); // obeedril for ms_exit.c
 void	ms_export(t_data *data); // dlana
 void	ms_unset(t_data *data, int i); // dlana
+void	ms_execve(t_cmd *cmd, char **env, t_data *data);
 
 int		ms_get_signal(void); // obeedril for signal
 void	ms_signal_ctrl_d(char *line); // dlana relocate
@@ -119,5 +121,8 @@ void	ms_malloc_array(char ***array, int size);
 void	ms_malloc_env(t_env **env, int size);
 
 void	rl_replace_line (const char *text, int clear_undo); // obeedril for readline
+
+void	ms_execution(t_data *data, t_cmd **cmd, char **env); //obeedril added
+
 
 #endif
