@@ -5,6 +5,25 @@ void	ms_count_arg_for_array(t_cmd *cmd);
 void	ms_connect_arg_for_array(t_cmd *cmd);
 int		ms_record_arg(t_cmd *cmd, char **str, int *i, int len);
 
+// void ms_printf_array(t_data *data)
+// {
+// 	int	i;
+// 	int y;
+
+// 	i = 0;
+// 	y = 0;
+// 	while (y < data->num_cmd)
+// 	{
+// 		while (i < data->cmd->num_array_arg)
+// 		{
+// 			printf("%s ", data->cmd[y].array_arg[i]);
+// 			i++;
+// 		}
+// 		y++;
+// 	}
+// 	printf("\n");
+// }
+
 void	ms_record_array(t_data *data)
 {
 	int	i;
@@ -18,6 +37,7 @@ void	ms_record_array(t_data *data)
 		ms_connect_arg_for_array(&data->cmd[i]);
 		i++;
 	}
+	//ms_printf_array(data); ///// распечатка убрать
 }
 
 void	ms_count_arg_for_array(t_cmd *cmd)
@@ -61,6 +81,7 @@ void	ms_connect_arg_for_array(t_cmd *cmd)
 		}
 		y++;
 	}
+	cmd->array_arg[y_arr] = NULL;
 }
 
 int	ms_record_arg(t_cmd *cmd, char **str, int *i, int size_str)

@@ -57,6 +57,14 @@ typedef struct s_tmp
 	int		count;
 }				t_tmp;
 
+typedef struct s_env
+{
+	char	*key;
+	char	*value;
+	struct s_env	*next;
+	struct s_env	*prev;
+}				t_env;
+
 typedef struct s_data
 {
 	t_cmd	*cmd;
@@ -64,7 +72,9 @@ typedef struct s_data
 	int		num_cmd;
 	int		num_error;
 	int		num_prev_error;
-	char    **our_env; // dlana
+	t_env	*env;
+	int		num_env;
+	//char    **our_env; // dlana
 	char	*prev_dir; // obeedril for ms_cd.c
 	char	*cur_dir; // obeedril for ms_cd.c
 	char	*home_dir; // obeedril for ms_cd.c
@@ -77,13 +87,19 @@ int		ms_count_arg_divided_qm(t_cmd *cmd, t_data *data); // dlana
 void	ms_create_struct_without_qm(t_cmd *cmd); // dlana
 void	ms_switch_qm(char *s, int i, int *qm_o, int *qm_d); // dlana
 int		ms_found_env_variable(int err, t_cmd *cmd);
-void	ms_replase_key_to_value(char **str, char *key, char *value, int start);
+void	ms_replase_key_to_value(char **str, int key, char *value, int start);
+
 void	ms_record_array(t_data *data);
 
-int		ms_our_cmd(t_data *data, char **env);
+void	ms_init_env(t_data *data, char **env); // dlana
+
+
+int		ms_our_cmd(t_data *data);
 void	ms_cd(char *arg_way, t_data *data, int i); // obeedril for ms_cd.c
 void	ms_pwd(void); // obeedril for ms_pwd.c
 void	ms_exit(t_data *data, int num_array_arg, char *exit_arg); // obeedril for ms_exit.c
+void	ms_export(t_data *data); // dlana
+void	ms_unset(t_data *data, int i); // dlana
 
 int		ms_get_signal(void); // obeedril for signal
 void	ms_signal_ctrl_d(char *line); // dlana relocate
@@ -100,6 +116,7 @@ void	ms_malloc_str(char **name, int size);
 void	ms_malloc_arg(t_arg **arg, int size);
 void	ms_malloc_cmd(t_cmd **cmd, int size);
 void	ms_malloc_array(char ***array, int size);
+void	ms_malloc_env(t_env **env, int size);
 
 void	rl_replace_line (const char *text, int clear_undo); // obeedril for readline
 
