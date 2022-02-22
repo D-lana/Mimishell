@@ -67,9 +67,10 @@ void	ms_create_struct_without_qm(t_cmd *cmd)
 	ms_malloc_arg(&cmd->arg, cmd->num_arg);
 	while (cmd->str[i] != '\0')
 	{
+		cmd->arg[num_arg].space = NO;
+		cmd->arg[num_arg].empty_key = NO;
 		if (cmd->str[i] == 34 || cmd->str[i] == 39)
 		{
-			cmd->arg[num_arg].space = NO;
 			i = ms_cut_quotation_marks(cmd->str, &cmd->arg[num_arg], i);
 			num_arg++;
 		}
@@ -79,7 +80,6 @@ void	ms_create_struct_without_qm(t_cmd *cmd)
 			{
 				if (cmd->str[i] != ' ')
 				{
-					cmd->arg[num_arg].space = NO;
 					i = ms_record_args_without_qm(cmd->str, &cmd->arg[num_arg], i);
 					num_arg++;
 				}

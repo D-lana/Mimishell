@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ms_found_redirect.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dlana <dlana@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/02/22 14:15:13 by dlana             #+#    #+#             */
+/*   Updated: 2022/02/22 14:15:14 by dlana            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int ms_error_parse_redir(t_data *data, char *s, int i)
@@ -129,7 +141,10 @@ int ms_found_redirect(t_cmd *cmd, t_data *data)
 		if ((cmd->str[i] == '>' || cmd->str[i] == '<') && qm_d == 1 && qm_o == 1)
 		{
 			ms_record_redir_and_file(cmd, i, num_redir, data);
-			printf ("file - %s, r - %d\n", cmd->file[num_redir], cmd->redir[num_redir]);
+			ms_replase_key_to_value(&cmd->str, data->tmp.size_cut, NULL, i);
+			//ms_cut_redir(cmd, i, data);
+			//printf ("file - %s, r - %d\n", cmd->file[num_redir], cmd->redir[num_redir]);
+			//printf ("new str %s\n", cmd->str);
 			num_redir++;
 		}
 		i++;

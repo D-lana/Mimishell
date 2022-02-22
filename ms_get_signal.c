@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   ms_get_signal.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dlana <dlana@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/14 15:01:07 by obeedril          #+#    #+#             */
 /*   Updated: 2022/02/22 12:15:07 by obeedril         ###   ########.fr       */
