@@ -40,7 +40,6 @@ void	ms_malloc_str(char **name, int size) // ms_malloc_str(&str, size);
 
 void	ms_malloc_arg(t_arg **arg, int size) //ms_malloc_str(&arg, size);
 {
-
 	(*arg) = malloc(sizeof(t_arg) * (size + 1));
 	if ((*arg) == NULL)
 	{
@@ -51,9 +50,18 @@ void	ms_malloc_arg(t_arg **arg, int size) //ms_malloc_str(&arg, size);
 
 void	ms_malloc_cmd(t_cmd **cmd, int size) //ms_malloc_str(&cmd, size);
 {
-
 	(*cmd) = malloc(sizeof(t_cmd) * (size + 1));
 	if ((*cmd) == NULL)
+	{
+		write(2, "Mimisell: Allocation memory error\n", 35);
+		exit(EXIT_FAILURE);
+	}
+}
+
+void	ms_malloc_env(t_env **env, int size)
+{
+	(*env) = malloc(sizeof(t_env) * (size + 1));
+	if ((*env) == NULL)
 	{
 		write(2, "Mimisell: Allocation memory error\n", 35);
 		exit(EXIT_FAILURE);

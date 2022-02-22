@@ -57,7 +57,6 @@ int ms_separator(t_data *data, char *line)
 	}
 	i = 0;
 	// int j = 0;
-	// //printf("Here\n");
 	// if(data->num_error == 0 && data->empty_str == NO) ////////////// распечатка, убрать)
 	// {
 	//     while (i < data->num_cmd)
@@ -94,6 +93,7 @@ int	main(int argc, char **argv, char **env)
 	if (argc < 1 || argv == NULL || env == NULL)
 		exit(1);
 	data.num_prev_error = 0;
+	ms_init_env(&data, env);
 	while (1)
 	{
 		ms_get_signal(); // obeedril for ms_get_signal.c
@@ -102,8 +102,8 @@ int	main(int argc, char **argv, char **env)
 		ms_signal_ctrl_d(line);
 		ms_separator(&data, line);
 		ms_record_array(&data); // dlana add ms_record_array.c
-		ms_check_first_arg(&data); // obeedril add for check first argument
-		ms_our_cmd(&data, env);
+		//ms_check_first_arg(&data); // obeedril add for check first argument
+		ms_our_cmd(&data);
 		data.num_prev_error = data.num_error;
 		add_history(line);
 		ms_free_str(&line);

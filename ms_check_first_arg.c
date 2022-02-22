@@ -6,7 +6,7 @@
 /*   By: dlana <dlana@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/14 16:49:32 by obeedril          #+#    #+#             */
-/*   Updated: 2022/02/19 12:21:02 by dlana            ###   ########.fr       */
+/*   Updated: 2022/02/19 19:46:13 by dlana            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static int	check_str(t_data *data, char **arr_p, int i, int n)
 	if (data->cmd[n].redir[0])
 	{
 		write (1, "Redirect!\n", 10);
-		return (-1);
+		return (0);
 	}
 	else
 	{
@@ -56,8 +56,8 @@ static int	check_str(t_data *data, char **arr_p, int i, int n)
 			}
 			else
 				find_cmd++;
-			free(str_way);
-			free(str_slesh);
+			ms_free_str(&str_way);
+			ms_free_str(&str_slesh);
 			i++;
 		}
 		return (find_cmd);
@@ -84,9 +84,10 @@ void	ms_check_first_arg(t_data *data)
 		if (find_cmd > 0)
 		{
 			data->num_error = ERR_CMD;
-			printf("\bMimishell: %s: command not found\n",
+			printf("Mimishell: %s: command not found\n",
 				data->cmd[n].array_arg[0]);
-		}
+			break ;
+		} 
 		n++;
 	}
 }
