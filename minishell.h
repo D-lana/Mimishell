@@ -100,7 +100,7 @@ void	ms_pwd(void); // obeedril for ms_pwd.c
 void	ms_exit(t_data *data, int num_array_arg, char *exit_arg); // obeedril for ms_exit.c
 void	ms_export(t_data *data); // dlana
 void	ms_unset(t_data *data, int i); // dlana
-void	ms_execve(t_cmd *cmd, char **env, t_data *data);
+void	ms_execve(t_cmd *cmd, t_data *data);
 
 int		ms_get_signal(void); // obeedril for signal
 void	ms_signal_ctrl_d(char *line); // dlana relocate

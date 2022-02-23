@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ms_check_first_arg.c                               :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: dlana <dlana@student.42.fr>                +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/14 16:49:32 by obeedril          #+#    #+#             */
-/*   Updated: 2022/02/22 15:47:54 by dlana            ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
 static char	*add_slesh(char **arr_p, int i, int j)
@@ -35,29 +23,25 @@ static int	check_str(t_data *data, char **arr_p, int i, int n)
 
 	find_cmd = 0;
 	str_way = NULL;
-	if (data->cmd[n].redir[0])
-		return (0); // break ; ?????
-	else
+	// оттестить если первый аргумент редирект
+	while (arr_p[i])
 	{
-		while (arr_p[i])
+		str_slesh = add_slesh(arr_p, i, 0);
+		str_way = ft_strjoin(str_slesh, data->cmd[n].array_arg[0]);
+		ms_free_str(&str_slesh); // change
+		if (!access (str_way, 1))
 		{
-			str_slesh = add_slesh(arr_p, i, 0);
-			str_way = ft_strjoin(str_slesh, data->cmd[n].array_arg[0]);
-			ms_free_str(&str_slesh); // change
-			if (!access (str_way, 1))
-			{
-				find_cmd = -1; // нашла команду
-				data->cmd[n].way_cmd = str_way;
-				//printf("adr1 = %s", data->cmd[n].way_cmd);
-				break ;
-			}
-			else
-				find_cmd++;
-			ms_free_str(&str_way); // changed free
-			i++;
+			find_cmd = -1; // нашла команду
+			data->cmd[n].way_cmd = ft_strdup(str_way); // отфришить где-нибудь в конце
+			break ;
 		}
-		return (find_cmd);
+		else
+			find_cmd++;
+
+		ms_free_str(&str_way); // changed free
+		i++;
 	}
+	return (find_cmd);
 }
 
 void	ms_check_first_arg(t_data *data)
