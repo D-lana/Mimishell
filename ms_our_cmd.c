@@ -1,16 +1,16 @@
 #include "minishell.h"
 
-int		ms_our_cmd(t_data *data);
+int		ms_our_cmd(t_data *data, int i);
 void	ms_echo(t_data *data, int i);
 void	ms_env(t_data *data);
 void	ms_export(t_data *data);
 void	ms_unset(t_data *data, int i);
 
-int	ms_our_cmd(t_data *data)
+int	ms_our_cmd(t_data *data, int i)
 {
-	int i;
+	//int i;
 
-	i = 0;
+	//i = 0;
 	if (data->num_error != 0 || data->empty_str == YES)
 		return(-1);
 	if(ft_strncmp(data->cmd[i].array_arg[0], "pwd\0", 3) == 0)
@@ -33,7 +33,7 @@ int	ms_our_cmd(t_data *data)
 			return(0);
 	}
 	else
-		ms_execve(data->cmd, NULL, data);
+		ms_execve(data->cmd, data);
 	return(0);
 }
 

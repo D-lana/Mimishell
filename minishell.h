@@ -93,7 +93,7 @@ void	ms_replase_key_to_value(char **str, int key, char *value, int start);
 void	ms_record_array(t_data *data);
 void	ms_init_env(t_data *data, char **env); // dlana
 
-int		ms_our_cmd(t_data *data);
+int		ms_our_cmd(t_data *data, int i);
 
 void	ms_cd(char *arg_way, t_data *data, int i); // obeedril for ms_cd.c
 void	ms_pwd(void); // obeedril for ms_pwd.c
@@ -121,7 +121,7 @@ void	ms_malloc_env(t_env **env, int size);
 
 void	rl_replace_line (const char *text, int clear_undo); // obeedril for readline
 
-//void	ms_execution(t_data *data, t_cmd **cmd, char **env); //obeedril added
+void	ms_execution(t_data *data, t_cmd **cmd, char **env); //obeedril added
 
 
 #endif

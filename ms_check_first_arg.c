@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ms_check_first_arg.c                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/02/23 17:48:49 by obeedril          #+#    #+#             */
+/*   Updated: 2022/02/23 17:48:53 by obeedril         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static char	*add_slesh(char **arr_p, int i, int j)
@@ -28,11 +40,13 @@ static int	check_str(t_data *data, char **arr_p, int i, int n)
 	{
 		str_slesh = add_slesh(arr_p, i, 0);
 		str_way = ft_strjoin(str_slesh, data->cmd[n].array_arg[0]);
+		//printf("str_way = %s\n", str_way);
 		ms_free_str(&str_slesh); // change
 		if (!access (str_way, 1))
 		{
 			find_cmd = -1; // нашла команду
 			data->cmd[n].way_cmd = ft_strdup(str_way); // отфришить где-нибудь в конце
+			//printf("way_cmd = %s\n", data->cmd[n].way_cmd);
 			break ;
 		}
 		else

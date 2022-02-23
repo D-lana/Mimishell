@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_init_env.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlana <dlana@student.42.fr>                +#+  +:+       +#+        */
+/*   By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 18:47:21 by dlana             #+#    #+#             */
-/*   Updated: 2022/02/23 15:02:22 by dlana            ###   ########.fr       */
+/*   Updated: 2022/02/23 17:41:10 by obeedril         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,5 +172,6 @@ void	ms_init_env(t_data *data, char **env)
 		ms_record_env(data, env, y);
 		y++;
 	}
+	data->our_env[y] = NULL;
 	//ms_print_env(data);
 }
