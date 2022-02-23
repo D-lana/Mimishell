@@ -1,7 +1,6 @@
-
 #include "minishell.h"
 
-void	ms_execve(t_cmd *cmd, char **env, t_data *data)
+void	ms_execve(t_cmd *cmd, t_data *data)
 {
 	pid_t pid;
 	int status;
@@ -14,8 +13,7 @@ void	ms_execve(t_cmd *cmd, char **env, t_data *data)
 	else if (pid == 0)
 	{
 		signal(SIGQUIT, SIG_DFL);
-		printf ("adr = |%s|", cmd->way_cmd);
-	 	if (execve(cmd->way_cmd, cmd->array_arg, env) == -1)
+	 	if (execve(cmd->way_cmd, cmd->array_arg, data->our_env) == -1)
 			perror("execve ");
 		exit (0);
 	}
