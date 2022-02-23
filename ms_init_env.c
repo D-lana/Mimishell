@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   ms_init_env.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlana <dlana@student.42.fr>                +#+  +:+       +#+        */
+/*   By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 18:47:21 by dlana             #+#    #+#             */
 /*   Updated: 2022/02/23 17:42:56 by dlana            ###   ########.fr       */

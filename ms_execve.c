@@ -9,13 +9,14 @@ void	ms_execve(t_cmd *cmd, t_data *data)
 	
 	termsig = 0;
 	ms_check_first_arg(data); // obeedril add for check first argument
-    if (data->num_error != 0 || data->empty_str == YES)
-        return ;
+	if (data->num_error != 0 || data->empty_str == YES)
+		return ;
 	if ((pid = fork()) == -1)
 		perror("fork error");
 	else if (pid == 0)
 	{
 		signal(SIGQUIT, SIG_DFL);
+	//	printf("way_cmd_execve = %s\n", cmd->way_cmd);
 	 	if (execve(cmd->way_cmd, cmd->array_arg, data->our_env) == -1)
 			perror("execve ");
 		exit (0);

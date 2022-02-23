@@ -102,9 +102,8 @@ int	main(int argc, char **argv, char **env)
 		ms_signal_ctrl_d(line);
 		ms_separator(&data, line);
 		ms_record_array(&data); // dlana add ms_record_array.c
-		//ms_check_first_arg(&data); // obeedril add for check first argument
 		//ms_execution(&data, &data.cmd, env);
-		ms_our_cmd(&data);
+		ms_our_cmd(&data, 0);
 		data.num_prev_error = data.num_error;
 		add_history(line);
 		ms_free_str(&line);

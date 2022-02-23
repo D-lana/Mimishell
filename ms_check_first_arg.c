@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ms_check_first_arg.c                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/02/23 17:48:49 by obeedril          #+#    #+#             */
+/*   Updated: 2022/02/23 17:48:53 by obeedril         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static char	*add_slesh(char **arr_p, int i, int j)
@@ -17,29 +29,33 @@ static char	*add_slesh(char **arr_p, int i, int j)
 
 static int  check_str(t_data *data, char **arr_p, int i, int n)
 {
-    int     find_cmd;
-    char    *str_slesh;
-    char    *str_way;
-    find_cmd = 0;
-    str_way = NULL;
-    // оттестить если первый аргумент редирект
-    while (arr_p[i])
-    {
-        str_slesh = add_slesh(arr_p, i, 0);
-        str_way = ft_strjoin(str_slesh, data->cmd[n].array_arg[0]);
-        ms_free_str(&str_slesh); // change
-        if (!access (str_way, 1))
-        {
-            find_cmd = -1; // нашла команду
-            data->cmd[n].way_cmd = ft_strdup(str_way); // отфришить где-нибудь в конце
-            break ;
-        }
-        else
-            find_cmd++;
-        ms_free_str(&str_way); // changed free
-        i++;
-    }
-    return (find_cmd);
+	int		find_cmd;
+	char	*str_slesh;
+	char	*str_way;
+
+	find_cmd = 0;
+	str_way = NULL;
+	// оттестить если первый аргумент редирект
+	while (arr_p[i])
+	{
+		str_slesh = add_slesh(arr_p, i, 0);
+		str_way = ft_strjoin(str_slesh, data->cmd[n].array_arg[0]);
+		//printf("str_way = %s\n", str_way);
+		ms_free_str(&str_slesh); // change
+		if (!access (str_way, 1))
+		{
+			find_cmd = -1; // нашла команду
+			data->cmd[n].way_cmd = ft_strdup(str_way); // отфришить где-нибудь в конце
+			//printf("way_cmd = %s\n", data->cmd[n].way_cmd);
+			break ;
+		}
+		else
+			find_cmd++;
+
+		ms_free_str(&str_way); // changed free
+		i++;
+	}
+	return (find_cmd);
 }
 
 void	ms_check_first_arg(t_data *data)
