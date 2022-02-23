@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ms_execve.c                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/20 17:12:25 by obeedril          #+#    #+#             */
-/*   Updated: 2022/02/23 15:01:02 by obeedril         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
 void	ms_execve(t_cmd *cmd, t_data *data)
@@ -18,8 +6,6 @@ void	ms_execve(t_cmd *cmd, t_data *data)
 	int status;
 	int termsig;
 	int	exit_st;
-	
-	//(void)env; // will add later in (execve(cmd->way_cmd, cmd->array_arg, NULL) == -1)
 	
 	termsig = 0;
 	if ((pid = fork()) == -1)

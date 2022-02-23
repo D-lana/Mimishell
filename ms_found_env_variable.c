@@ -6,7 +6,7 @@
 /*   By: dlana <dlana@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 12:51:48 by dlana             #+#    #+#             */
-/*   Updated: 2022/02/22 14:16:14 by dlana            ###   ########.fr       */
+/*   Updated: 2022/02/22 15:36:19 by dlana            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,8 +124,6 @@ void	ms_record_value(t_cmd *cmd, int *i, int num_arg)
 	value = getenv(key);
 	ms_replase_key_to_value(&cmd->arg[num_arg].str, 1, NULL, (*i - n - 1));
 	ms_replase_key_to_value(&cmd->arg[num_arg].str, n, value, (*i - n - 1));
-	// ms_replase_key_to_value(&cmd->arg[num_arg].str, "$", NULL, (*i - n - 1));
-	// ms_replase_key_to_value(&cmd->arg[num_arg].str, key, value, (*i - n - 1));
 	if (ft_strlen(cmd->arg[num_arg].str) == 0)
 		cmd->arg[num_arg].empty_key = YES;
 }
