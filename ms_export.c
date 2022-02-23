@@ -1,87 +1,176 @@
 #include "minishell.h"
 
-void	ms_export(t_data *data)
+void ms_print_sort_export(t_data *data, int y)
 {
-	int y;
+	int x;
 	char	qm_d;
 
 	y = 0;
+	x = 0;
 	qm_d = DOUBLE_Q_MARK;
-	while (y < data->num_env)
+	write(1, "declare -x ", 12);
+	while (data->our_env[y][x] != '=' && data->our_env[y][x] != '\0')
 	{
-		printf("declare -x %s=%c%s%c\n", data->env->key, qm_d,
-				data->env->value, qm_d);
-		data->env = data->env->next;
-		y++;
+		write(1, &data->our_env[y][x], 1);
+		x++;
+	}
+	write(1, "=", 1);
+	x++;
+	if (data->our_env[y][x] != '\0')
+	{
+		write(1, &qm_d, 1);
+		while (data->our_env[y][x] != '=' && data->our_env[y][x] != '\0')
+		{
+			write(1, &data->our_env[y][x], 1);
+			x++;
+		}
+		write(1, &qm_d, 1);
+	}
+	write(1, "\n", 1);
+}
+
+
+void ms_sort_env(t_data *data, int y)
+{
+	int i;
+	int difference;
+	int first;
+
+	i = 0;
+	difference = 0;
+	first = YES;
+	while (i < data->num_env)
+	{
+		difference = ft_strncmp(data->our_env[y], data->our_env[i],
+			ft_strlen(data->our_env[y]));
+		printf("difference=%d\n", difference);
+		if (difference >= 0)
+		{
+			first = NO;
+			//write(1, "not first\n", 11);
+		}
+		i++;
+	}
+	if (first == YES)
+	{
+		data->our_env[y][i] = 'A'; // 'a' = 97 'A' = 65
+		ms_print_sort_export(data, y);		write(1, "it is first\n", 13);
+		ms_print_sort_export(data, i);
 	}
 }
 
-void	ft_cut_list(t_env *cut_list) //, t_env *p_to_struct)
-{
-	t_env	*tmp;
-	t_env	*p_prev;
 
-	tmp = cut_list;
-	p_prev = cut_list->prev;
-	cut_list = cut_list->next;
-	cut_list->prev = p_prev;
-	p_prev->next = cut_list;
-	tmp->next = NULL;
-	tmp->prev = NULL;
-	printf("cut\n");
-	if (tmp)
+void	ms_export(t_data *data)
+{
+	int y;
+	//int x;
+	char	qm_d;
+
+	y = 0;
+	//x = 0;
+	qm_d = DOUBLE_Q_MARK;
+	//ms_sort_env(data, y);
+	while (y < data->num_env)
 	{
-		if (tmp->key)
-			ms_free_str(&tmp->key);
-		if (tmp->value)
-			ms_free_str(&tmp->value);
-		free(tmp);
+		ms_sort_env(data, y);
+		// write(1, "declare -x ", 12);
+		// while (data->our_env[y][x] != '=' && data->our_env[y][x] != '\0')
+		// {
+		// 	write(1, &data->our_env[y][x], 1);
+		// 	x++;
+		// }
+		// write(1, "=", 1);
+		// x++;
+		// if (data->our_env[y][x] != '\0')
+		// {
+		// 	write(1, &qm_d, 1);
+		// 	while (data->our_env[y][x] != '=' && data->our_env[y][x] != '\0')
+		// 	{
+		// 		write(1, &data->our_env[y][x], 1);
+		// 		x++;
+		// 	}
+		// 	write(1, &qm_d, 1);
+		// }
+		// write(1, "\n", 1);
+		y++;
+		//x = 0;
 	}
 }
 
 void	ms_unset(t_data *data, int i)
 {
-	int y;
-	int size_key;
-
-	y = 0;
-	while (y < data->num_env)
+	while (data->our_env[i])
 	{
-		size_key = ft_strlen(data->env->key) + 1;
-		printf("yes %d\n", y);
-
-		if(ft_strncmp(data->cmd[i].array_arg[1], data->env->key, size_key) == 0)
-		{
-			printf("yes\n");
-			ft_cut_list(data->env);
-			// t_env	*tmp;
-			// t_env	*p_prev;
-
-			// tmp = data->env;
-			// p_prev = data->env->prev;
-			// data->env = data->env->next;
-			// data->env->prev = p_prev;
-			// p_prev->next = data->env;
-			// tmp->next = NULL;
-			// tmp->prev = NULL;
-			// printf("cut\n");
-			// if (tmp)
-			// {
-			// 	if (tmp->key)
-			// 		ms_free_str(&tmp->key);
-			// 	if (tmp->value)
-			// 		ms_free_str(&tmp->value);
-			// 	free(tmp);
-			// }
-			//ft_cut_list(data->env);
-			data->num_env--;
-			return ;
-		}
-		printf("s %s\n", data->env->key);
-		data->env = data->env->next;
-		y++;
+		i++;
 	}
 }
+
+// void	ft_cut_list(t_env *cut_list) //, t_env *p_to_struct)
+// {
+// 	t_env	*tmp;
+// 	t_env	*p_prev;
+
+// 	tmp = cut_list;
+// 	p_prev = cut_list->prev;
+// 	cut_list = cut_list->next;
+// 	cut_list->prev = p_prev;
+// 	p_prev->next = cut_list;
+// 	tmp->next = NULL;
+// 	tmp->prev = NULL;
+// 	printf("cut\n");
+// 	if (tmp)
+// 	{
+// 		if (tmp->key)
+// 			ms_free_str(&tmp->key);
+// 		if (tmp->value)
+// 			ms_free_str(&tmp->value);
+// 		free(tmp);
+// 	}
+// }
+
+// void	ms_unset(t_data *data, int i)
+// {
+// 	int y;
+// 	int size_key;
+
+// 	y = 0;
+// 	while (y < data->num_env)
+// 	{
+// 		size_key = ft_strlen(data->env->key) + 1;
+// 		printf("yes %d\n", y);
+
+// 		if(ft_strncmp(data->cmd[i].array_arg[1], data->env->key, size_key) == 0)
+// 		{
+// 			printf("yes\n");
+// 			ft_cut_list(data->env);
+// 			// t_env	*tmp;
+// 			// t_env	*p_prev;
+
+// 			// tmp = data->env;
+// 			// p_prev = data->env->prev;
+// 			// data->env = data->env->next;
+// 			// data->env->prev = p_prev;
+// 			// p_prev->next = data->env;
+// 			// tmp->next = NULL;
+// 			// tmp->prev = NULL;
+// 			// printf("cut\n");
+// 			// if (tmp)
+// 			// {
+// 			// 	if (tmp->key)
+// 			// 		ms_free_str(&tmp->key);
+// 			// 	if (tmp->value)
+// 			// 		ms_free_str(&tmp->value);
+// 			// 	free(tmp);
+// 			// }
+// 			//ft_cut_list(data->env);
+// 			data->num_env--;
+// 			return ;
+// 		}
+// 		printf("s %s\n", data->env->key);
+// 		data->env = data->env->next;
+// 		y++;
+// 	}
+// }
 
 // void	ft_create_env_list(t_env *env, char *key, char *value)
 // {
