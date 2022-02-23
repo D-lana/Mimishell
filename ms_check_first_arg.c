@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_check_first_arg.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dlana <dlana@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/14 16:49:32 by obeedril          #+#    #+#             */
-/*   Updated: 2022/02/22 14:24:04 by obeedril         ###   ########.fr       */
+/*   Updated: 2022/02/22 15:47:54 by dlana            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,11 @@ static int	check_str(t_data *data, char **arr_p, int i, int n)
 			{
 				find_cmd = -1; // нашла команду
 				data->cmd[n].way_cmd = str_way;
+				//printf("adr1 = %s", data->cmd[n].way_cmd);
 				break ;
 			}
 			else
 				find_cmd++;
-
 			ms_free_str(&str_way); // changed free
 			i++;
 		}

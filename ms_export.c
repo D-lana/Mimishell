@@ -16,35 +16,28 @@ void	ms_export(t_data *data)
 	}
 }
 
-// void	ft_cut_list(t_env *cut_list) //, t_env *p_to_struct)
-// {
-// 	t_env	*tmp;
-// 	t_env	*p_prev;
+void	ft_cut_list(t_env *cut_list) //, t_env *p_to_struct)
+{
+	t_env	*tmp;
+	t_env	*p_prev;
 
-// 	tmp = cut_list;
-// 	p_prev = cut_list->prev;
-// 	cut_list = cut_list->next;
-// 	cut_list->prev = p_prev;
-// 	p_prev->next = cut_list;
-// 	tmp->next = NULL;
-// 	tmp->prev = NULL;
-// 	printf("cut\n");
-// 	if (tmp)
-// 	{
-// 		if (tmp->key)
-// 			ms_free_str(&tmp->key);
-// 		if (tmp->value)
-// 			ms_free_str(&tmp->value);
-// 		free(tmp);
-// 	}
-// 	// cut_list = p_to_struct;
-// 	// p_2 = p_to_struct->next;
-// 	// p_tail = p_to_struct;
-// 	// p_tail = p_tail->prev;
-// 	// p_to_struct = p_to_struct->next;
-// 	// p_to_struct->prev = p_tail;
-// 	// p_tail->next = p_to_struct;
-// }
+	tmp = cut_list;
+	p_prev = cut_list->prev;
+	cut_list = cut_list->next;
+	cut_list->prev = p_prev;
+	p_prev->next = cut_list;
+	tmp->next = NULL;
+	tmp->prev = NULL;
+	printf("cut\n");
+	if (tmp)
+	{
+		if (tmp->key)
+			ms_free_str(&tmp->key);
+		if (tmp->value)
+			ms_free_str(&tmp->value);
+		free(tmp);
+	}
+}
 
 void	ms_unset(t_data *data, int i)
 {
@@ -60,25 +53,26 @@ void	ms_unset(t_data *data, int i)
 		if(ft_strncmp(data->cmd[i].array_arg[1], data->env->key, size_key) == 0)
 		{
 			printf("yes\n");
-			t_env	*tmp;
-			t_env	*p_prev;
+			ft_cut_list(data->env);
+			// t_env	*tmp;
+			// t_env	*p_prev;
 
-			tmp = data->env;
-			p_prev = data->env->prev;
-			data->env = data->env->next;
-			data->env->prev = p_prev;
-			p_prev->next = data->env;
-			tmp->next = NULL;
-			tmp->prev = NULL;
-			printf("cut\n");
-			if (tmp)
-			{
-				if (tmp->key)
-					ms_free_str(&tmp->key);
-				if (tmp->value)
-					ms_free_str(&tmp->value);
-				free(tmp);
-			}
+			// tmp = data->env;
+			// p_prev = data->env->prev;
+			// data->env = data->env->next;
+			// data->env->prev = p_prev;
+			// p_prev->next = data->env;
+			// tmp->next = NULL;
+			// tmp->prev = NULL;
+			// printf("cut\n");
+			// if (tmp)
+			// {
+			// 	if (tmp->key)
+			// 		ms_free_str(&tmp->key);
+			// 	if (tmp->value)
+			// 		ms_free_str(&tmp->value);
+			// 	free(tmp);
+			// }
 			//ft_cut_list(data->env);
 			data->num_env--;
 			return ;
