@@ -76,7 +76,7 @@ typedef struct s_data
 	int		num_prev_error;
 	t_env	*env;
 	int		num_env;
-	char    **our_env; // dlana
+	char	**our_env; // dlana
 	char	*prev_dir; // obeedril for ms_cd.c
 	char	*cur_dir; // obeedril for ms_cd.c
 	char	*home_dir; // obeedril for ms_cd.c

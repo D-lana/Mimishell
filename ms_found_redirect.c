@@ -6,7 +6,7 @@
 /*   By: dlana <dlana@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/22 14:15:13 by dlana             #+#    #+#             */
-/*   Updated: 2022/02/22 14:15:14 by dlana            ###   ########.fr       */
+/*   Updated: 2022/02/22 16:05:10 by dlana            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,8 @@ void	ms_init_emum_redir(t_cmd *cmd, int *i_orig, int num_redir)
 void	ms_record_redir_and_file(t_cmd *cmd, int i, int num_redir, t_data *d)
 {
 	int start;
+	int qm_o = 1;
+	int qm_d = 1;
 
 	start = 0;
 	d->tmp.size_str = 0;
@@ -79,11 +81,16 @@ void	ms_record_redir_and_file(t_cmd *cmd, int i, int num_redir, t_data *d)
 	while (cmd->str[i] == ' ' && cmd->str[i] != '\0')
 		i++;
 	start = i;
-	while(cmd->str[i] != ' ' && cmd->str[i] != '\0')
+	while(cmd->str[i] != '\0')
 	{
+		ms_switch_qm(cmd->str, i, &qm_o, &qm_d);
+		if (cmd->str[i] == ' ' && qm_o == 1 && qm_d == 1)
+			break;
 		d->tmp.size_str++;
 		i++;
 	}
+	if (qm_o != 1 || qm_d != 1)
+		write(1, "Oppps!\n", 8); ///////////// ошибка в названии файла - незакрытая кавычка
 	ms_malloc_str(&cmd->file[num_redir], d->tmp.size_str);
 	ms_record_str(&cmd->file[num_redir], cmd->str, start, d->tmp.size_str);
 	d->tmp.size_cut = i - d->tmp.size_cut;
@@ -142,9 +149,8 @@ int ms_found_redirect(t_cmd *cmd, t_data *data)
 		{
 			ms_record_redir_and_file(cmd, i, num_redir, data);
 			ms_replase_key_to_value(&cmd->str, data->tmp.size_cut, NULL, i);
-			//ms_cut_redir(cmd, i, data);
-			//printf ("file - %s, r - %d\n", cmd->file[num_redir], cmd->redir[num_redir]);
-			//printf ("new str %s\n", cmd->str);
+			printf ("file - %s, r - %d\n", cmd->file[num_redir], cmd->redir[num_redir]);
+			printf ("new str %s\n", cmd->str);
 			num_redir++;
 		}
 		i++;

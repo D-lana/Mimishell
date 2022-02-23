@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_execve.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dlana <dlana@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 17:12:25 by obeedril          #+#    #+#             */
-/*   Updated: 2022/02/22 14:24:15 by obeedril         ###   ########.fr       */
+/*   Updated: 2022/02/22 15:43:12 by dlana            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void	ms_execve(t_cmd *cmd, char **env, t_data *data)
 	else if (pid == 0)
 	{
 		signal(SIGQUIT, SIG_DFL);
+		printf ("adr = |%s|", cmd->way_cmd);
 	 	if (execve(cmd->way_cmd, cmd->array_arg, env) == -1)
 			perror("execve ");
 		exit (0);

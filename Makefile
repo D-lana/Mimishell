@@ -17,8 +17,8 @@ CC			=	gcc
 
 CFLAGS		=	-Wall -Werror -Wextra -I
 
-RLL			=	-lreadline -L ~/.brew/Cellar/readline/8.1.1/lib \
-				-I~/.brew/Cellar/readline/8.1.1/include
+RLL			=	-lreadline -L ~/.brew/Cellar/readline/8.1.2/lib \
+				-I~/.brew/Cellar/readline/8.1.2/include
 
 RM			=	rm -f
 

@@ -33,7 +33,7 @@ int	ms_our_cmd(t_data *data)
 			return(0);
 	}
 	else
-		ms_execve(data->cmd, data->our_env, data);
+		ms_execve(data->cmd, NULL, data);
 	return(0);
 }
 
@@ -68,17 +68,10 @@ void	ms_env(t_data *data)
 	y = 0;
 	while (y < data->num_env)
 	{
-		printf("%s=", data->env->key);
-		printf("%s\n", data->env->value);
-		data->env = data->env->next;
+		printf("%s\n", data->our_env[y]);
+		//printf("%s=", data->env->key);
+		//printf("%s\n", data->env->value);
+		//data->env = data->env->next;
 		y++;
 	}
-	// int y;
-
-	// y = 0;
-	// while (data->env[y].key != NULL)
-	// {
-	// 	printf("%s=%s\n", data->env[y].key, data->env[y].value);
-	// 	y++;
-	// }
 }
