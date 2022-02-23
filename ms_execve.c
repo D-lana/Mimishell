@@ -8,6 +8,9 @@ void	ms_execve(t_cmd *cmd, t_data *data)
 	int	exit_st;
 	
 	termsig = 0;
+	ms_check_first_arg(data); // obeedril add for check first argument
+    if (data->num_error != 0 || data->empty_str == YES)
+        return ;
 	if ((pid = fork()) == -1)
 		perror("fork error");
 	else if (pid == 0)

@@ -33,7 +33,7 @@ int	ms_our_cmd(t_data *data)
 			return(0);
 	}
 	else
-		ms_execve(data->cmd, NULL, data);
+		ms_execve(data->cmd, data);
 	return(0);
 }
 
