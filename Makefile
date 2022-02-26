@@ -14,9 +14,9 @@ LIBFT_LIB	=	$(LIBDIR)/libft.a
 
 LIB			=	-L$(LIBDIR) -lft
 
-CC			=	gcc
+CC			=	gcc #-g -fsanitize=address
 
-CFLAGS		=	-Wall -Werror -Wextra -I
+CFLAGS		=	-Wall -Werror -Wextra -I 
 
 RLL			=	-lreadline -L ~/.brew/Cellar/readline/8.1.2/lib \
 				-I~/.brew/Cellar/readline/8.1.2/include

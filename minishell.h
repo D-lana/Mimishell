@@ -81,6 +81,7 @@ typedef struct s_data
 	char	*cur_dir; // obeedril for ms_cd.c
 	char	*home_dir; // obeedril for ms_cd.c
 	int		empty_str;
+	int		count_redir;
 }				t_data;
 
 int		ms_count_and_record_cmd(t_data *data, char *line);
@@ -122,6 +123,7 @@ void	ms_malloc_env(t_env **env, int size);
 void	rl_replace_line (const char *text, int clear_undo); // obeedril for readline
 
 void	ms_execution(t_data *data, t_cmd **cmd, char **env); //obeedril added
+
 
 
 #endif

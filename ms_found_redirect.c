@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_found_redirect.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlana <dlana@student.42.fr>                +#+  +:+       +#+        */
+/*   By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/22 14:15:13 by dlana             #+#    #+#             */
-/*   Updated: 2022/02/22 16:05:10 by dlana            ###   ########.fr       */
+/*   Updated: 2022/02/25 16:13:04 by obeedril         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ int	ms_count_redirect(t_cmd *cmd, t_data *data)
 	qm_o = 1;
 	qm_d = 1;
 	i = 0;
-	data->tmp.count = 0;
+	data->count_redir = 0;
 	while (cmd->str[i] != '\0')
 	{
 		ms_switch_qm(cmd->str, i, &qm_o, &qm_d);
@@ -119,7 +119,7 @@ int	ms_count_redirect(t_cmd *cmd, t_data *data)
 				i++;
 			if (ms_error_parse_redir(data, cmd->str, i) == -1)
 				return (-1);
-			data->tmp.count++;
+			data->count_redir++;
 		}
 		else
 			i++;
@@ -149,12 +149,11 @@ int ms_found_redirect(t_cmd *cmd, t_data *data)
 		{
 			ms_record_redir_and_file(cmd, i, num_redir, data);
 			ms_replase_key_to_value(&cmd->str, data->tmp.size_cut, NULL, i);
-			printf ("file - %s, r - %d\n", cmd->file[num_redir], cmd->redir[num_redir]);
-			printf ("new str %s\n", cmd->str);
+			//printf ("file - %s, r - %d\n", cmd->file[num_redir], cmd->redir[num_redir]);
+			//printf ("new str %s\n", cmd->str);
 			num_redir++;
 		}
 		i++;
 	}
-	data->tmp.count = 0;
 	return (0);
 }
