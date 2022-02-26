@@ -1,31 +1,19 @@
 #include "minishell.h"
 
-void	ms_free_str(char **tmp_str);
+void	ms_malloc_array(char ***array, int size);
 void	ms_malloc_str(char **name, int size);
 void	ms_malloc_arg(t_arg **arg, int size);
 void	ms_malloc_cmd(t_cmd **cmd, int size);
+int		*ms_malloc_arr_int(int **arr_int, int size);
 
-void    ms_malloc_array(char ***array, int size) // ms_malloc_array(array, size);
+void	ms_malloc_array(char ***array, int size) // ms_malloc_array(array, size);
 {
-    (*array) = (char **)malloc(sizeof(char *) * (size + 1));
-    if ((*array) == NULL)
-    {
-        write(2, "Mimisell: Allocation memory error\n", 35);
-        exit(EXIT_FAILURE);
-    }
-}
-
-void	ms_free_str(char **tmp_str) // ms_free_str(&str);
-{
-	char *tmp;
-
-	tmp = *tmp_str;
-	if (tmp)
+	(*array) = (char **)malloc(sizeof(char *) * (size + 1));
+	if ((*array) == NULL)
 	{
-		free(tmp);
-		tmp = NULL;
+		write(2, "Mimisell: Allocation memory error\n", 35);
+		exit(EXIT_FAILURE);
 	}
-	*tmp_str = tmp;
 }
 
 void	ms_malloc_str(char **name, int size) // ms_malloc_str(&str, size);
@@ -58,12 +46,13 @@ void	ms_malloc_cmd(t_cmd **cmd, int size) //ms_malloc_str(&cmd, size);
 	}
 }
 
-void	ms_malloc_env(t_env **env, int size)
+int	*ms_malloc_arr_int(int **arr_int, int size)
 {
-	(*env) = malloc(sizeof(t_env) * (size + 1));
-	if ((*env) == NULL)
+	(*arr_int) = (int *)malloc(sizeof(int) * (size + 1));
+	if ((*arr_int) == NULL)
 	{
 		write(2, "Mimisell: Allocation memory error\n", 35);
 		exit(EXIT_FAILURE);
 	}
+	return(*arr_int);
 }

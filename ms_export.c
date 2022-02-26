@@ -1,144 +1,121 @@
 #include "minishell.h"
 
-void	ms_export(t_data *data)
+void	ms_export(t_data *data, int i);
+
+void	ms_print_sort_export(t_data *data, int y)
 {
-	int y;
+	int		x;
 	char	qm_d;
 
-	y = 0;
+	x = 0;
 	qm_d = DOUBLE_Q_MARK;
-	while (y < data->num_env)
+	write(1, "declare -x ", 12);
+	while (data->our_env[y][x] != '=' && data->our_env[y][x] != '\0')
 	{
-		printf("declare -x %s=%c%s%c\n", data->env->key, qm_d,
-				data->env->value, qm_d);
-		data->env = data->env->next;
+		write(1, &data->our_env[y][x], 1);
+		x++;
+	}
+	if (data->our_env[y][x] != '\0')
+	{
+		write(1, "=", 1);
+		x++;
+		write(1, &qm_d, 1);
+		while (data->our_env[y][x] != '\0')
+		{
+			write(1, &data->our_env[y][x], 1);
+			x++;
+		}
+		write(1, &qm_d, 1);
+	}
+	write(1, "\n", 1);
+}
+
+int	ft_strncmp_by_env(const char *s1, const char *s2)
+{
+	int				i;
+	unsigned char	*t1;
+	unsigned char	*t2;
+
+	t1 = (unsigned char *) s1;
+	t2 = (unsigned char *) s2;
+	i = 0;
+	while ((t1[i] != '\0' || t2[i] != '\0') && t2[i] != '=' && t1[i] != '=')
+	{
+		
+		if (t1[i] != t2[i])
+			return (t1[i] - t2[i]);
+		i++;
+	}
+	if ((t1[i] != '\0' || t2[i] != '\0') && t2[i] != '=' && t1[i] != '=')
+		return (t1[i] - t2[i]);
+	return (0);
+}
+
+void	ms_sort_env(t_data *data, int y, int **sort)
+{
+	int	i;
+	int	difference;
+	int	first;
+
+	i = 0;
+	difference = 0;
+	first = YES;
+	i = 0;
+	while (i < data->num_env)
+	{
+		if ((*sort)[i] != YES)
+		{
+			difference = ft_strncmp_by_env(data->our_env[y], data->our_env[i]);
+			if (difference > 0)
+				first = NO;
+		}
+		i++;
+	}
+	if (first == YES && (*sort)[y] != YES)
+	{
+		(*sort)[y] = YES;
+		ms_print_sort_export(data, y);
+	}
+}
+
+int	ms_check_sorted(int *sort, t_data *data)
+{
+	int	i;
+	
+	i = 0;
+	while (i < data->num_env)
+	{
+		if (sort[i] == NO)
+			return (NO);
+		i++;
+	}
+	return (YES);
+}
+
+void	ms_export(t_data *data, int i)
+{
+	int		y;
+	int		*sort;
+
+	y = 0;
+	if (data->cmd[i].array_arg[1] != NULL)
+	{
+		ms_add_env_variable(data, i);
+		return ;
+	}
+	*sort = *ms_malloc_arr_int(&sort, data->num_env);
+	while (sort[y] < data->num_env)
+	{
+		sort[y] = NO;
 		y++;
 	}
-}
-
-void	ft_cut_list(t_env *cut_list) //, t_env *p_to_struct)
-{
-	t_env	*tmp;
-	t_env	*p_prev;
-
-	tmp = cut_list;
-	p_prev = cut_list->prev;
-	cut_list = cut_list->next;
-	cut_list->prev = p_prev;
-	p_prev->next = cut_list;
-	tmp->next = NULL;
-	tmp->prev = NULL;
-	printf("cut\n");
-	if (tmp)
-	{
-		if (tmp->key)
-			ms_free_str(&tmp->key);
-		if (tmp->value)
-			ms_free_str(&tmp->value);
-		free(tmp);
-	}
-}
-
-void	ms_unset(t_data *data, int i)
-{
-	int y;
-	int size_key;
-
 	y = 0;
 	while (y < data->num_env)
 	{
-		size_key = ft_strlen(data->env->key) + 1;
-		printf("yes %d\n", y);
-
-		if(ft_strncmp(data->cmd[i].array_arg[1], data->env->key, size_key) == 0)
-		{
-			printf("yes\n");
-			ft_cut_list(data->env);
-			// t_env	*tmp;
-			// t_env	*p_prev;
-
-			// tmp = data->env;
-			// p_prev = data->env->prev;
-			// data->env = data->env->next;
-			// data->env->prev = p_prev;
-			// p_prev->next = data->env;
-			// tmp->next = NULL;
-			// tmp->prev = NULL;
-			// printf("cut\n");
-			// if (tmp)
-			// {
-			// 	if (tmp->key)
-			// 		ms_free_str(&tmp->key);
-			// 	if (tmp->value)
-			// 		ms_free_str(&tmp->value);
-			// 	free(tmp);
-			// }
-			//ft_cut_list(data->env);
-			data->num_env--;
-			return ;
-		}
-		printf("s %s\n", data->env->key);
-		data->env = data->env->next;
+		ms_sort_env(data, y, &sort);
 		y++;
+		if (y == data->num_env && ms_check_sorted(sort, data) != YES)
+			y = 0;
 	}
+	ms_free_int_arr(&sort);
 }
-
-// void	ft_create_env_list(t_env *env, char *key, char *value)
-// {
-// 	t_env	*tmp;
-
-// 	tmp = malloc(sizeof(t_env));
-// 	if (!tmp)
-// 		ft_error();
-// 	tmp->key = key;
-// 	tmp->value = value;
-// 	if (env == 0)
-// 	{
-// 		tmp->prev = tmp;
-// 		tmp->next = tmp;
-// 	}
-// 	if (env != 0)
-// 	{
-// 		tmp->prev = env->prev;
-// 		env->prev->next = tmp;
-// 		tmp->next = env;
-// 		env->prev = tmp;
-// 	}
-// 	env = tmp;
-// }
-
-// void	ft_rotate_list(t_env *points)
-// {
-// 	if (points->count_a > 1)
-// 		points->a = points->a->next;
-// 	if (points->checker == 0)
-// 		write (1, "ra\n", 3);
-// }
-
-
-// void    ms_env(t_data *data, char **env)
-// {
-//     int y;
-//     int x;
-//     y = 0;
-//     x = 0;
-//     //t_data *new = data;
-//     //const char *env;
-//     //env = getenv("All");
-//     while (env[y] != 0)
-//         y++;
-//     ms_malloc_array(&data->our_env, y);
-//     y = 0;
-//     while (env[y] != 0)
-//     {
-//         while (env[y][x] != '\0')
-//         {
-//             x++;
-//         }
-//         ms_malloc_str(&data->our_env[y], x);
-//         ms_record_str(&data->our_env[y], env[y], 0, x);
-//         printf("%s\n", data->our_env[y]);
-//         y++;
-//         x = 0;
-//     }
-// }

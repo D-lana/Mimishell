@@ -13,6 +13,7 @@ typedef enum e_value
 {
 	NO,
 	YES,
+	YES_AFTER_PARSER,
 	REDIR_R, // <
 	REDIR_W, // >
 	REDIR_W_ADD, // >>
@@ -21,10 +22,13 @@ typedef enum e_value
 	ERR_PIPE,
 	ERR_MEMORY,
 	ERR_Q_MARK,
+	ADD_TO_OLD,
+	ADD_NEW,
 	DOUBLE_Q_MARK = 34,
 	ONE_Q_MARK = 39,
 	ERR_CMD = 127,
 	ERR_TOKEN = 258,
+	ERR_EXPORT = 1,
 }				t_value;
 
 typedef struct s_arg
@@ -59,14 +63,6 @@ typedef struct s_tmp
 	int		count;
 }				t_tmp;
 
-typedef struct s_env
-{
-	char	*key;
-	char	*value;
-	struct s_env	*next;
-	struct s_env	*prev;
-}				t_env;
-
 typedef struct s_data
 {
 	t_cmd	*cmd;
@@ -74,9 +70,11 @@ typedef struct s_data
 	int		num_cmd;
 	int		num_error;
 	int		num_prev_error;
-	t_env	*env;
 	int		num_env;
 	char	**our_env; // dlana
+	char	**tmp_var; // dlana
+	int		num_tmp_var;
+	int		only_var;
 	char	*prev_dir; // obeedril for ms_cd.c
 	char	*cur_dir; // obeedril for ms_cd.c
 	char	*home_dir; // obeedril for ms_cd.c
@@ -94,13 +92,18 @@ void	ms_replase_key_to_value(char **str, int key, char *value, int start);
 void	ms_record_array(t_data *data);
 void	ms_init_env(t_data *data, char **env); // dlana
 
+int		ms_add_env_variable(t_data *data, int i_cmd); // dlana
+void	ms_found_variable(t_data *data);
+int		ms_valid_export(char *var);
+int		ms_cut_array_arg(char ***arr, int *count_arr, int y);
+
 int		ms_our_cmd(t_data *data, int i);
 
 void	ms_cd(char *arg_way, t_data *data, int i); // obeedril for ms_cd.c
 void	ms_pwd(void); // obeedril for ms_pwd.c
 void	ms_exit(t_data *data, int num_array_arg, char *exit_arg); // obeedril for ms_exit.c
-void	ms_export(t_data *data); // dlana
-void	ms_unset(t_data *data, int i); // dlana
+void	ms_export(t_data *data, int i); // dlana
+int		ms_unset(t_data *data, int i_cmd); // dlana
 void	ms_execve(t_cmd *cmd, t_data *data);
 
 int		ms_get_signal(void); // obeedril for signal
@@ -112,13 +115,15 @@ void	ms_record_char(char **result, char *str, int *r, int *s);
 int		ms_error(int *error, char *str);
 void	ms_check_first_arg(t_data *data); // obeedril added for check a first agr
 
-void	ms_free_str(char **tmp_str);
+void	ms_free_str(char **str);
+void	ms_free_arr(char ***arr);
+void	ms_free_int_arr(int **int_arr);
 
 void	ms_malloc_str(char **name, int size);
 void	ms_malloc_arg(t_arg **arg, int size);
 void	ms_malloc_cmd(t_cmd **cmd, int size);
 void	ms_malloc_array(char ***array, int size);
-void	ms_malloc_env(t_env **env, int size);
+int		*ms_malloc_arr_int(int **arr_int, int size);
 
 void	rl_replace_line (const char *text, int clear_undo); // obeedril for readline
 
