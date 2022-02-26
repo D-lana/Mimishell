@@ -6,7 +6,7 @@
 #    By: dlana <dlana@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/03/02 21:56:09 by dlana             #+#    #+#              #
-#    Updated: 2022/02/19 15:28:47 by dlana            ###   ########.fr        #
+#    Updated: 2022/02/26 12:58:31 by dlana            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ RM			=	rm -f
 CFLAGS		=	-Wall -Wextra -Werror
 
 SRCS		=	ft_strlen.c ft_isdigit.c ft_strncmp.c ft_itoa.c ft_strdup.c ft_split.c ft_strjoin.c\
-				ft_atoi.c \
+				ft_atoi.c ft_isalpha.c ft_strchr.c \
 
 
 OBJS		=	${SRCS:.c=.o}

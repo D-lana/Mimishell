@@ -11,6 +11,10 @@ int	ms_error(int *error, char *str)
 		printf("Mimishell: Syntax error near unexpected token '%s' \n", str);
 	else if ((*error) == ERR_Q_MARK)
 		write(2, "Mimisell: Skipped quotation_marks\n", 35);
+	else if ((*error) == ERR_EXPORT && str[0] == '!')
+		printf("Mimishell: %s: event not found\n", str);
+	else if ((*error) == ERR_EXPORT)
+		printf("Mimishell: export: '%s': not a valid identifier\n", str);
 	return(-1);
 }
 
@@ -45,13 +49,11 @@ int ms_separator(t_data *data, char *line)
 	{
 		if(data->num_error == 0 && data->empty_str == NO)
 			ms_found_redirect(&data->cmd[i], data);
-		if(data->num_error == 0 && data->empty_str == NO)
-		{
+		if(data->num_error == 0 && data->empty_str == NO && data->cmd[i].str != NULL)
 			ms_count_arg_divided_qm(&data->cmd[i], data);
-		}
-		if(data->num_error == 0 && data->empty_str == NO)
+		if(data->num_error == 0 && data->empty_str == NO && data->cmd[i].str != NULL)
 			ms_create_struct_without_qm(&data->cmd[i]);
-		if(data->num_error == 0 && data->empty_str == NO)
+		if(data->num_error == 0 && data->empty_str == NO && data->cmd[i].str != NULL)
 			ms_found_env_variable(data->num_prev_error, &data->cmd[i]);
 		i++;
 	}
@@ -93,6 +95,7 @@ int	main(int argc, char **argv, char **env)
 	if (argc < 1 || argv == NULL || env == NULL)
 		exit(1);
 	data.num_prev_error = 0;
+	data.num_tmp_var = 0;
 	ms_init_env(&data, env);
 	while (1)
 	{
