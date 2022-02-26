@@ -18,7 +18,7 @@ int		ms_record_arg(t_cmd *cmd, char **str, int *i, int len);
 // 		{
 // 			printf("%s ", data->cmd[y].array_arg[i]);
 // 			i++;
-// 		}
+// 		}	
 // 		y++;
 // 	}
 // 	printf("\n");
@@ -29,15 +29,24 @@ void	ms_record_array(t_data *data)
 	int	i;
 
 	i = 0;
+	//printf ("new str %s\n", data->cmd[i].str);
 	if (data->num_error != 0 || data->empty_str == YES)
+	{
 		return ;
+	}
 	while (i < data->num_cmd)
 	{
-		ms_count_arg_for_array(&data->cmd[i]);
-		ms_connect_arg_for_array(&data->cmd[i]);
+		if (data->cmd[i].str != NULL)
+		{
+			ms_count_arg_for_array(&data->cmd[i]);
+			ms_connect_arg_for_array(&data->cmd[i]);
+		}
 		i++;
 	}
 	//ms_printf_array(data); ///// распечатка убрать
+	if(data->num_error == 0 && data->empty_str == NO && data->cmd[0].str != NULL)
+		ms_found_variable(data);
+	//printf ("new str1 %s\n", data->cmd[0].str);
 }
 
 void	ms_count_arg_for_array(t_cmd *cmd)

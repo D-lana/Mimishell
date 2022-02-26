@@ -27,7 +27,7 @@ static char	*add_slesh(char **arr_p, int i, int j)
 	return (str_slesh);
 }
 
-static int	check_str(t_data *data, char **arr_p, int i, int n)
+static int  check_str(t_data *data, char **arr_p, int i, int n)
 {
 	int		find_cmd;
 	char	*str_slesh;

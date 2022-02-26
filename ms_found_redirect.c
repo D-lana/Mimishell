@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ms_found_redirect.c                                :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/22 14:15:13 by dlana             #+#    #+#             */
-/*   Updated: 2022/02/25 16:13:04 by obeedril         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
 int ms_error_parse_redir(t_data *data, char *s, int i)
@@ -140,8 +128,8 @@ int ms_found_redirect(t_cmd *cmd, t_data *data)
 	num_redir = 0;
 	if (ms_count_redirect(cmd, data) == -1)
 		return (-1);
-	cmd->redir = (int *)malloc(sizeof(int) * (data->tmp.count + 1));
-	ms_malloc_array(&cmd->file, data->tmp.count);
+	cmd->redir = (int *)malloc(sizeof(int) * (data->count_redir + 1));
+	ms_malloc_array(&cmd->file, data->count_redir);
 	while (cmd->str[i] != '\0')
 	{
 		ms_switch_qm(cmd->str, i, &qm_o, &qm_d);
@@ -149,11 +137,15 @@ int ms_found_redirect(t_cmd *cmd, t_data *data)
 		{
 			ms_record_redir_and_file(cmd, i, num_redir, data);
 			ms_replase_key_to_value(&cmd->str, data->tmp.size_cut, NULL, i);
-			//printf ("file - %s, r - %d\n", cmd->file[num_redir], cmd->redir[num_redir]);
-			//printf ("new str %s\n", cmd->str);
 			num_redir++;
 		}
 		i++;
+	}
+	if (cmd->str[0] == '\0')
+	{
+		ms_free_str(&cmd->str);
+		//printf("cmd->str %s\n", cmd->str);
+		//cmd->str = NULL;
 	}
 	return (0);
 }
