@@ -78,18 +78,38 @@ void	ms_sort_env(t_data *data, int y, int **sort)
 	}
 }
 
-int	ms_check_sorted(int *sort, t_data *data)
+int	ms_check_sorted(int **sort, t_data *data)
 {
 	int	i;
 	
 	i = 0;
 	while (i < data->num_env)
 	{
-		if (sort[i] == NO)
+		if ((*sort)[i] == NO)
 			return (NO);
 		i++;
 	}
 	return (YES);
+}
+
+void	ms_recurs_sort(t_data *data, int **sort)
+{
+	int	end;
+	int	y;
+
+	y = 0;
+	end = 0;
+	while (y < data->num_env)
+	{
+		ms_sort_env(data, y, sort);
+		y++;
+		if (y == data->num_env)
+		{
+			end = ms_check_sorted(sort, data);
+			if (end == NO)
+				ms_recurs_sort(data, sort);
+		}
+	}
 }
 
 void	ms_export(t_data *data, int i)
@@ -109,13 +129,18 @@ void	ms_export(t_data *data, int i)
 		sort[y] = NO;
 		y++;
 	}
-	y = 0;
-	while (y < data->num_env)
-	{
-		ms_sort_env(data, y, &sort);
-		y++;
-		if (y == data->num_env && ms_check_sorted(sort, data) != YES)
-			y = 0;
-	}
+	ms_recurs_sort(data, &sort);
+	//y = 0;
+	// while (y < data->num_env)
+	// {
+	// 	ms_sort_env(data, y, &sort);
+	// 	y++;
+	// 	if (y == data->num_env)
+	// 	{
+	// 		end = ms_check_sorted(sort, data);
+	// 		if (end == NO)
+	// 			y = 0;
+	// 	}
+	// }
 	ms_free_int_arr(&sort);
 }

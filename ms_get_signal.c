@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_get_signal.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dlana <dlana@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 17:49:13 by obeedril          #+#    #+#             */
-/*   Updated: 2022/02/25 18:34:24 by obeedril         ###   ########.fr       */
+/*   Updated: 2022/03/03 16:29:34 by dlana            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,14 @@ int	ms_get_signal(void)
 	return (0);
 }
 
-void ms_signal_ctrl_d(char *line)
+void	ms_signal_ctrl_d(t_data *data, char *line)
 {
 	if (line == NULL)
 	{
 		printf("\033[1;36m\bMiMiShell >\033[0A"); 
 		printf("\033[1;0m exit\n\033[0m");
+		ms_free_cycle(&data, &line);
+		ms_free_all(&data);
 		exit(EXIT_SUCCESS);
 	}
 }

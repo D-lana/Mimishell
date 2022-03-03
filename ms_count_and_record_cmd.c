@@ -13,7 +13,7 @@ int ms_record_one_str(char **str, char *line, int *start, int *num)
 	qm_d = 1;
 	while (line[(*start) + size] != '\0' && line[(*start) + size] != '|')
 	{
-		ms_switch_qm(line, (*start) + size, &qm_o, &qm_d);
+		ms_switch_qm(line[(*start) + size], &qm_o, &qm_d);
 		if (line[(*start) + size + 1] == '|' && (qm_o == -1 || qm_d == -1))
 			size++;
 		size++;
@@ -50,11 +50,11 @@ int ms_count_and_record_cmd(t_data *data, char *line)
 	if (line[i] == '|')
 	{
 		data->num_error = ERR_TOKEN;
-		return(ms_error(&data->num_error, "|"));
+		return(ms_error(data->num_error, "|"));
 	}
 	while (line[i] != '\0')
 	{
-		ms_switch_qm(line, i, &qm_o, &qm_d);
+		ms_switch_qm(line[i], &qm_o, &qm_d);
 		if (line[i] == '|' &&  qm_o == 1 && qm_d == 1)
 		{
 			i++;
@@ -66,13 +66,13 @@ int ms_count_and_record_cmd(t_data *data, char *line)
 			if (line[i] == '\0')
 			{
 				data->num_error = ERR_TOKEN;
-				return(ms_error(&data->num_error, "|")); //// возможно сюда нужно добавить предложение для ввода > и чтение с командной строки
+				return(ms_error(data->num_error, "|")); //// возможно сюда нужно добавить предложение для ввода > и чтение с командной строки
 			} 
 			data->num_cmd++;
 		}
 		i++;
 	}
-	ms_malloc_cmd(&data->cmd, data->num_cmd);
+	ms_malloc_cmd(&data->cmd, data->num_cmd); /// free cmd +
 	i = 0;
 	num = 0;
 	while (line[i] != '\0')

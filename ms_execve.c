@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void	ms_execve(t_cmd *cmd, t_data *data)
+void	ms_execve(t_cmd *cmd, t_data *data, int i)
 {
 	pid_t pid;
 	int status;
@@ -8,6 +8,7 @@ void	ms_execve(t_cmd *cmd, t_data *data)
 	int	exit_st;
 	
 	termsig = 0;
+	//printf("cmd = %s", cmd->array_arg[0]);
 	ms_check_first_arg(data); // obeedril add for check first argument
 	if (data->num_error != 0 || data->empty_str == YES)
 		return ;
@@ -15,9 +16,10 @@ void	ms_execve(t_cmd *cmd, t_data *data)
 		perror("fork error");
 	else if (pid == 0)
 	{
+		//write(2, "ms_execve\n", 11);
 		signal(SIGQUIT, SIG_DFL);
-	//	printf("way_cmd_execve = %s\n", cmd->way_cmd);
-	 	if (execve(cmd->way_cmd, cmd->array_arg, data->our_env) == -1)
+		//ft_putstr_fd(cmd[i].way_cmd, 2);
+	 	if (execve(cmd[i].way_cmd, cmd[i].array_arg, data->our_env) == -1)
 			perror("execve ");
 		exit (0);
 	}

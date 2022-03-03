@@ -6,7 +6,7 @@
 /*   By: dlana <dlana@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 18:47:21 by dlana             #+#    #+#             */
-/*   Updated: 2022/02/25 15:49:25 by dlana            ###   ########.fr       */
+/*   Updated: 2022/02/26 16:27:00 by dlana            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ void	ms_init_env(t_data *data, char **env)
 	int	y;
 
 	y = 0;
+	
 	while (env[y] != 0)
 		y++;
 	data->num_env = y;
