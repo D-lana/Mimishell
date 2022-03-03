@@ -27,6 +27,23 @@ int	ms_our_cmd(t_data *data, int i)
 	return(0);
 }
 
+int	ms_found_minus_n(char *arg)
+{
+	int i;
+
+	i = 0;
+	if (arg[i] == '\0')
+		return (-1);
+	if (arg[i] != '-' || arg[i + 1] != 'n')
+		return (-1);
+	i++;
+	while (arg[i] == 'n' && arg[i] != '\0')
+		i++;
+	if (arg[i] != '\0')
+		return (-1);
+	return (0);
+}
+
 void	ms_echo(t_data *data, int i)
 {
 	int j;
@@ -36,7 +53,7 @@ void	ms_echo(t_data *data, int i)
 	n = NO;
 	while (j < data->cmd[i].num_array_arg)
 	{		
-		if (j == 1 && ft_strncmp(data->cmd[i].array_arg[j], "-n\0", 3) == 0)
+		if (j == 1 && ms_found_minus_n(data->cmd[i].array_arg[j]) == 0) // ft_strncmp(data->cmd[i].array_arg[j], "-n\0", 3)
 		{
 			n = YES;
 			j++;

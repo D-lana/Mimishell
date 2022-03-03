@@ -1,7 +1,5 @@
 #include "minishell.h"
  
-// запуск minishell в minishell
-
 static void exe_signal(t_data *data)
 {
 	int status;

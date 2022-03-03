@@ -80,16 +80,18 @@ typedef struct s_data
 	char	*prev_dir; // obeedril for ms_cd.c
 	char	*cur_dir; // obeedril for ms_cd.c
 	char	*home_dir; // obeedril for ms_cd.c
-	int		flag_old;
+	int		flag_old; //check it
 	int		empty_str;
-	//int		count_redir;
+	int		fd_pipe[2];
 }				t_data;
+
+void	ms_exe(t_data *data);
 
 int		ms_count_and_record_cmd(t_data *data, char *line);
 int		ms_found_redirect(t_cmd *cmd, t_data *data);
 int		ms_count_arg_divided_qm(t_cmd *cmd, t_data *data); // dlana
 void	ms_create_struct_without_qm(t_cmd *cmd); // dlana
-void	ms_switch_qm(char *s, int i, int *qm_o, int *qm_d); // dlana
+void	ms_switch_qm(char c, int *qm_o, int *qm_d); // dlana
 int		ms_found_env_variable(int err, t_cmd *cmd);
 void	ms_replase_key_to_value(char **str, int key, char *value, int start);
 void	ms_record_array(t_data *data);
@@ -110,12 +112,12 @@ int		ms_unset(t_data *data, int i_cmd); // dlana
 void	ms_execve(t_cmd *cmd, t_data *data, int i);
 
 int		ms_get_signal(void); // obeedril for signal
-void	ms_signal_ctrl_d(char *line); // dlana relocate
+void	ms_signal_ctrl_d(t_data *data, char *line); // dlana relocate
 
 void	ms_record_str(char **file, char *str, int start, int size_str); // dlana
 void	ms_record_char(char **result, char *str, int *r, int *s);
 
-int		ms_error(int *error, char *str);
+int		ms_error(int error, char *str);
 void	ms_check_first_arg(t_data *data); // obeedril added for check a first agr
 
 void	ms_free_str(char **str);
@@ -130,8 +132,6 @@ int		*ms_malloc_arr_int(int **arr_int, int size);
 
 void	rl_replace_line (const char *text, int clear_undo); // obeedril for readline
 
-void	ms_execution(t_data *data, t_cmd *cmd, char **env); //obeedril added
-
-
+void	ms_execution(t_data *data); //obeedril added
 
 #endif

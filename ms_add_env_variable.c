@@ -125,7 +125,7 @@ int	ms_add_env_variable(t_data *data, int i_cmd)
 		if (valid == ERR_EXPORT)
 		{
 			data->num_error = ERR_EXPORT;
-			return(ms_error(&data->num_error, data->cmd[i_cmd].array_arg[i]));
+			return(ms_error(data->num_error, data->cmd[i_cmd].array_arg[i]));
 		}
 		// else if (valid == ADD_TO_OLD)
 		// 	ms_add_to_old_var(data, &data->cmd[i_cmd].array_arg[i]);

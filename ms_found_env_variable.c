@@ -6,7 +6,7 @@
 /*   By: dlana <dlana@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 12:51:48 by dlana             #+#    #+#             */
-/*   Updated: 2022/02/22 15:36:19 by dlana            ###   ########.fr       */
+/*   Updated: 2022/02/26 20:27:12 by dlana            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int		ms_found_env_variable(int err, t_cmd *cmd);
 void	ms_replase_key_to_value(char **str, int key, char *value, int start);
-void	ms_record_value(t_cmd *cmd, int *i, int num_arg);
+void	ms_record_value(t_cmd *cmd, int i, int num_arg);
 void	ms_put_num_error(int err, char **str, int *start);
 int		ms_record_key(t_cmd *cmd, int *i, int num_arg, char **key);
 
@@ -47,7 +47,7 @@ int	ms_found_env_variable(int err, t_cmd *cmd)
 				ms_put_num_error(err, &cmd->arg[y].str, &i);
 			else if (cmd->arg[y].str[i] == '$' && cmd->arg[y].str[i + 1] != ' '
 				&& (cmd->arg[y].str[i + 1] != '\0' && cmd->arg[y].q_m != 39))
-				ms_record_value(cmd, &i, y);
+				ms_record_value(cmd, i, y);
 			else
 				i++;
 		}
@@ -108,7 +108,7 @@ int	ms_record_key(t_cmd *cmd, int *i, int num_arg, char **key)
 	return (n);
 }
 
-void	ms_record_value(t_cmd *cmd, int *i, int num_arg)
+void	ms_record_value(t_cmd *cmd, int i, int num_arg)
 {
 	int		n;
 	char	*key;
@@ -116,14 +116,14 @@ void	ms_record_value(t_cmd *cmd, int *i, int num_arg)
 
 	n = 0;
 	cmd->arg[num_arg].empty_key = NO;
-	(*i)++;
-	if (ft_isdigit(cmd->arg[num_arg].str[(*i)]) == 1)
+	i++;
+	if (ft_isdigit(cmd->arg[num_arg].str[i]) == 1)
 		key = "1\0";
 	else
-		n = ms_record_key(cmd, i, num_arg, &key);
+		n = ms_record_key(cmd, &i, num_arg, &key);
 	value = getenv(key);
-	ms_replase_key_to_value(&cmd->arg[num_arg].str, 1, NULL, (*i - n - 1));
-	ms_replase_key_to_value(&cmd->arg[num_arg].str, n, value, (*i - n - 1));
+	ms_replase_key_to_value(&cmd->arg[num_arg].str, 1, NULL, (i - n - 1));
+	ms_replase_key_to_value(&cmd->arg[num_arg].str, n, value, (i - n - 1));
 	if (ft_strlen(cmd->arg[num_arg].str) == 0)
 		cmd->arg[num_arg].empty_key = YES;
 }
