@@ -1,10 +1,10 @@
 #include "minishell.h"
 
-void ms_switch_qm(char *s, int i, int *qm_o, int *qm_d)
+void	ms_switch_qm(char c, int *qm_o, int *qm_d)
 {
-	if (s[i] == DOUBLE_Q_MARK && (*qm_o) == 1)
+	if (c == DOUBLE_Q_MARK && (*qm_o) == 1)
 		(*qm_d) = (*qm_d) * (-1);
-	if (s[i] == ONE_Q_MARK &&  (*qm_d) == 1)
+	if (c == ONE_Q_MARK && (*qm_d) == 1)
 		(*qm_o) = (*qm_o) * (-1);
 }
 
@@ -64,7 +64,7 @@ void	ms_create_struct_without_qm(t_cmd *cmd)
 
 	i = 0;
 	num_arg = 0;
-	ms_malloc_arg(&cmd->arg, cmd->num_arg);
+	ms_malloc_arg(&cmd->arg, cmd->num_arg); // free +
 	while (cmd->str[i] != '\0')
 	{
 		cmd->arg[num_arg].space = NO;
@@ -103,7 +103,7 @@ int ms_check_quotation_marks(t_cmd *cmd, int i, t_data *data)
 	else
 	{
 		data->num_error = ERR_TOKEN;
-		return((ms_error(&data->num_error, &cmd->str[i - 1])));
+		return((ms_error(data->num_error, &cmd->str[i - 1])));
 	}
 	return (i + 1);
 }

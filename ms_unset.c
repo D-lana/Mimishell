@@ -17,14 +17,18 @@ int	ms_unset(t_data *data, int i_cmd)
 		if (ft_isdigit(data->cmd[i_cmd].array_arg[y][0]) == 1)
 		{
 			data->num_error = ERR_EXPORT;
-			return(ms_error(&data->num_error, data->cmd[i_cmd].array_arg[y]));
+			return(ms_error(data->num_error, data->cmd[i_cmd].array_arg[y]));
 		}
 		size_key = ft_strlen(data->cmd[i_cmd].array_arg[y]);
 		while (y_env < data->num_env)
 		{
 			if(ft_strncmp(data->cmd[i_cmd].array_arg[y], data->our_env[y_env], size_key) == 0 
 				&& (data->our_env[y_env][size_key] == '=' || data->our_env[y_env][size_key] == '\0'))
+			{
+				if(ft_strncmp(data->cmd[i_cmd].array_arg[y], "OLDPWD=", 7) == 0)
+					data->flag_old = 0;
 				ms_cut_env_variable(data, y_env); ////////////////////
+			}
 			y_env++;
 		}
 		y++;
