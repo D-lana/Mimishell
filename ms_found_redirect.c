@@ -164,7 +164,7 @@ int	ms_count_redirect(t_cmd *cmd, t_data *data)
 		else
 			i++;
 	}
-	return (0);
+	return (cmd->count_redir);
 }
 
 int ms_found_redirect(t_cmd *cmd, t_data *data)
@@ -178,7 +178,8 @@ int ms_found_redirect(t_cmd *cmd, t_data *data)
 	qm_d = 1;
 	i = 0;
 	num_redir = 0;
-	if (ms_count_redirect(cmd, data) == -1)
+	cmd->count_redir = ms_count_redirect(cmd, data);
+	if (cmd->count_redir <= 0)
 		return (-1);
 	ms_malloc_arr_int(&cmd->redir, cmd->count_redir); // free +
 	ms_malloc_array(&cmd->file, cmd->count_redir); // free +
@@ -196,5 +197,6 @@ int ms_found_redirect(t_cmd *cmd, t_data *data)
 	}
 	if (cmd->str[0] == '\0')
 		ms_free_str(&cmd->str);
+	data->tmp.size_cut = 0;
 	return (0);
 }

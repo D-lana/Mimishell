@@ -58,6 +58,7 @@ int ms_separator(t_data *data, char *line)
 		if(data->num_error == 0 && data->empty_str == NO && data->cmd[i].str != NULL)
 			ms_found_env_variable(data->num_prev_error, &data->cmd[i]);
 		i++;
+		//printf ("i_sep = %d\n", i);
 	}
 	i = 0;
 	return (0);
@@ -119,9 +120,12 @@ int	main(int argc, char **argv, char **env)
 {
 	t_data data;
 	char *line;
-
-	if (argc < 1 || argv == NULL || env == NULL)
+  
+	if (argc != 1 || argv == NULL || env == NULL)
+	{
+		printf("Mimishell: this programm complies without arguments\n");
 		exit(127);
+	}
 	ms_init_data(&data, env, YES);
 	while (1)
 	{
@@ -132,7 +136,6 @@ int	main(int argc, char **argv, char **env)
 		if (line != 0)
 			ms_separator(&data, line);
 		ms_record_array(&data); // dlana add ms_record_array.c
-		//ms_exe(&data);
 		ms_execution(&data);
 		if (data.empty_str == NO)
 			add_history(line);
@@ -140,4 +143,5 @@ int	main(int argc, char **argv, char **env)
 	}
 	ms_free_all(&data);
 	// free (data->prev_dir) ???? // obeedril for ms_cd.c
+	// free (data->cur_dir) ???? // obeedril for ms_cd.c
 }

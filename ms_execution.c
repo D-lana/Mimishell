@@ -1,7 +1,21 @@
+
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ms_execution.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/02/19 13:00:12 by obeedril          #+#    #+#             */
+/*   Updated: 2022/03/03 18:25:41 by obeedril         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-// << txt
 // signal
+// cat <<! <<? <<a
+
 
 static void ms_write_in_heredoc(int fd, char *str)
 {
@@ -10,13 +24,31 @@ static void ms_write_in_heredoc(int fd, char *str)
 	free(str);
 }
 
+int point_last_redir(t_cmd *cmd, int redir)
+{
+	int	i;
+	int last;
+	
+	i = 0;
+	last = 0;
+	while (cmd->redir[i])
+	{
+		if (cmd->redir[i] == redir)
+			last = i;
+		i++;
+	}
+	return (last);
+}
+
 int ms_heredoc(t_cmd *cmd, t_data *data)
 {
 	char *str;
 	pid_t pid;
 	int status;
 	int termsig;
-
+	int	last;
+	
+	last = 0;
 	if(data->num_error == 0 && data->empty_str == NO)
 	{
 		if ((pid = fork()) == -1)
@@ -27,32 +59,31 @@ int ms_heredoc(t_cmd *cmd, t_data *data)
 			{
 				signal(SIGINT, SIG_DFL);
 				str = readline("> ");
-				//get_next_line(&str);
-				
+				//printf ("buffer = %s\n", rl_line_buffer);
 				if (!str)
 				{
-					rl_on_new_line();
-					rl_replace_line("\b", 0);
-					//rl_on_new_line();
 					rl_redisplay();
-					
+					rl_on_new_line();
 					break ;
 				}
-				//	break ;
-				if (ft_strncmp(*cmd->file, str, ft_strlen(*cmd->file)) == 0)
-				{
-					write (1, "A\n", 2);
-					printf("%s\n", *cmd->file);
-					free (str);
-					write (1, "B\n", 2);
-					break ;
-				}
-				//else
-					ms_write_in_heredoc(cmd->fd[1], str);
+					last = point_last_redir(cmd, 5);
+					printf("last = %d\n", last);
+					printf("str = |%s|\n", str);
+					printf("cmd = |%s|\n", cmd->file[last]);
+					if (ft_strncmp(cmd->file[last], str, ft_strlen(cmd->file[last])) == 0)
+					{
+						write (1, "A\n", 2);
+						free (str);
+						break ;
+					}
+					else
+						ms_write_in_heredoc(cmd->fd[1], str);
+				// }
 			}
 			exit (0);
 		}
-		signal(SIGINT, SIG_IGN);
+		if (pid != 0)
+			signal(SIGINT, SIG_IGN);
 		signal(SIGQUIT, SIG_IGN);
 		waitpid(0, &status, 0);
 		if (WIFSIGNALED(status) > 0)
