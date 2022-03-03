@@ -3,34 +3,41 @@
 int		ms_unset(t_data *data, int i_cmd);
 void	ms_cut_env_variable(t_data *data, int y);
 
-int	ms_unset(t_data *data, int i_cmd)
+int ms_unset(t_data *data, int i_cmd)
 {
-	int	y;
-	int	size_key;
-	int y_env;
-
-	y = 0;
-	y_env = 0;
-	size_key = 0;
-	while (data->cmd[i_cmd].array_arg[y] != NULL)
-	{
-		if (ft_isdigit(data->cmd[i_cmd].array_arg[y][0]) == 1)
-		{
-			data->num_error = ERR_EXPORT;
-			return(ms_error(&data->num_error, data->cmd[i_cmd].array_arg[y]));
-		}
-		size_key = ft_strlen(data->cmd[i_cmd].array_arg[y]);
-		while (y_env < data->num_env)
-		{
-			if(ft_strncmp(data->cmd[i_cmd].array_arg[y], data->our_env[y_env], size_key) == 0 
-				&& (data->our_env[y_env][size_key] == '=' || data->our_env[y_env][size_key] == '\0'))
-				ms_cut_env_variable(data, y_env); ////////////////////
-			y_env++;
-		}
-		y++;
-		y_env = 0;
-	}
-	return (0);
+    int y;
+    int size_key;
+    int y_env;
+    y = 0;
+    y_env = 0;
+    size_key = 0;
+    while (data->cmd[i_cmd].array_arg[y] != NULL)
+    {
+        if (ft_isdigit(data->cmd[i_cmd].array_arg[y][0]) == 1)
+        {
+            data->num_error = ERR_EXPORT;
+            return(ms_error(&data->num_error, data->cmd[i_cmd].array_arg[y]));
+        }
+        size_key = ft_strlen(data->cmd[i_cmd].array_arg[y]);
+        while (y_env < data->num_env)
+        {
+            if(ft_strncmp(data->cmd[i_cmd].array_arg[y], data->our_env[y_env], size_key) == 0
+                && (data->our_env[y_env][size_key] == '=' || data->our_env[y_env][size_key] == '\0'))
+            {
+                if(ft_strncmp(data->cmd[i_cmd].array_arg[y], "OLDPWD", 6) == 0)
+				{
+					//write (1, "A\n", 2);
+                    data->flag_old = 0;
+					//printf("flag_old = %d\n", data->flag_old);
+				}
+                ms_cut_env_variable(data, y_env); ////////////////////
+            }
+            y_env++;
+        }
+        y++;
+        y_env = 0;
+    }
+    return (0);
 }
 
 void	ms_cut_env_variable(t_data *data, int y)

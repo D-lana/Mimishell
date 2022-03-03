@@ -13,12 +13,12 @@ typedef enum e_value
 {
 	NO,
 	YES,
-	YES_AFTER_PARSER,
 	REDIR_R, // <
 	REDIR_W, // >
 	REDIR_W_ADD, // >>
 	HEREDOC, // <<
 	REDIR_ROMB, // <>
+	YES_AFTER_PARSER,
 	ERR_PIPE,
 	ERR_MEMORY,
 	ERR_Q_MARK,
@@ -52,6 +52,8 @@ typedef struct s_cmd
 	int		num_arg; // не использовать
 	int		num_array_arg;
 	char	*way_cmd;
+	char	*cur_way_cmd;
+	int		count_redir;
 }				t_cmd;
 
 typedef struct s_tmp
@@ -78,8 +80,9 @@ typedef struct s_data
 	char	*prev_dir; // obeedril for ms_cd.c
 	char	*cur_dir; // obeedril for ms_cd.c
 	char	*home_dir; // obeedril for ms_cd.c
+	int		flag_old;
 	int		empty_str;
-	int		count_redir;
+	//int		count_redir;
 }				t_data;
 
 int		ms_count_and_record_cmd(t_data *data, char *line);
@@ -100,11 +103,11 @@ int		ms_cut_array_arg(char ***arr, int *count_arr, int y);
 int		ms_our_cmd(t_data *data, int i);
 
 void	ms_cd(char *arg_way, t_data *data, int i); // obeedril for ms_cd.c
-void	ms_pwd(void); // obeedril for ms_pwd.c
+void	ms_pwd(t_data *data); // obeedril for ms_pwd.c
 void	ms_exit(t_data *data, int num_array_arg, char *exit_arg); // obeedril for ms_exit.c
 void	ms_export(t_data *data, int i); // dlana
 int		ms_unset(t_data *data, int i_cmd); // dlana
-void	ms_execve(t_cmd *cmd, t_data *data);
+void	ms_execve(t_cmd *cmd, t_data *data, int i);
 
 int		ms_get_signal(void); // obeedril for signal
 void	ms_signal_ctrl_d(char *line); // dlana relocate
@@ -127,7 +130,7 @@ int		*ms_malloc_arr_int(int **arr_int, int size);
 
 void	rl_replace_line (const char *text, int clear_undo); // obeedril for readline
 
-void	ms_execution(t_data *data, t_cmd **cmd, char **env); //obeedril added
+void	ms_execution(t_data *data, t_cmd *cmd, char **env); //obeedril added
 
 
 

@@ -9,7 +9,7 @@ int	ms_our_cmd(t_data *data, int i)
 	if (data->num_error != 0 || data->empty_str == YES || data->cmd[i].array_arg == NULL)
 		return(-1);
 	if(ft_strncmp(data->cmd[i].array_arg[0], "pwd\0", 3) == 0)
-		ms_pwd(); // obeedril changes
+		ms_pwd(data); // obeedril changes
 	else if(ft_strncmp(data->cmd[i].array_arg[0], "cd\0", 3) == 0)
 		ms_cd(data->cmd[i].array_arg[1], data, 0);
 	else if(ft_strncmp(data->cmd[i].array_arg[0], "echo\0", 5) == 0)
@@ -23,7 +23,7 @@ int	ms_our_cmd(t_data *data, int i)
 	else if(ft_strncmp(data->cmd[i].array_arg[0], "unset\0", 6) == 0)
 		ms_unset(data, i);
 	else
-		ms_execve(data->cmd, data);
+		ms_execve(data->cmd, data, i);
 	return(0);
 }
 
@@ -58,7 +58,12 @@ void	ms_env(t_data *data)
 	y = 0;
 	while (y < data->num_env)
 	{
-		if (ft_strchr(data->our_env[y], 61) != NULL)
+		if (ft_strncmp(data->our_env[y], "OLDPWD", 6) == 0)
+		{
+			if (data->prev_dir != NULL)
+				printf("%s\n", data->our_env[y]);
+		}
+		else if (ft_strchr(data->our_env[y], 61) != NULL)
 			printf("%s\n", data->our_env[y]);
 		y++;
 	}

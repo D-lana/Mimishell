@@ -93,7 +93,7 @@ int	ms_count_redirect(t_cmd *cmd, t_data *data)
 	qm_o = 1;
 	qm_d = 1;
 	i = 0;
-	data->count_redir = 0;
+	cmd->count_redir = 0;
 	while (cmd->str[i] != '\0')
 	{
 		ms_switch_qm(cmd->str, i, &qm_o, &qm_d);
@@ -107,12 +107,12 @@ int	ms_count_redirect(t_cmd *cmd, t_data *data)
 				i++;
 			if (ms_error_parse_redir(data, cmd->str, i) == -1)
 				return (-1);
-			data->count_redir++;
+			cmd->count_redir++;
 		}
 		else
 			i++;
 	}
-	return (0);
+	return (cmd->count_redir);
 }
 
 int ms_found_redirect(t_cmd *cmd, t_data *data)
@@ -126,10 +126,11 @@ int ms_found_redirect(t_cmd *cmd, t_data *data)
 	qm_d = 1;
 	i = 0;
 	num_redir = 0;
-	if (ms_count_redirect(cmd, data) == -1)
+	cmd->count_redir = ms_count_redirect(cmd, data);
+	if (cmd->count_redir <= 0)
 		return (-1);
-	cmd->redir = (int *)malloc(sizeof(int) * (data->count_redir + 1));
-	ms_malloc_array(&cmd->file, data->count_redir);
+	cmd->redir = (int *)malloc(sizeof(int) * (cmd->count_redir + 1));
+	ms_malloc_array(&cmd->file, cmd->count_redir);
 	while (cmd->str[i] != '\0')
 	{
 		ms_switch_qm(cmd->str, i, &qm_o, &qm_d);
@@ -147,5 +148,7 @@ int ms_found_redirect(t_cmd *cmd, t_data *data)
 		//printf("cmd->str %s\n", cmd->str);
 		//cmd->str = NULL;
 	}
+	data->tmp.size_cut = 0;
+	//printf ("cmd->count_redir = %d\n", cmd->count_redir);
 	return (0);
 }

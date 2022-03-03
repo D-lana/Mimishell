@@ -6,14 +6,15 @@
 /*   By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 13:00:12 by obeedril          #+#    #+#             */
-/*   Updated: 2022/02/26 13:31:11 by obeedril         ###   ########.fr       */
+/*   Updated: 2022/03/03 18:25:41 by obeedril         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// << txt
 // signal
+// cat <<! <<? <<a
+
 
 static void ms_write_in_heredoc(int fd, char *str)
 {
@@ -22,13 +23,31 @@ static void ms_write_in_heredoc(int fd, char *str)
 	free(str);
 }
 
+int point_last_redir(t_cmd *cmd, int redir)
+{
+	int	i;
+	int last;
+	
+	i = 0;
+	last = 0;
+	while (cmd->redir[i])
+	{
+		if (cmd->redir[i] == redir)
+			last = i;
+		i++;
+	}
+	return (last);
+}
+
 int ms_heredoc(t_cmd *cmd, t_data *data)
 {
 	char *str;
 	pid_t pid;
 	int status;
 	int termsig;
-
+	int	last;
+	
+	last = 0;
 	if(data->num_error == 0 && data->empty_str == NO)
 	{
 		if ((pid = fork()) == -1)
@@ -39,32 +58,31 @@ int ms_heredoc(t_cmd *cmd, t_data *data)
 			{
 				signal(SIGINT, SIG_DFL);
 				str = readline("> ");
-				//get_next_line(&str);
-				
+				//printf ("buffer = %s\n", rl_line_buffer);
 				if (!str)
 				{
-					rl_on_new_line();
-					rl_replace_line("\b", 0);
-					//rl_on_new_line();
 					rl_redisplay();
-					
+					rl_on_new_line();
 					break ;
 				}
-				//	break ;
-				if (ft_strncmp(*cmd->file, str, ft_strlen(*cmd->file)) == 0)
-				{
-					write (1, "A\n", 2);
-					printf("%s\n", *cmd->file);
-					free (str);
-					write (1, "B\n", 2);
-					break ;
-				}
-				//else
-					ms_write_in_heredoc(cmd->fd[1], str);
+					last = point_last_redir(cmd, 5);
+					printf("last = %d\n", last);
+					printf("str = |%s|\n", str);
+					printf("cmd = |%s|\n", cmd->file[last]);
+					if (ft_strncmp(cmd->file[last], str, ft_strlen(cmd->file[last])) == 0)
+					{
+						write (1, "A\n", 2);
+						free (str);
+						break ;
+					}
+					else
+						ms_write_in_heredoc(cmd->fd[1], str);
+				// }
 			}
 			exit (0);
 		}
-		signal(SIGINT, SIG_IGN);
+		if (pid != 0)
+			signal(SIGINT, SIG_IGN);
 		signal(SIGQUIT, SIG_IGN);
 		waitpid(0, &status, 0);
 		if (WIFSIGNALED(status) > 0)
@@ -119,31 +137,7 @@ int	ms_redirect(t_cmd *cmd)
 	return (0);
 }
 
-// void ms_pipe(t_data *data, t_cmd **cmd, int i)
-// {
-// 	//printf("cmd[i] = %s\n", cmd[i]->array_arg[0]);
-// 	//if (i > 0 && !(cmd[i]->fd[0]))
-// 	printf("cmd->fd[0] = %d\n", cmd[i]->fd[0]);
-// 	if ((!cmd[i]->fd[0]) && i > 0)
-// 	{
-// 		write (1, "A\n", 2);
-// 		dup2(cmd[i]->fd[0], 0);
-// 		close (cmd[i]->fd[0]);
-// 	}
-// 	if ((!cmd[i]->fd[1]) && i < data->num_cmd) //&& i > 0))
-// 	{
-// 		write (1, "B\n", 2);
-// 		if (pipe(cmd[i]->fd) != 0)
-// 			perror("pipe ");
-// 		write (1, "D\n", 2);
-// 		dup2(cmd[i]->fd[1], 1);
-// 		write (1, "E\n", 2);
-// 		close (cmd[i]->fd[1]);
-// 		write (1, "F\n", 2);
-// 	}
-// }
-
-void ms_execution(t_data *data, t_cmd **cmd, char **env)
+void ms_execution(t_data *data, t_cmd *cmd, char **env)
 {
 	int i;
 	int		stdio[2];
@@ -154,19 +148,16 @@ void ms_execution(t_data *data, t_cmd **cmd, char **env)
 	stdio[1] = dup(1);
 	while (i < data->num_cmd)
 	{
-		if (data->count_redir != 0)
+		
+		if (cmd[i].count_redir != 0)
 		{
-			ms_open_file(cmd[i], data);
-			ms_redirect(cmd[i]);
+			ms_open_file(&cmd[i], data);
+			ms_redirect(&cmd[i]);
 		}
-		// else
-		// {
-		// // write (1, "D\n", 2);
-		// 	if (data->num_cmd > 1)
-		// 		ms_pipe(data, &cmd[i], i);
-		// }
-		// write (1, "E\n", 2);
-		//printf("cmd[i] = %s\n", cmd[i]->array_arg[0]);
+		// if (data->num_cmd > 1)
+		// 	ms_pipe(data, &cmd[i], i);
+		// write (2, "E\n", 2);
+		
 		ms_our_cmd(data, i);
 		i++;
 	}

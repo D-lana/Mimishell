@@ -6,7 +6,7 @@
 /*   By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 15:15:18 by obeedril          #+#    #+#             */
-/*   Updated: 2022/02/18 14:49:41 by obeedril         ###   ########.fr       */
+/*   Updated: 2022/02/27 18:35:01 by obeedril         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,11 @@ static int	ft_isnum(char *str)
 	while (str[i] != '\0')
 	{
 		if (str[i] < 48 || str[i] > 57)
+		{
+			if (str[0] == 45)
+				return (0);
 			return (1);
+		}
 		i++;
 	}
 	return (0);
