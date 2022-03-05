@@ -52,7 +52,7 @@ typedef struct s_cmd
 	int		num_arg; // не использовать
 	int		num_array_arg;
 	char	*way_cmd;
-	char	*cur_way_cmd;
+	//char	*cur_way_cmd;
 	int		count_redir;
 }				t_cmd;
 
@@ -123,6 +123,8 @@ void	ms_check_first_arg(t_data *data); // obeedril added for check a first agr
 void	ms_free_str(char **str);
 void	ms_free_arr(char ***arr);
 void	ms_free_int_arr(int **int_arr);
+void	ms_free_cycle(t_data *data, char **line);
+void	ms_free_all(t_data *data);
 
 void	ms_malloc_str(char **name, int size);
 void	ms_malloc_arg(t_arg **arg, int size);
@@ -133,5 +135,6 @@ int		*ms_malloc_arr_int(int **arr_int, int size);
 void	rl_replace_line (const char *text, int clear_undo); // obeedril for readline
 
 void	ms_execution(t_data *data); //obeedril added
+//void ms_execution(t_data *data, t_cmd *cmd, char **env);
 
 #endif
