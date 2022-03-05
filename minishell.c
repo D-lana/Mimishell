@@ -90,27 +90,29 @@ void ms_free_all(t_data *data)
 void ms_free_cycle(t_data *data, char **line)
 {
 	int i;
+	int y;
 
 	i = 0;
+	y = 0;
 	ms_free_str(line);
-	while (data->num_cmd > 0)
+	while (data->num_cmd > y)
 	{
-		while (i < data->cmd[data->num_cmd].num_arg)
+		while (i < data->cmd[y].num_arg)
 		{
-			ms_free_str(&data->cmd[data->num_cmd].arg[i].str);
-			data->cmd[data->num_cmd].arg[i].str = NULL;
+			ms_free_str(&data->cmd[y].arg[i].str);
+			data->cmd[y].arg[i].str = NULL;
 			i++;
 		}
-		if (data->cmd[data->num_cmd].arg)
-			free(data->cmd[data->num_cmd].arg);
-		if (data->cmd[data->num_cmd].num_array_arg > 0)
-			ms_free_arr(&data->cmd[data->num_cmd].array_arg);
+		if (data->cmd[y].arg)
+			free(data->cmd[y].arg);
+		if (data->cmd[y].num_array_arg > 0)
+			ms_free_arr(&data->cmd[y].array_arg);
 		if (data->cmd->count_redir > 0)
 		{
-			ms_free_int_arr(&data->cmd->redir);
-			ms_free_arr(&data->cmd[data->num_cmd].file);
+			ms_free_int_arr(&data->cmd[y].redir);
+			ms_free_arr(&data->cmd[y].file);
 		}
-		data->num_cmd--;
+		y++;
 	}
 	free(data->cmd);
 	data->cmd = NULL;
@@ -137,11 +139,14 @@ int	main(int argc, char **argv, char **env)
 			ms_separator(&data, line);
 		ms_record_array(&data); // dlana add ms_record_array.c
 		ms_execution(&data);
+		write (1, "W2\n", 3);
+		//ms_execution(&data, data.cmd, env);
 		if (data.empty_str == NO)
 			add_history(line);
-		ms_free_cycle(&data, &line);
+		//ms_free_cycle(&data, &line);
+		//write (1, "A\n", 2);
 	}
-	ms_free_all(&data);
+	//ms_free_all(&data);
 	// free (data->prev_dir) ???? // obeedril for ms_cd.c
 	// free (data->cur_dir) ???? // obeedril for ms_cd.c
 }
