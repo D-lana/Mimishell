@@ -40,8 +40,7 @@ int	ft_strncmp_by_env(const char *s1, const char *s2)
 	t2 = (unsigned char *) s2;
 	i = 0;
 	while ((t1[i] != '\0' || t2[i] != '\0') && t2[i] != '=' && t1[i] != '=')
-	{
-		
+	{	
 		if (t1[i] != t2[i])
 			return (t1[i] - t2[i]);
 		i++;

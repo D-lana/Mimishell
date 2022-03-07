@@ -28,16 +28,16 @@ typedef enum e_value
 	ONE_Q_MARK = 39,
 	ERR_CMD = 127,
 	ERR_TOKEN = 258,
-	ERR_EXPORT = 1,
+	ERR_NUM_ONE = 1,
 }				t_value;
 
 typedef struct s_arg
 {
-	char			*str;
-	int				q_m;
-	int				space;
-	int				redir;
-	int				empty_key;
+	char		*str;
+	int			q_m;
+	int			space;
+	int			redir;
+	int			empty_key;
 
 }				t_arg;
 
@@ -57,8 +57,6 @@ typedef struct s_cmd
 
 typedef struct s_tmp
 {
-	//int		size_k;
-	//int		size_v;
 	int		size_str;
 	int		size_cut;
 	int		count;
@@ -82,22 +80,28 @@ typedef struct s_data
 	int		empty_str;
 	int		flag_old;
 	int		fd_pipe[2];
+	int		name_file;
 }				t_data;
 
 void	ms_exe(t_data *data);
 
 int		ms_count_and_record_cmd(t_data *data, char *line);
+
 int		ms_found_redirect(t_cmd *cmd, t_data *data);
+int		ms_record_redir_and_file(t_cmd *cmd, int i, int num_redir, t_data *d);
+
 int		ms_count_arg_divided_qm(t_cmd *cmd, t_data *data); // dlana
 void	ms_create_struct_without_qm(t_cmd *cmd); // dlana
 void	ms_switch_qm(char c, int *qm_o, int *qm_d); // dlana
-int		ms_found_env_variable(int err, t_cmd *cmd);
+int		ms_found_env_variable(t_data *data, t_cmd *cmd);
 void	ms_replase_key_to_value(char **str, int key, char *value, int start);
+void	ms_found_dollar(t_data *data, char **str, int q_m, int *i_orig);
 void	ms_record_array(t_data *data);
 void	ms_init_env(t_data *data, char **env); // dlana
 
 int		ms_add_env_variable(t_data *data, int i_cmd); // dlana
 void	ms_found_variable(t_data *data);
+char	*ms_found_tmp_var(t_data *data, char **var, int x);
 int		ms_valid_export(char *var);
 int		ms_cut_array_arg(char ***arr, int *count_arr, int y);
 
@@ -122,6 +126,8 @@ void	ms_check_first_arg(t_data *data); // obeedril added for check a first agr
 void	ms_free_str(char **str);
 void	ms_free_arr(char ***arr);
 void	ms_free_int_arr(int **int_arr);
+void	ms_free_cycle(t_data *data, char **line);
+void	ms_free_all(t_data *data);
 
 void	ms_malloc_str(char **name, int size);
 void	ms_malloc_arg(t_arg **arg, int size);

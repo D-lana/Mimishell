@@ -1,8 +1,5 @@
 #include "minishell.h"
 
-// << txt
-// signal
-
 static void ms_write_in_heredoc(int fd, char *str)
 {
 	write(fd, str, ft_strlen(str));
@@ -10,7 +7,7 @@ static void ms_write_in_heredoc(int fd, char *str)
 	free(str);
 }
 
-int ms_heredoc(t_cmd *cmd, t_data *data)
+int ms_heredoc(t_cmd *cmd, t_data *data, int i)
 {
 	char *str;
 	pid_t pid;
@@ -26,33 +23,26 @@ int ms_heredoc(t_cmd *cmd, t_data *data)
 			while (1)
 			{
 				signal(SIGINT, SIG_DFL);
+
 				str = readline("> ");
-				//get_next_line(&str);
-				
 				if (!str)
 				{
-					rl_on_new_line();
-					rl_replace_line("\b", 0);
-					//rl_on_new_line();
 					rl_redisplay();
-					
+					rl_on_new_line();
 					break ;
 				}
-				//	break ;
-				if (ft_strncmp(*cmd->file, str, ft_strlen(*cmd->file)) == 0)
-				{
-					write (1, "A\n", 2);
-					printf("%s\n", *cmd->file);
-					free (str);
-					write (1, "B\n", 2);
-					break ;
-				}
-				//else
-					ms_write_in_heredoc(cmd->fd[1], str);
+					if (ft_strncmp(cmd->file[i], str, ft_strlen(cmd->file[i])) == 0)
+					{
+						free (str);
+							break ;
+					}
+					else
+						ms_write_in_heredoc(cmd->fd[1], str);
 			}
 			exit (0);
 		}
-		signal(SIGINT, SIG_IGN);
+		if (pid != 0)
+			signal(SIGINT, SIG_IGN);
 		signal(SIGQUIT, SIG_IGN);
 		waitpid(0, &status, 0);
 		if (WIFSIGNALED(status) > 0)
@@ -61,10 +51,8 @@ int ms_heredoc(t_cmd *cmd, t_data *data)
 			if (termsig == 2)
 				write(1, ">   \b\b\b\n", 8);
 		}
-	//	ms_get_signal();
-		cmd->fd[0] = open(*cmd->file, O_RDONLY, 0644);
-		close(cmd->fd[1]);
-		// close(cmd->fd[0]);
+		cmd->fd[0] = open(cmd->file[i], O_RDONLY, 0644);
+		 close(cmd->fd[1]);
 	}
 	return (0);
 }
@@ -85,8 +73,10 @@ void	ms_open_file(t_cmd *cmd, t_data *data)
 		if (cmd->redir[i] == 5)
 		{
 			cmd->fd[1] = open(cmd->file[i], O_WRONLY | O_CREAT | O_TRUNC | O_APPEND, 0644);
-			ms_heredoc(cmd, data);
-			unlink(cmd->file[i]);
+			if (cmd->fd[0] > 0)
+				close(cmd->fd[0]);
+			ms_heredoc(cmd, data, i);
+
 		}
 		i++;
 	}
@@ -109,14 +99,14 @@ int	ms_redirect(t_cmd *cmd)
 
 void ms_pipe(t_data *data, int i)
 {
-	if (i > 0)
+	if (i > 0 && !data->cmd[i].fd[0])
 	{
 		if (dup2(data->fd_pipe[0], 0) == -1)
 			perror("fd[0]");
 		if (close(data->fd_pipe[0]) == -1)
 			perror("fd[0]");
 	}
-	if (i < data->num_cmd - 1)
+	if (i < data->num_cmd - 1 && !data->cmd[i].fd[1])
 	{
 		if (pipe(data->fd_pipe) == -1)
 			perror("fd[1]");
@@ -125,12 +115,44 @@ void ms_pipe(t_data *data, int i)
 	}
 }
 
+static void exe_signal(t_data *data)
+{
+	int status;
+	int termsig;
+	int	exit_st;
+	int	i;
+
+	i = 0;
+	termsig = 0;
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
+	while (data->num_cmd > i)
+	{
+		waitpid(0, &status, 0);
+		i++;
+	}
+	waitpid(0, &status, 0);
+	exit_st = WEXITSTATUS(status);
+	if (exit_st > 0)
+		data->num_error = exit_st;
+	if (WIFSIGNALED(status) > 0)
+	{
+		termsig = WTERMSIG(status);
+		if (termsig == 2)
+			write(1, "\n", 1);
+		if (termsig == 3)
+			printf("Quit: %d\n", status);
+	}
+}
+
 void ms_execution(t_data *data)
 {
 	int		i;
 	int		stdio[2];
+	int j;
 	
 	i = 0;
+	j = 0;
 	stdio[0] = dup(0);
 	stdio[1] = dup(1);
 	while (i < data->num_cmd)
@@ -143,11 +165,20 @@ void ms_execution(t_data *data)
 		if (data->num_cmd > 1)
 			ms_pipe(data, i);
 		ms_our_cmd(data, i);
+		if (data->cmd[i].count_redir != 0)
+		{
+			while (data->cmd[i].file[j])
+			{
+				if (data->cmd[i].redir[j] == 5)
+					unlink(data->cmd[i].file[j]);
+				j++;
+			}
+		}
 		if (data->num_cmd > 1)
 			dup2(stdio[1], STDOUT_FILENO);
 		i++;
 	}
-	//write (2, "Escape while\n", 14);
+	exe_signal(data);
 	if (dup2(stdio[1], 1) == -1) // return 1;
 		perror("dup2 ");
 	if (dup2(stdio[0], 0) == -1) // return 0;

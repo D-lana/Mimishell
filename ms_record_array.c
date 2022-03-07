@@ -29,7 +29,6 @@ void	ms_record_array(t_data *data)
 	int	i;
 
 	i = 0;
-	//printf ("new str %s\n", data->cmd[i].str);
 	if (data->num_error != 0 || data->empty_str == YES)
 	{
 		return ;
@@ -46,7 +45,6 @@ void	ms_record_array(t_data *data)
 	//ms_printf_array(data); ///// распечатка убрать
 	if(data->num_error == 0 && data->empty_str == NO && data->cmd[0].str != NULL)
 		ms_found_variable(data);
-	//printf ("new str1 %s\n", data->cmd[0].str);
 }
 
 void	ms_count_arg_for_array(t_cmd *cmd)
