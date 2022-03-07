@@ -16,7 +16,7 @@ int ms_unset(t_data *data, int i_cmd)
 	{
 		if (ft_isdigit(data->cmd[i_cmd].array_arg[y][0]) == 1)
 		{
-			data->num_error = ERR_EXPORT;
+			data->num_error = ERR_NUM_ONE;
 			return(ms_error(data->num_error, data->cmd[i_cmd].array_arg[y]));
 		}
 		size_key = ft_strlen(data->cmd[i_cmd].array_arg[y]);

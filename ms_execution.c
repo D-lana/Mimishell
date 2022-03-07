@@ -13,12 +13,8 @@
 
 #include "minishell.h"
 
-// signal
-// cat <<! <<? <<a
-
 // bash-3.2$ < txt1
 //bash: txt1: No such file or directory
-
 
 static void ms_write_in_heredoc(int fd, char *str)
 {
@@ -123,14 +119,8 @@ int	ms_redirect(t_cmd *cmd)
 
 void ms_pipe(t_data *data, int i)
 {
-	//printf("i = %d\n", i);
-	//printf("d-redir_born[0] = %d\n", data->cmd->redir_born[0]);
-	//printf("d-redir_born[1] = %d\n", data->cmd->redir_born[1]);
-	//printf("fd[0] = %d\n", data->fd_pipe[0]);
-	//printf("fd[1] = %d\n", data->fd_pipe[1]);
 	if (i > 0 && !data->cmd[i].redir_born[0])
 	{
-	//	write (1, "B\n", 2);
 		if (dup2(data->fd_pipe[0], 0) == -1)
 			perror("fd[0]");
 		if (close(data->fd_pipe[0]) == -1)
@@ -138,7 +128,6 @@ void ms_pipe(t_data *data, int i)
 	}
 	if (i < data->num_cmd - 1 && !data->cmd[i].redir_born[1])
 	{
-		//write (1, "A\n", 2);
 		if (pipe(data->fd_pipe) == -1)
 			perror("fd[1]");
 		dup2(data->fd_pipe[1], 1);
@@ -202,46 +191,19 @@ void ms_execution(t_data *data)
 	last = -1;
 	stdio[0] = dup(0);
 	stdio[1] = dup(1);
-//	printf("num_cmd0 = %d\n", data->num_cmd);
 	while (i < data->num_cmd)
 	{
 		if (data->cmd[i].count_redir != 0)
 		{
-		//	printf("i_exe = %d\n", i);
 			ms_open_file(&data->cmd[i], data);
 			ms_redirect(&data->cmd[i]);
 			last = find_last_redir(last, data);
 		}
-	//	printf("num_cmd = %d\n", data->num_cmd);
 		if (data->num_cmd > 1)
-		{
-			// char *a = i + '0';
-			// ft_putstr_fd(a, 2);
-			// if (i != 0 && data->cmd[i - 1].count_redir)
-			// {
-			// 	write (1, "X\n", 2);
-			// 	printf("redir[last] = %d\n", data->cmd[i - 1].redir[last]);
-			// 	if (data->cmd[i - 1].redir[last] != 3 && data->cmd[i - 1].redir[last] != 4)
-			// 	{
-			// 		write (1, "Y\n", 2);
-			// 		ms_pipe(data, i);
-			// 		write (1, "Z\n", 2);
-			// 	}
-			// }
-			// else
-			// {
-			//	write (1, "Y1\n", 3);
 				ms_pipe(data, i);
-			//	write (1, "Z1\n", 3);
-			// }
-		}
 		ms_our_cmd(data, i);
-		//write (1, "after\n", 6);
-	//	printf("count_redir = %d\n", data->cmd[i].count_redir);
 		if (data->cmd[i].count_redir) // i == 0  data->num_cmd > 1
 		{
-			//write (1, "X3\n", 3);
-		//	printf("redir[last] = %d\n", data->cmd[i].redir[last]);
 			if (data->cmd[i].redir[last] == 3 || data->cmd[i].redir[last] == 4)
 				break ;
 		}
@@ -257,13 +219,9 @@ void ms_execution(t_data *data)
 		if (data->num_cmd > 1)
 			dup2(stdio[1], STDOUT_FILENO);
 		i++;
-	//	printf("i_end = %d\n", i);
 	}
-	//printf("data->num_error exec = %d\n", data->num_error);
 	if (data->num_cmd > 1 || (data->build_in == NO && data->num_cmd == 1))
 		exe_signal(data);
-	//printf("data->num_error exec = %d\n", data->num_error);
-	//write (2, "Escape while\n", 14);
 	if (dup2(stdio[1], 1) == -1) // return 1;
 		perror("dup2 ");
 	if (dup2(stdio[0], 0) == -1) // return 0;
