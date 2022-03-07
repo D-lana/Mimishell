@@ -6,7 +6,7 @@
 /*   By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 17:48:49 by obeedril          #+#    #+#             */
-/*   Updated: 2022/03/05 20:37:50 by obeedril         ###   ########.fr       */
+/*   Updated: 2022/03/06 18:08:11 by obeedril         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 // bash-3.2$ ./libft
 // bash: ./libft: is a directory
 // bash-3.2$ echo $?
+
+// data->num_error = 126;
 
 #include "minishell.h"
 
@@ -30,20 +32,15 @@ static int ms_check_way_itself(t_data *data, int find_cmd, int n)
 	str_slesh = ft_strjoin(str, "/");
 	str_way = ft_strjoin(str_slesh, data->cmd[n].array_arg[0]);
 	ms_free_str(&str_slesh);
-	if (!access (str_way, 1))
+	if (opendir(data->cmd[n].array_arg[0]) != 0)
+		find_cmd = -2;
+	else if (!access (str_way, 1))
 	{
-		write (1, "A\n", 2);
-		find_cmd = -1; // нашла команду
+		find_cmd = -1;
 		data->cmd[n].way_cmd = ft_strdup(str_way);
-		//data->cmd[n].cur_way_cmd = ft_strdup(str_way); // отфришить где-нибудь в конце
 	}
 	else
-	{
-		write (1, "B\n", 2);
-		find_cmd = -2;
-		//printf("Mimishell: %s: Permission denied\n", data->cmd[n].array_arg[0]);
-	}
-	
+		find_cmd = -3;
 	ms_free_str(&str_way);
 	return (find_cmd);
 }
@@ -119,14 +116,17 @@ void	ms_check_first_arg(t_data *data)
 			data->num_error = ERR_CMD;
 			printf("Mimishell: %s: command not found\n",
 				data->cmd[n].array_arg[0]);
-			data->num_error = 127; // оставить?
 		}
 		if (find_cmd == -2)
 		{
-			printf("Mimishell: %s: Permission denied\n", data->cmd[n].array_arg[0]);
-			data->num_error = 126;
-					
+			data->num_error = ERR_FILE_OR_DIR;
+			printf("Mimishell: %s: is a directory\n", data->cmd[n].array_arg[0]);
 		}
+		if (find_cmd == -3)
+		{
+			data->num_error = ERR_FILE_OR_DIR;
+			printf("Mimishell: %s: Permission denied\n", data->cmd[n].array_arg[0]);
+		}	
 		n++;
 	}
 }
