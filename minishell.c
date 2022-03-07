@@ -71,6 +71,7 @@ void ms_init_data(t_data *data, char **env, int first)
 		data->flag_old = 1;
 		data->prev_dir = NULL; // for ft_cd.c
 		data->num_prev_error = 0;
+		data->num_error = 0;
 		data->num_tmp_var = 0;
 		ms_init_env(data, env);
 	}
@@ -78,6 +79,7 @@ void ms_init_data(t_data *data, char **env, int first)
 	data->num_error = 0;
 	data->empty_str = NO;
 	data->home_dir = getenv("HOME"); // obeedril for ft_cd.c
+	data->build_in = YES;
 }
 
 void ms_free_all(t_data *data)
@@ -139,7 +141,6 @@ int	main(int argc, char **argv, char **env)
 			ms_separator(&data, line);
 		ms_record_array(&data); // dlana add ms_record_array.c
 		ms_execution(&data);
-		write (1, "W2\n", 3);
 		//ms_execution(&data, data.cmd, env);
 		if (data.empty_str == NO)
 			add_history(line);

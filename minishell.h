@@ -8,6 +8,7 @@
 #include <readline/history.h>
 #include "libft.h"
 #include <fcntl.h>
+#include <dirent.h>
 
 typedef enum e_value
 {
@@ -29,6 +30,7 @@ typedef enum e_value
 	ERR_CMD = 127,
 	ERR_TOKEN = 258,
 	ERR_EXPORT = 1,
+	ERR_FILE_OR_DIR = 126,
 }				t_value;
 
 typedef struct s_arg
@@ -49,10 +51,10 @@ typedef struct s_cmd
 	int		*redir; // = enum
 	char	**file; // имя файла
 	int		fd[2];
+	int		redir_born[2];
 	int		num_arg; // не использовать
 	int		num_array_arg;
 	char	*way_cmd;
-	//char	*cur_way_cmd;
 	int		count_redir;
 }				t_cmd;
 
@@ -83,6 +85,7 @@ typedef struct s_data
 	int		flag_old; //check it
 	int		empty_str;
 	int		fd_pipe[2];
+	int		build_in;
 }				t_data;
 
 void	ms_exe(t_data *data);

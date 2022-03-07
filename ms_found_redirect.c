@@ -130,8 +130,11 @@ int	ms_record_redir_and_file(t_cmd *cmd, int i, int num_redir, t_data *d)
 	if (qm_o != 1 || qm_d != 1)
 		return (ms_err_name_file(d, qm_o, qm_d)); //write(1, "Oppps!\n", 8); ///////////// ошибка в названии файла - незакрытая кавычка
 	ms_malloc_str(&cmd->file[num_redir], d->tmp.size_str);
+	//printf("file = %s\n", cmd->file[num_redir]);
+	//printf("num_redir = %d\n", num_redir);
 	ms_record_str(&cmd->file[num_redir], cmd->str, start, d->tmp.size_str);
 	ms_cut_qm_in_name_file(d, &cmd->file[num_redir]);
+	//printf("file1 = %s\n", cmd->file[num_redir]);
 	d->tmp.size_cut = i - d->tmp.size_cut;
 	return (0);
 }

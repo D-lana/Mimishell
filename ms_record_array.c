@@ -30,7 +30,7 @@ void	ms_record_array(t_data *data)
 
 	i = 0;
 	//printf ("new str %s\n", data->cmd[i].str);
-	if (data->num_error != 0 || data->empty_str == YES)
+	if (data->num_error != 0 || data->empty_str == YES || data->cmd[i].str == NULL)
 	{
 		return ;
 	}

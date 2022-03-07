@@ -30,7 +30,7 @@ void	ms_add_tmp_variable(t_data *data, char *var)
 	i = 0; //// распечатка убрать
 	while (i < data->num_tmp_var)
 	{
-		printf("tmp_var = %s\n", data->tmp_var[i]);
+		//printf("tmp_var = %s\n", data->tmp_var[i]);
 		i++;
 	}
 }

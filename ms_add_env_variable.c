@@ -93,6 +93,7 @@ int	ms_valid_export(char *var)
 	int	i;
 
 	i = 0;
+	//printf ("var = %s\n", var);
 	if (ft_isdigit(var[i]) == 1)
 		return (ERR_EXPORT);
 	while (var[i] != '\0')
@@ -120,7 +121,6 @@ int	ms_add_env_variable(t_data *data, int i_cmd)
 	valid = 0;
 	while (data->cmd[i_cmd].array_arg[i] != NULL)
 	{
-		
 		valid = ms_valid_export(data->cmd[i_cmd].array_arg[i]);
 		if (valid == ERR_EXPORT)
 		{
