@@ -15,7 +15,7 @@ LIBFT_LIB	=	$(LIBDIR)/libft.a
 
 LIB			=	-L$(LIBDIR) -lft
 
-CC			=	gcc #-g -fsanitize=address
+CC			=	gcc -g -fsanitize=address
 
 CFLAGS		=	-Wall -Werror -Wextra -I 
 

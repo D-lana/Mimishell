@@ -102,8 +102,8 @@ void	ms_open_file(t_cmd *cmd, t_data *data)
 	}
 	cmd->redir_born[0] = cmd->fd[0];
 	cmd->redir_born[1] = cmd->fd[1];
-	printf("redir_born[0] = %d\n", cmd->redir_born[0]);
-	printf("redir_born[1] = %d\n", cmd->redir_born[1]);
+	//printf("redir_born[0] = %d\n", cmd->redir_born[0]);
+	//printf("redir_born[1] = %d\n", cmd->redir_born[1]);
 }
 
 int	ms_redirect(t_cmd *cmd)

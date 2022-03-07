@@ -1,11 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ms_execve.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/07 15:39:51 by obeedril          #+#    #+#             */
+/*   Updated: 2022/03/07 16:28:57 by obeedril         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
- 
-//  bash-3.2$ mkdir papka
-// bash-3.2$ echo $?
-// 0
-// bash-3.2$ mkdir papka
-// mkdir: papka: File exists
-// bash-3.2$ echo $?
 
 void	ms_execve(t_cmd *cmd, t_data *data, int i)
 {

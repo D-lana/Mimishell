@@ -6,27 +6,20 @@
 /*   By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 17:48:49 by obeedril          #+#    #+#             */
-/*   Updated: 2022/03/06 18:08:11 by obeedril         ###   ########.fr       */
+/*   Updated: 2022/03/07 16:31:59 by obeedril         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
-// bash-3.2$ ./libft
-// bash: ./libft: is a directory
-// bash-3.2$ echo $?
-
-// data->num_error = 126;
-
 #include "minishell.h"
 
-static int ms_check_way_itself(t_data *data, int find_cmd, int n)
+static int	ms_check_way_itself(t_data *data, int find_cmd, int n)
 {
 	char	*str;
 	char	*str_slesh;
 	char	*str_way;
-	
+
 	str = NULL;
-	str_way =NULL;
+	str_way = NULL;
 	str_slesh = NULL;
 	str = getcwd(NULL, 0);
 	str_slesh = ft_strjoin(str, "/");
@@ -48,6 +41,7 @@ static int ms_check_way_itself(t_data *data, int find_cmd, int n)
 static char	*add_slesh(char **arr_p, int i, int j)
 {
 	char	*str_slesh;
+
 	str_slesh = NULL;
 	ms_malloc_str(&str_slesh, ft_strlen(arr_p[i]) + 1);
 	while (arr_p[i][j] != '\0')
@@ -60,7 +54,7 @@ static char	*add_slesh(char **arr_p, int i, int j)
 	return (str_slesh);
 }
 
-static int  check_str(t_data *data, char **arr_p, int i, int n)
+static int	check_str(t_data *data, char **arr_p, int i, int n)
 {
 	int		find_cmd;
 	char	*str_slesh;
@@ -68,8 +62,9 @@ static int  check_str(t_data *data, char **arr_p, int i, int n)
 
 	find_cmd = 0;
 	str_way = NULL;
-	//оттестить если первый аргумент редирект
-	if ((data->cmd[n].array_arg[0][0] == '.' && data->cmd[n].array_arg[0][1] == '/'))
+	str_slesh = NULL;
+	if ((data->cmd[n].array_arg[0][0] == '.'
+		&& data->cmd[n].array_arg[0][1] == '/'))
 		find_cmd = ms_check_way_itself(data, find_cmd, n);
 	else
 	{
@@ -77,20 +72,45 @@ static int  check_str(t_data *data, char **arr_p, int i, int n)
 		{
 			str_slesh = add_slesh(arr_p, i, 0);
 			str_way = ft_strjoin(str_slesh, data->cmd[n].array_arg[0]);
-			ms_free_str(&str_slesh); // change
+			ms_free_str(&str_slesh);
 			if (!access (str_way, 1))
 			{
-				find_cmd = -1; // нашла команду
-				data->cmd[n].way_cmd = ft_strdup(str_way); // отфришить где-нибудь в конце
+				find_cmd = -1;
+				data->cmd[n].way_cmd = ft_strdup(str_way);
 				break ;
 			}
 			else
 				find_cmd++;
-			ms_free_str(&str_way); // changed free
+			ms_free_str(&str_way);
 			i++;
 		}
 	}
 	return (find_cmd);
+}
+
+static void	check_find_cmd(t_data *data, int find_cmd, int n)
+{
+	if (find_cmd >= 0)
+	{
+		data->num_error = ERR_CMD;
+		ft_putstr_fd("MiMishell: ", 2);
+		ft_putstr_fd(data->cmd[n].array_arg[0], 2);
+		ft_putstr_fd(": command not found\n", 2);
+	}
+	if (find_cmd == -2)
+	{
+		data->num_error = ERR_FILE_OR_DIR;
+		ft_putstr_fd("MiMishell: ", 2);
+		ft_putstr_fd(data->cmd[n].array_arg[0], 2);
+		ft_putstr_fd(": is a directory\n", 2);
+	}
+	if (find_cmd == -3)
+	{
+		data->num_error = ERR_FILE_OR_DIR;
+		ft_putstr_fd("MiMishell: ", 2);
+		ft_putstr_fd(data->cmd[n].array_arg[0], 2);
+		ft_putstr_fd(": Permission denied\n", 2);
+	}	
 }
 
 void	ms_check_first_arg(t_data *data)
@@ -111,22 +131,7 @@ void	ms_check_first_arg(t_data *data)
 	while (n < data->num_cmd)
 	{
 		find_cmd = check_str(data, arr_p, i, n);
-		if (find_cmd >= 0)
-		{
-			data->num_error = ERR_CMD;
-			printf("Mimishell: %s: command not found\n",
-				data->cmd[n].array_arg[0]);
-		}
-		if (find_cmd == -2)
-		{
-			data->num_error = ERR_FILE_OR_DIR;
-			printf("Mimishell: %s: is a directory\n", data->cmd[n].array_arg[0]);
-		}
-		if (find_cmd == -3)
-		{
-			data->num_error = ERR_FILE_OR_DIR;
-			printf("Mimishell: %s: Permission denied\n", data->cmd[n].array_arg[0]);
-		}	
+		check_find_cmd(data, find_cmd, n);
 		n++;
 	}
 }
