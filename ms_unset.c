@@ -3,7 +3,7 @@
 int		ms_unset(t_data *data, int i_cmd);
 void	ms_cut_env_variable(t_data *data, int y);
 
-int	ms_unset(t_data *data, int i_cmd)
+int ms_unset(t_data *data, int i_cmd)
 {
 	int	y;
 	int	size_key;
@@ -25,7 +25,7 @@ int	ms_unset(t_data *data, int i_cmd)
 			if(ft_strncmp(data->cmd[i_cmd].array_arg[y], data->our_env[y_env], size_key) == 0 
 				&& (data->our_env[y_env][size_key] == '=' || data->our_env[y_env][size_key] == '\0'))
 			{
-				if(ft_strncmp(data->cmd[i_cmd].array_arg[y], "OLDPWD=", 7) == 0)
+				if(ft_strncmp(data->cmd[i_cmd].array_arg[y], "OLDPWD=", 6) == 0)
 					data->flag_old = 0;
 				ms_cut_env_variable(data, y_env); ////////////////////
 			}

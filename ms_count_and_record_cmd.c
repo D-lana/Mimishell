@@ -74,6 +74,12 @@ int ms_count_and_record_cmd(t_data *data, char *line)
 	}
 	ms_malloc_cmd(&data->cmd, data->num_cmd); /// free cmd +
 	i = 0;
+	while (data->num_cmd > i)
+	{
+		data->cmd[i] = (t_cmd){};
+		i++;
+	}
+	i = 0;
 	num = 0;
 	while (line[i] != '\0')
 		ms_record_one_str(&data->cmd[num].str, line, &i, &num);

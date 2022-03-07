@@ -69,6 +69,7 @@ int	ms_valid_export(char *var)
 	int	i;
 
 	i = 0;
+	//printf ("var = %s\n", var);
 	if (ft_isdigit(var[i]) == 1)
 		return (ERR_NUM_ONE);
 	while (var[i] != '\0')

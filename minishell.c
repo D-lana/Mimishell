@@ -42,6 +42,7 @@ int	ms_separator(t_data *data, char *line)
 			&& data->cmd[i].str != NULL)
 			ms_found_env_variable(data, &data->cmd[i]);
 		i++;
+		//printf ("i_sep = %d\n", i);
 	}
 	i = 0;
 	return (0);
@@ -52,8 +53,10 @@ void	ms_init_data(t_data *data, char **env, int first)
 	if (first == YES)
 	{
 		data->flag_old = 1;
-		data->prev_dir = NULL;
+		data->prev_dir = NULL; // for ft_cd.c
+		data->cur_dir = getcwd(NULL, 0);
 		data->num_prev_error = 0;
+		data->num_error = 0;
 		data->num_tmp_var = 0;
 		ms_init_env(data, env);
 		data->name_file = NO;
@@ -62,15 +65,19 @@ void	ms_init_data(t_data *data, char **env, int first)
 	data->num_error = 0;
 	data->empty_str = NO;
 	data->home_dir = getenv("HOME");
+	data->build_in = YES;
 }
 
 int	main(int argc, char **argv, char **env)
 {
 	t_data	data;
 	char	*line;
-
-	if (argc < 1 || argv == NULL || env == NULL)
+  
+	if (argc != 1 || argv == NULL || env == NULL)
+	{
+		printf("Mimishell: this programm complies without arguments\n");
 		exit(127);
+	}
 	ms_init_data(&data, env, YES);
 	while (1)
 	{
@@ -79,9 +86,10 @@ int	main(int argc, char **argv, char **env)
 		line = readline("\033[1;36mMiMiShell > \033[0m");
 		ms_signal_ctrl_d(&data, line);
 		if (line != 0)
-			ms_separator(&data, line);
-		ms_record_array(&data);
+		ms_separator(&data, line);
+		ms_record_array(&data); // dlana add ms_record_array.c
 		ms_execution(&data);
+		//ms_execution(&data, data.cmd, env);
 		if (data.empty_str == NO)
 			add_history(line);
 		ms_free_str(&line);
@@ -89,4 +97,7 @@ int	main(int argc, char **argv, char **env)
 	}
 	//ms_free_all(&data);
 	// free (data->prev_dir) ???? // obeedril for ms_cd.c
+	// free (data->cur_dir) ???? // obeedril for ms_cd.c
+
+	// free data->cmd[n].way_cmd (check_first_arg.c)
 }

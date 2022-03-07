@@ -1,4 +1,20 @@
+
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ms_execution.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/02/19 13:00:12 by obeedril          #+#    #+#             */
+/*   Updated: 2022/03/03 18:25:41 by obeedril         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
+
+// bash-3.2$ < txt1
+//bash: txt1: No such file or directory
 
 static void ms_write_in_heredoc(int fd, char *str)
 {
@@ -80,6 +96,10 @@ void	ms_open_file(t_cmd *cmd, t_data *data)
 		}
 		i++;
 	}
+	cmd->redir_born[0] = cmd->fd[0];
+	cmd->redir_born[1] = cmd->fd[1];
+	//printf("redir_born[0] = %d\n", cmd->redir_born[0]);
+	//printf("redir_born[1] = %d\n", cmd->redir_born[1]);
 }
 
 int	ms_redirect(t_cmd *cmd)
@@ -99,14 +119,14 @@ int	ms_redirect(t_cmd *cmd)
 
 void ms_pipe(t_data *data, int i)
 {
-	if (i > 0 && !data->cmd[i].fd[0])
+	if (i > 0 && !data->cmd[i].redir_born[0])
 	{
 		if (dup2(data->fd_pipe[0], 0) == -1)
 			perror("fd[0]");
 		if (close(data->fd_pipe[0]) == -1)
 			perror("fd[0]");
 	}
-	if (i < data->num_cmd - 1 && !data->cmd[i].fd[1])
+	if (i < data->num_cmd - 1 && !data->cmd[i].redir_born[1])
 	{
 		if (pipe(data->fd_pipe) == -1)
 			perror("fd[1]");
@@ -128,10 +148,10 @@ static void exe_signal(t_data *data)
 	signal(SIGQUIT, SIG_IGN);
 	while (data->num_cmd > i)
 	{
-		waitpid(0, &status, 0);
+		waitpid(-1, &status, 0);
 		i++;
 	}
-	waitpid(0, &status, 0);
+	waitpid(-1, &status, 0);
 	exit_st = WEXITSTATUS(status);
 	if (exit_st > 0)
 		data->num_error = exit_st;
@@ -145,14 +165,30 @@ static void exe_signal(t_data *data)
 	}
 }
 
+int find_last_redir(int last, t_data *data)
+{
+	int i;
+
+	i = 0;
+	while (data->cmd->redir[i])
+	{
+		if (data->cmd->redir[i] == 3 || data->cmd->redir[i] == 4)
+			last = i;
+		i++;
+	}
+	return (last);
+}
+
 void ms_execution(t_data *data)
 {
 	int		i;
 	int		stdio[2];
 	int j;
+	int last;
 	
 	i = 0;
 	j = 0;
+	last = -1;
 	stdio[0] = dup(0);
 	stdio[1] = dup(1);
 	while (i < data->num_cmd)
@@ -161,10 +197,16 @@ void ms_execution(t_data *data)
 		{
 			ms_open_file(&data->cmd[i], data);
 			ms_redirect(&data->cmd[i]);
+			last = find_last_redir(last, data);
 		}
 		if (data->num_cmd > 1)
-			ms_pipe(data, i);
+				ms_pipe(data, i);
 		ms_our_cmd(data, i);
+		if (data->cmd[i].count_redir) // i == 0  data->num_cmd > 1
+		{
+			if (data->cmd[i].redir[last] == 3 || data->cmd[i].redir[last] == 4)
+				break ;
+		}
 		if (data->cmd[i].count_redir != 0)
 		{
 			while (data->cmd[i].file[j])
@@ -178,7 +220,8 @@ void ms_execution(t_data *data)
 			dup2(stdio[1], STDOUT_FILENO);
 		i++;
 	}
-	exe_signal(data);
+	if (data->num_cmd > 1 || (data->build_in == NO && data->num_cmd == 1))
+		exe_signal(data);
 	if (dup2(stdio[1], 1) == -1) // return 1;
 		perror("dup2 ");
 	if (dup2(stdio[0], 0) == -1) // return 0;
@@ -195,9 +238,10 @@ void ms_execution(t_data *data)
 // 	{
 // 		write (2, "i < data->num_cmd\n", 19);
 // 		dup2(data->fd_pipe[1], STDOUT_FILENO);
-// 		close(data->fd_pipe[1]);
+// 		//close(data->fd_pipe[1]);
 // 		//close(data->fd_pipe[0]);
 // 	}
+// 	close(data->fd_pipe[1]);
 // 	write (2, "Child 1\n", 9);
 // 	ms_our_cmd(data, i);
 // 	exit (EXIT_FAILURE);
@@ -209,7 +253,7 @@ void ms_execution(t_data *data)
 // 	int		stdio[2];
 // 	(void) env;
 // 	(void) cmd;
-// 	int status;
+// //	int status;
 // 	pid_t	child;
 	
 // 	i = 0;
@@ -217,7 +261,7 @@ void ms_execution(t_data *data)
 // 	stdio[1] = dup(1);
 // 	while (i < data->num_cmd)
 // 	{
-// 		if (data->count_redir != 0)
+// 		if (data->cmd[i].count_redir != 0)
 // 		{
 // 			ms_open_file(&cmd[i], data);
 // 			ms_redirect(&cmd[i]);
@@ -225,7 +269,7 @@ void ms_execution(t_data *data)
 // 		}
 // 		if (data->num_cmd > 1)
 // 		{
-// 			write (1, "Before\n", 8);
+// 			//write (1, "Before\n", 8);
 // 			if (i < data->num_cmd - 1)
 // 			{
 // 				if (pipe(data->fd_pipe) < 0) // error
@@ -239,17 +283,21 @@ void ms_execution(t_data *data)
 // 				ft_child(data, i);
 // 			//write (2, "Child 2", 8);
 // 			//close(data->fd_pipe[1]);
-// 			dup2(data->fd_pipe[0], STDIN_FILENO);
-// 			close(data->fd_pipe[0]);
-// 			close(data->fd_pipe[1]);
-// 			waitpid(0, &status, 0);
-// 			write (2, "After\n", 7);
+// 			if (data->cmd[i].fd[0] == 0)
+// 			{
+// 				dup2(data->fd_pipe[0], STDIN_FILENO);
+// 				close(data->fd_pipe[0]);
+// 				close(data->fd_pipe[1]);
+// 			}
+// 		//	waitpid(0, &status, 0);
+// 			//write (2, "After\n", 7);
 // 		}
 // 		else
 // 			ms_our_cmd(data, i);
 // 		i++;
 // 	}
-// 	write (2, "Escape while\n", 14);
+// 	exe_signal(data);
+// 	//write (2, "Escape while\n", 14);
 // 	if (dup2(stdio[1], 1) == -1) // return 1;
 // 		perror("dup2 ");
 // 	if (dup2(stdio[0], 0) == -1) // return 0;
