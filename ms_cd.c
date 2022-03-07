@@ -6,7 +6,7 @@
 /*   By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/14 16:58:28 by obeedril          #+#    #+#             */
-/*   Updated: 2022/02/27 12:39:25 by obeedril         ###   ########.fr       */
+/*   Updated: 2022/03/07 16:54:04 by obeedril         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ static void	minus(char *arg_way, t_data *data, int i)
 	if (arg_way[i + 1] == '\0')
 	{
 		if (data->prev_dir == NULL || data->flag_old == 0)
-			printf("Mimishell: cd: OLDPWD not set\n");
+			ft_putstr_fd("Mimishell: cd: OLDPWD not set\n", 2);
 		else
 		{
 			chdir(data->prev_dir);

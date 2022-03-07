@@ -70,6 +70,7 @@ void ms_init_data(t_data *data, char **env, int first)
 	{
 		data->flag_old = 1;
 		data->prev_dir = NULL; // for ft_cd.c
+		data->cur_dir = getcwd(NULL, 0);
 		data->num_prev_error = 0;
 		data->num_error = 0;
 		data->num_tmp_var = 0;
@@ -150,4 +151,6 @@ int	main(int argc, char **argv, char **env)
 	//ms_free_all(&data);
 	// free (data->prev_dir) ???? // obeedril for ms_cd.c
 	// free (data->cur_dir) ???? // obeedril for ms_cd.c
+
+	// free data->cmd[n].way_cmd (check_first_arg.c)
 }
