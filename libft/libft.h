@@ -6,7 +6,7 @@
 /*   By: dlana <dlana@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/18 16:06:06 by dlana             #+#    #+#             */
-/*   Updated: 2022/03/03 13:18:06 by dlana            ###   ########.fr       */
+/*   Updated: 2022/03/08 13:49:28 by dlana            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,5 +29,6 @@ char	**ft_split(char const *s, char c);
 int		ft_atoi(const char *str);
 char	*ft_strchr(const char *s, int c);
 void	ft_putstr_fd(char *s, int fd);
+void	ft_putnbr_fd(int nb, int fd);
 
 #endif
