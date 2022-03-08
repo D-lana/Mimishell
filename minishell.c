@@ -1,6 +1,7 @@
 #include "minishell.h"
 
 // добавить расшифровку по $ в имени файла
+// 
 
 int	ms_error(int error, char *str)
 {

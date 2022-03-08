@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_found_env_variable.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlana <dlana@student.42.fr>                +#+  +:+       +#+        */
+/*   By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 12:51:48 by dlana             #+#    #+#             */
-/*   Updated: 2022/03/07 16:57:35 by dlana            ###   ########.fr       */
+/*   Updated: 2022/03/08 12:22:14 by obeedril         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ void	ms_found_dollar(t_data *data, char **str, int q_m, int *i_orig)
 	if ((*str)[i] == '$' && (*str)[i + 1] == '$')
 		i += 2;
 	else if ((*str)[i] == '$' && (*str)[i + 1] == '?')
-		ms_put_num_error(data->num_error, str, &i);
+		ms_put_num_error(data->num_prev_error, str, &i);
 	else if ((*str)[i] == '$' && (*str)[i + 1] != ' '
 		&& ((*str)[i + 1] != '\0' && q_m != 39))
 		i = ms_record_value(data, str, i);

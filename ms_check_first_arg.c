@@ -6,7 +6,7 @@
 /*   By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 17:48:49 by obeedril          #+#    #+#             */
-/*   Updated: 2022/03/07 16:31:59 by obeedril         ###   ########.fr       */
+/*   Updated: 2022/03/08 12:15:47 by obeedril         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,45 +93,34 @@ static void	check_find_cmd(t_data *data, int find_cmd, int n)
 	if (find_cmd >= 0)
 	{
 		data->num_error = ERR_CMD;
-		ft_putstr_fd("MiMishell: ", 2);
-		ft_putstr_fd(data->cmd[n].array_arg[0], 2);
-		ft_putstr_fd(": command not found\n", 2);
+		ms_print_errors_chfa(data->cmd[n].array_arg[0], 1);
 	}
 	if (find_cmd == -2)
 	{
 		data->num_error = ERR_FILE_OR_DIR;
-		ft_putstr_fd("MiMishell: ", 2);
-		ft_putstr_fd(data->cmd[n].array_arg[0], 2);
-		ft_putstr_fd(": is a directory\n", 2);
+		ms_print_errors_chfa(data->cmd[n].array_arg[0], 2);
 	}
 	if (find_cmd == -3)
 	{
 		data->num_error = ERR_FILE_OR_DIR;
-		ft_putstr_fd("MiMishell: ", 2);
-		ft_putstr_fd(data->cmd[n].array_arg[0], 2);
-		ft_putstr_fd(": Permission denied\n", 2);
+		ms_print_errors_chfa(data->cmd[n].array_arg[0], 3);
 	}	
 }
 
-void	ms_check_first_arg(t_data *data)
+void	ms_check_first_arg(t_data *data, int n)
 {
 	const char	*p;
 	char		**arr_p;
 	int			i;
-	int			n;
 	int			find_cmd;
 
 	i = 0;
-	n = 0;
 	find_cmd = 0;
 	if (data->num_error != 0 || data->empty_str == YES)
 		return ;
 	p = getenv("PATH");
 	arr_p = ft_split(p, ':');
-	while (n < data->num_cmd)
-	{
-		find_cmd = check_str(data, arr_p, i, n);
-		check_find_cmd(data, find_cmd, n);
-		n++;
-	}
+	find_cmd = check_str(data, arr_p, i, n);
+	check_find_cmd(data, find_cmd, n);
+
 }
