@@ -56,6 +56,8 @@ typedef struct s_cmd
 	int		num_array_arg;
 	char	*way_cmd;
 	int		count_redir;
+	int		bad_file;
+	
 }				t_cmd;
 
 typedef struct s_tmp
@@ -125,7 +127,7 @@ void	ms_record_str(char **file, char *str, int start, int size_str); // dlana
 void	ms_record_char(char **result, char *str, int *r, int *s);
 
 int		ms_error(int error, char *str);
-void	ms_check_first_arg(t_data *data); // obeedril added for check a first agr
+void	ms_check_first_arg(t_data *data, int n); // obeedril added for check a first agr
 
 void	ms_free_str(char **str);
 void	ms_free_arr(char ***arr);
@@ -142,6 +144,9 @@ int		*ms_malloc_arr_int(int **arr_int, int size);
 void	rl_replace_line (const char *text, int clear_undo); // obeedril for readline
 
 void	ms_execution(t_data *data); //obeedril added
+
+void	ms_print_errors_chfa(char *str, int flag);
+void	ms_print_error_cd(char *str, int flag);
 //void ms_execution(t_data *data, t_cmd *cmd, char **env);
 
 #endif

@@ -55,9 +55,11 @@ int	ms_our_cmd(t_data *data, int i)
 {
 	pid_t pid;
 
-	if (data->num_error != 0 || data->empty_str == YES
-		|| data->cmd[i].array_arg == NULL)
+	if (data->num_error != 0 || data->empty_str == YES || data->cmd[i].array_arg == NULL)
+	{
+		ft_putstr_fd("MMMMs_our_cmd\n", 2);
 		return(-1);
+	}
 	ms_build_in_or_no(data, i);
 	if (i == 0 && data->build_in == YES)
 			ms_build_in_cmd(data, i);
