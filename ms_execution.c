@@ -13,9 +13,6 @@
 
 #include "minishell.h"
 
-// bash-3.2$ < txt1
-//bash: txt1: No such file or directory
-
 static void ms_write_in_heredoc(int fd, char *str)
 {
 	write(fd, str, ft_strlen(str));
@@ -73,9 +70,32 @@ int ms_heredoc(t_cmd *cmd, t_data *data, int i)
 	return (0);
 }
 
+int check_file(t_cmd *cmd, int i)
+{
+	int		j;
+	char	*str;
+	char	*str_slesh;
+	char	*str_way;
+	int		mistake;
+
+	j = 0;
+	mistake = 0;
+	str = NULL;
+	str_way = NULL;
+	str_slesh = NULL;
+	str = getcwd(NULL, 0);
+	str_slesh = ft_strjoin(str, "/");
+	str_way = ft_strjoin(str_slesh, cmd->file[i]);
+	ms_free_str(&str_slesh);
+	if (!access (str_way, 0))
+		mistake = 1;
+	ms_free_str(&str_way);
+	return (mistake);
+}
+
 void	ms_open_file(t_cmd *cmd, t_data *data)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (cmd->file[i])
@@ -85,7 +105,15 @@ void	ms_open_file(t_cmd *cmd, t_data *data)
 		if (cmd->redir[i] == 4)
 			cmd->fd[1] = open(cmd->file[i], O_CREAT | O_WRONLY  | O_APPEND, 0644);
 		if (cmd->redir[i] == 2)
-			cmd->fd[0] = open(cmd->file[i], O_RDONLY, 0644);
+		{
+			if (check_file(cmd, i) == 1)
+				cmd->fd[0] = open(cmd->file[i], O_RDONLY, 0644);
+			else
+			{
+				ms_print_errors_chfa(cmd->file[i], 4);
+				cmd->bad_file = YES;
+			}
+		}
 		if (cmd->redir[i] == 5)
 		{
 			cmd->fd[1] = open(cmd->file[i], O_WRONLY | O_CREAT | O_TRUNC | O_APPEND, 0644);
@@ -94,12 +122,15 @@ void	ms_open_file(t_cmd *cmd, t_data *data)
 			ms_heredoc(cmd, data, i);
 
 		}
+		if (cmd->redir[i] == 6)
+		{
+			cmd->fd[0] = open(cmd->file[i], O_CREAT |O_RDONLY | O_TRUNC, 0644);
+			cmd->fd[1] = open(cmd->file[i], O_CREAT | O_WRONLY | O_TRUNC, 0644);
+		}
 		i++;
 	}
 	cmd->redir_born[0] = cmd->fd[0];
 	cmd->redir_born[1] = cmd->fd[1];
-	//printf("redir_born[0] = %d\n", cmd->redir_born[0]);
-	//printf("redir_born[1] = %d\n", cmd->redir_born[1]);
 }
 
 int	ms_redirect(t_cmd *cmd)
@@ -117,10 +148,14 @@ int	ms_redirect(t_cmd *cmd)
 	return (0);
 }
 
-void ms_pipe(t_data *data, int i)
+void ms_pipe(t_data *data, int i, int last)
 {
 	if (i > 0 && !data->cmd[i].redir_born[0])
 	{
+		if (last != -1 && (data->cmd[i - 1].redir[last] == 3 
+			|| data->cmd[i - 1].redir[last] == 4))
+			return ;
+		//write(2, "pipe i > 0\n", 11);
 		if (dup2(data->fd_pipe[0], 0) == -1)
 			perror("fd[0]");
 		if (close(data->fd_pipe[0]) == -1)
@@ -128,6 +163,10 @@ void ms_pipe(t_data *data, int i)
 	}
 	if (i < data->num_cmd - 1 && !data->cmd[i].redir_born[1])
 	{
+		if (last != -1 && (data->cmd[i].redir[last] == 3
+			|| data->cmd[i].redir[last] == 4))
+			return ;
+		//write(2, "pipe i = 0\n", 11);
 		if (pipe(data->fd_pipe) == -1)
 			perror("fd[1]");
 		dup2(data->fd_pipe[1], 1);
@@ -153,8 +192,8 @@ static void exe_signal(t_data *data)
 	}
 	waitpid(-1, &status, 0);
 	exit_st = WEXITSTATUS(status);
-	if (exit_st > 0)
-		data->num_error = exit_st;
+	// if (exit_st > 0)
+	// 	data->num_error = exit_st;
 	if (WIFSIGNALED(status) > 0)
 	{
 		termsig = WTERMSIG(status);
@@ -193,6 +232,7 @@ void ms_execution(t_data *data)
 	stdio[1] = dup(1);
 	while (i < data->num_cmd)
 	{
+		data->cmd[i].bad_file = NO;
 		if (data->cmd[i].count_redir != 0)
 		{
 			ms_open_file(&data->cmd[i], data);
@@ -200,13 +240,10 @@ void ms_execution(t_data *data)
 			last = find_last_redir(last, data);
 		}
 		if (data->num_cmd > 1)
-				ms_pipe(data, i);
-		ms_our_cmd(data, i);
-		if (data->cmd[i].count_redir) // i == 0  data->num_cmd > 1
-		{
-			if (data->cmd[i].redir[last] == 3 || data->cmd[i].redir[last] == 4)
-				break ;
-		}
+			ms_pipe(data, i, last);
+		if (data->cmd[i].bad_file == NO)
+			ms_our_cmd(data, i);
+	//	write(2, "Afrer cmd\n", 11);
 		if (data->cmd[i].count_redir != 0)
 		{
 			while (data->cmd[i].file[j])
@@ -218,92 +255,16 @@ void ms_execution(t_data *data)
 		}
 		if (data->num_cmd > 1)
 			dup2(stdio[1], STDOUT_FILENO);
+		//write(2, "End while\n", 11);
 		i++;
 	}
+	//write(2, "End while\n", 11);
 	if (data->num_cmd > 1 || (data->build_in == NO && data->num_cmd == 1))
 		exe_signal(data);
-	if (dup2(stdio[1], 1) == -1) // return 1;
+	if (dup2(stdio[1], 1) == -1)
 		perror("dup2 ");
-	if (dup2(stdio[0], 0) == -1) // return 0;
+	if (dup2(stdio[0], 0) == -1)
 		perror("dup2 ");
 	close(stdio[0]);
 	close(stdio[1]);
 }
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-// void	ft_child(t_data *data, int i)
-// {
-// 	if (i < data->num_cmd - 1)
-// 	{
-// 		write (2, "i < data->num_cmd\n", 19);
-// 		dup2(data->fd_pipe[1], STDOUT_FILENO);
-// 		//close(data->fd_pipe[1]);
-// 		//close(data->fd_pipe[0]);
-// 	}
-// 	close(data->fd_pipe[1]);
-// 	write (2, "Child 1\n", 9);
-// 	ms_our_cmd(data, i);
-// 	exit (EXIT_FAILURE);
-// }
-
-// void ms_execution(t_data *data, t_cmd *cmd, char **env)
-// {
-// 	int i;
-// 	int		stdio[2];
-// 	(void) env;
-// 	(void) cmd;
-// //	int status;
-// 	pid_t	child;
-	
-// 	i = 0;
-// 	stdio[0] = dup(0);
-// 	stdio[1] = dup(1);
-// 	while (i < data->num_cmd)
-// 	{
-// 		if (data->cmd[i].count_redir != 0)
-// 		{
-// 			ms_open_file(&cmd[i], data);
-// 			ms_redirect(&cmd[i]);
-// 			ms_our_cmd(data, i);
-// 		}
-// 		if (data->num_cmd > 1)
-// 		{
-// 			//write (1, "Before\n", 8);
-// 			if (i < data->num_cmd - 1)
-// 			{
-// 				if (pipe(data->fd_pipe) < 0) // error
-// 					exit(write (2, "Error: Pipe\n", 13));
-// 			}
-// 			//close(data->fd_pipe[1]);
-// 			child = fork();
-// 			if (child < 0) // error
-// 				exit(2);
-// 			if (child == 0)
-// 				ft_child(data, i);
-// 			//write (2, "Child 2", 8);
-// 			//close(data->fd_pipe[1]);
-// 			if (data->cmd[i].fd[0] == 0)
-// 			{
-// 				dup2(data->fd_pipe[0], STDIN_FILENO);
-// 				close(data->fd_pipe[0]);
-// 				close(data->fd_pipe[1]);
-// 			}
-// 		//	waitpid(0, &status, 0);
-// 			//write (2, "After\n", 7);
-// 		}
-// 		else
-// 			ms_our_cmd(data, i);
-// 		i++;
-// 	}
-// 	exe_signal(data);
-// 	//write (2, "Escape while\n", 14);
-// 	if (dup2(stdio[1], 1) == -1) // return 1;
-// 		perror("dup2 ");
-// 	if (dup2(stdio[0], 0) == -1) // return 0;
-// 		perror("dup2 ");
-// 	close(stdio[0]);
-// 	close(stdio[1]);
-// }
-
-

@@ -41,7 +41,8 @@ int	ms_count_redirect(t_cmd *cmd, t_data *data, int qm_o, int qm_d)
 			&& qm_d == 1 && qm_o == 1)
 		{
 			if ((cmd->str[i] == '>' && cmd->str[i + 1] == '>')
-				|| (cmd->str[i + 1] == '<' && cmd->str[i] == '<'))
+				|| (cmd->str[i + 1] == '<' && cmd->str[i] == '<')
+				|| (cmd->str[i] == '<' && cmd->str[i + 1] == '>'))
 				i++;
 			i++;
 			while (cmd->str[i] == ' ' && cmd->str[i] != '\0')

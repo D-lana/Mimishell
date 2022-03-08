@@ -6,7 +6,7 @@
 /*   By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/14 16:58:28 by obeedril          #+#    #+#             */
-/*   Updated: 2022/03/07 16:54:04 by obeedril         ###   ########.fr       */
+/*   Updated: 2022/03/08 15:26:46 by obeedril         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ static void	minus(char *arg_way, t_data *data, int i)
 	if (arg_way[i + 1] == '\0')
 	{
 		if (data->prev_dir == NULL || data->flag_old == 0)
-			ft_putstr_fd("Mimishell: cd: OLDPWD not set\n", 2);
+			ms_print_error_cd(NULL, 1);
 		else
 		{
 			chdir(data->prev_dir);
@@ -74,8 +74,7 @@ static void	minus(char *arg_way, t_data *data, int i)
 	else
 	{
 		data->num_error = 1;
-		printf("Mimishell: cd: -%c: invalid option\n", arg_way[i + 1]);
-		printf("cd: usage: cd [-L|-P] [dir]\n");
+		ms_print_error_cd(&arg_way[i + 1], 2);
 	}
 }
 
@@ -99,7 +98,7 @@ static void	tilda_slesh_dir(char *arg_way, t_data *data, int i)
 	if (chdir(new_str) == -1)
 	{
 		data->num_error = 1;
-		printf ("Mimishel: cd: %s: No such file or directory\n", arg_way);
+		ms_print_error_cd(new_str, 3);
 	}
 	else
 	{
@@ -134,7 +133,7 @@ void	ms_cd(char *arg_way, t_data *data, int i)
 		if (chdir(arg_way) == -1)
 		{
 			data->num_error = 1;
-			printf("Mimishell: cd: %s: No such file or directory\n", arg_way);
+			ms_print_error_cd(arg_way, 3);
 		}
 		else
 		{
