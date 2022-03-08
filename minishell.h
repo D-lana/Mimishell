@@ -103,7 +103,7 @@ int		ms_found_env_variable(t_data *data, t_cmd *cmd);
 void	ms_replase_key_to_value(char **str, int key, char *value, int start);
 void	ms_found_dollar(t_data *data, char **str, int q_m, int *i_orig);
 void	ms_record_array(t_data *data);
-void	ms_init_env(t_data *data, char **env); // dlana
+void	ms_init_env(t_data *data, char ***env); // dlana
 
 int		ms_add_env_variable(t_data *data, int i_cmd); // dlana
 void	ms_found_variable(t_data *data);

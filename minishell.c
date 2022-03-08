@@ -49,7 +49,7 @@ int	ms_separator(t_data *data, char *line)
 	return (0);
 }
 
-void	ms_init_data(t_data *data, char **env, int first)
+void	ms_init_data(t_data *data, char ***env, int first)
 {
 	if (first == YES)
 	{
@@ -79,11 +79,11 @@ int	main(int argc, char **argv, char **env)
 		printf("Mimishell: this programm complies without arguments\n");
 		exit(127);
 	}
-	ms_init_data(&data, env, YES);
+	ms_init_data(&data, &env, YES);
 	while (1)
 	{
 		ms_get_signal();
-		ms_init_data(&data, env, NO);
+		ms_init_data(&data, &env, NO);
 		line = readline("\033[1;36mMiMiShell > \033[0m");
 		ms_signal_ctrl_d(&data, line);
 		if (line != 0)
