@@ -129,17 +129,5 @@ void	ms_export(t_data *data, int i)
 		y++;
 	}
 	ms_recurs_sort(data, &sort);
-	//y = 0;
-	// while (y < data->num_env)
-	// {
-	// 	ms_sort_env(data, y, &sort);
-	// 	y++;
-	// 	if (y == data->num_env)
-	// 	{
-	// 		end = ms_check_sorted(sort, data);
-	// 		if (end == NO)
-	// 			y = 0;
-	// 	}
-	// }
 	ms_free_int_arr(&sort);
 }

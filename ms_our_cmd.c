@@ -55,30 +55,21 @@ int	ms_our_cmd(t_data *data, int i)
 {
 	pid_t pid;
 
-	if (data->num_error != 0 || data->empty_str == YES || data->cmd[i].array_arg == NULL)
+	if (data->num_error != 0 || data->empty_str == YES
+		|| data->cmd[i].array_arg == NULL)
 		return(-1);
 	ms_build_in_or_no(data, i);
 	if (i == 0 && data->build_in == YES)
-	{
-		
 			ms_build_in_cmd(data, i);
-	}
 	else if (data->build_in == YES)
 	{
 		if ((pid = fork()) == -1)
 			perror("fork error");
 		if (pid == 0)
-		{
-			ms_build_in_cmd(data, i);
-			exit (0);
-		}
-			
+			exit(ms_build_in_cmd(data, i));
 	}
 	else
-	{
-		//write(2,"jjjjjjjjj",10);
 		ms_execve(data->cmd, data, i);
-	}
 	return(0);
 }
 
