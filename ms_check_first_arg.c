@@ -6,7 +6,7 @@
 /*   By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 17:48:49 by obeedril          #+#    #+#             */
-/*   Updated: 2022/03/08 12:15:47 by obeedril         ###   ########.fr       */
+/*   Updated: 2022/03/09 20:13:33 by obeedril         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ static int	ms_check_way_itself(t_data *data, int find_cmd, int n)
 	str_slesh = NULL;
 	str = getcwd(NULL, 0);
 	str_slesh = ft_strjoin(str, "/");
+	ms_free_str(&str);
 	str_way = ft_strjoin(str_slesh, data->cmd[n].array_arg[0]);
 	ms_free_str(&str_slesh);
 	if (opendir(data->cmd[n].array_arg[0]) != 0)
@@ -53,6 +54,23 @@ static char	*add_slesh(char **arr_p, int i, int j)
 	str_slesh[j + 1] = '\0';
 	return (str_slesh);
 }
+
+// static int look_for_way(t_data *data, char *str_way, int n)
+// {
+// 	int	find_cmd;
+
+// 	find_cmd = 0;
+// 	if (!access (str_way, 1))
+// 	{
+// 		find_cmd = -1;
+// 		data->cmd[n].way_cmd = ft_strdup(str_way);
+// 		return (find_cmd);
+// 	}
+// 	else
+// 		find_cmd++;
+// 	ms_free_str(&str_way);
+// 	return (find_cmd);
+// }
 
 static int	check_str(t_data *data, char **arr_p, int i, int n)
 {
@@ -109,7 +127,7 @@ static void	check_find_cmd(t_data *data, int find_cmd, int n)
 
 void	ms_check_first_arg(t_data *data, int n)
 {
-	const char	*p;
+	char		*path;
 	char		**arr_p;
 	int			i;
 	int			find_cmd;
@@ -118,9 +136,9 @@ void	ms_check_first_arg(t_data *data, int n)
 	find_cmd = 0;
 	if (data->num_error != 0 || data->empty_str == YES)
 		return ;
-	p = getenv("PATH");
-	arr_p = ft_split(p, ':');
+	path = getenv("PATH");
+	arr_p = ft_split(path, ':');
 	find_cmd = check_str(data, arr_p, i, n);
 	check_find_cmd(data, find_cmd, n);
-
+	ms_free_arr(&arr_p);
 }

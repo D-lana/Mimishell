@@ -150,11 +150,20 @@ int	ms_redirect(t_cmd *cmd)
 
 void ms_pipe(t_data *data, int i, int last)
 {
+	//(void)last;
 	if (i > 0 && !data->cmd[i].redir_born[0])
 	{
 		if (last != -1 && (data->cmd[i - 1].redir[last] == 3 
 			|| data->cmd[i - 1].redir[last] == 4))
+		{
+			data->cmd[i].fd[0] = open("tmp", O_CREAT | O_RDONLY | O_TRUNC, 0644);
+			if (dup2(data->cmd[i].fd[0], 0) == -1)
+				perror("fd[0]");
+			if (close(data->cmd[i].fd[0]) == -1)
+				perror("fd[0]");
+			//close(0);
 			return ;
+		}
 		//write(2, "pipe i > 0\n", 11);
 		if (dup2(data->fd_pipe[0], 0) == -1)
 			perror("fd[0]");
@@ -243,7 +252,7 @@ void ms_execution(t_data *data)
 			ms_pipe(data, i, last);
 		if (data->cmd[i].bad_file == NO)
 			ms_our_cmd(data, i);
-	//	write(2, "Afrer cmd\n", 11);
+	 	//write(2, "Afrer cmd\n", 11);
 		if (data->cmd[i].count_redir != 0)
 		{
 			while (data->cmd[i].file[j])

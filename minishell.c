@@ -85,7 +85,7 @@ int	main(int argc, char **argv, char **env)
 		ms_get_signal();
 		ms_init_data(&data, &env, NO);
 		line = readline("\033[1;36mMiMiShell > \033[0m");
-		ms_signal_ctrl_d(&data, line);
+		ms_signal_ctrl_d(&data, &line);
 		if (line != 0)
 		ms_separator(&data, line);
 		ms_record_array(&data); // dlana add ms_record_array.c
@@ -94,9 +94,9 @@ int	main(int argc, char **argv, char **env)
 		if (data.empty_str == NO)
 			add_history(line);
 		ms_free_str(&line);
-		// ms_free_cycle(&data, &line);
+		//ms_free_cycle(&data, &line);
 	}
-	//ms_free_all(&data);
+//	ms_free_all(&data, &line);
 	// free (data->prev_dir) ???? // obeedril for ms_cd.c
 	// free (data->cur_dir) ???? // obeedril for ms_cd.c
 
