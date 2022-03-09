@@ -72,6 +72,7 @@ int	ms_our_cmd(t_data *data, int i)
 	}
 	else
 		ms_execve(data->cmd, data, i);
+	unlink("tmp");
 	return(0);
 }
 
