@@ -13,6 +13,7 @@ int	ms_check_quotation_marks(t_cmd *cmd, int i, t_data *data)
 	else
 	{
 		data->num_error = ERR_TOKEN;
+		cmd->num_arg = 0;
 		return (ms_error(data->num_error, &cmd->str[i - 1]));
 	}
 	return (i + 1);

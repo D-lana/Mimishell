@@ -1,10 +1,5 @@
 #include "minishell.h"
 
-void	ms_record_array(t_data *data);
-void	ms_count_arg_for_array(t_cmd *cmd);
-void	ms_connect_arg_for_array(t_cmd *cmd);
-int		ms_record_arg(t_cmd *cmd, char **str, int *i, int len);
-
 // void ms_printf_array(t_data *data)
 // {
 // 	int	i;
@@ -24,30 +19,6 @@ int		ms_record_arg(t_cmd *cmd, char **str, int *i, int len);
 // 	printf("\n");
 // }
 
-void	ms_record_array(t_data *data)
-{
-	int	i;
-
-	i = 0;
-	//printf ("new str %s\n", data->cmd[i].str);
-	if (data->num_error != 0 || data->empty_str == YES || data->cmd[i].str == NULL)
-	{
-		return ;
-	}
-	while (i < data->num_cmd)
-	{
-		if (data->cmd[i].str != NULL)
-		{
-			ms_count_arg_for_array(&data->cmd[i]);
-			ms_connect_arg_for_array(&data->cmd[i]);
-		}
-		i++;
-	}
-	//ms_printf_array(data); ///// распечатка убрать
-	if(data->num_error == 0 && data->empty_str == NO && data->cmd[0].str != NULL)
-		ms_found_variable(data);
-}
-
 void	ms_count_arg_for_array(t_cmd *cmd)
 {
 	int i;
@@ -60,6 +31,30 @@ void	ms_count_arg_for_array(t_cmd *cmd)
 			cmd->num_array_arg++;
 		i++;
 	}
+}
+
+int	ms_record_arg(t_cmd *cmd, char **str, int *i, int size_str)
+{
+	int x;
+	int size_copy;
+
+	x = 0;
+	size_copy = 0;
+	ms_malloc_str(str, size_str);
+	printf("alloc str cmd->array_arg[y_arr]\n");
+	while (size_copy < size_str)
+	{
+		while (cmd->arg[(*i)].str[x] != '\0')
+		{
+			(*str)[size_copy + x] = cmd->arg[(*i)].str[x];
+			x++;
+		}
+		size_copy += x;
+		x = 0;
+		(*i)++;
+	}
+	(*str)[size_copy] = '\0';
+	return (0);
 }
 
 void	ms_connect_arg_for_array(t_cmd *cmd)
@@ -76,6 +71,9 @@ void	ms_connect_arg_for_array(t_cmd *cmd)
 	len = 0;
 	start = 0;
 	ms_malloc_array(&cmd->array_arg, cmd->num_array_arg);
+	printf("alloc cmd->array_arg\n");
+	cmd->array_empty = NO;
+	//write(2, "empty.str in arr\n", 18);
 	while (y < cmd->num_arg)
 	{
 		while (cmd->arg[y].str[x] != '\0')
@@ -92,25 +90,33 @@ void	ms_connect_arg_for_array(t_cmd *cmd)
 	cmd->array_arg[y_arr] = NULL;
 }
 
-int	ms_record_arg(t_cmd *cmd, char **str, int *i, int size_str)
+void	ms_record_array(t_data *data)
 {
-	int x;
-	int size_copy;
+	int	i;
 
-	x = 0;
-	size_copy = 0;
-	ms_malloc_str(str, size_str);
-	while (size_copy < size_str)
+	i = 0;
+	//printf ("new str %s\n", data->cmd[i].str);
+	if (data->num_error != 0)
 	{
-		while (cmd->arg[(*i)].str[x] != '\0')
-		{
-			(*str)[size_copy + x] = cmd->arg[(*i)].str[x];
-			x++;
-		}
-		size_copy += x;
-		x = 0;
-		(*i)++;
+		//write(2, "return record_array\n", 21);
+		return ;
 	}
-	(*str)[size_copy] = '\0';
-	return (0);
+	while (i < data->num_cmd)
+	{
+		data->cmd[i].array_empty = YES;
+		if (data->cmd[i].str == NULL)
+		{
+			//data->cmd[i].array_empty = YES;
+			write(2, "empty.str\n", 11);
+		}
+		if (data->cmd[i].str != NULL)
+		{
+			ms_count_arg_for_array(&data->cmd[i]);
+			ms_connect_arg_for_array(&data->cmd[i]);
+		}
+		i++;
+	}
+	//ms_printf_array(data); ///// распечатка убрать
+	if(data->num_error == 0 && data->cmd[0].str != NULL)
+		ms_found_variable(data);
 }

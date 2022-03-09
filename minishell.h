@@ -35,28 +35,29 @@ typedef enum e_value
 
 typedef struct s_arg
 {
-	char		*str;
-	int			q_m;
-	int			space;
-	int			redir;
-	int			empty_key;
+	char	*str;
+	int		q_m;
+	int		space;
+	int		redir;
+	int		empty_key;
 
 }				t_arg;
 
 typedef struct s_cmd
 {
 	char	*str;
-	t_arg	*arg; // не использовать
+	t_arg	*arg;
 	char 	**array_arg;
-	int		*redir; // = enum
-	char	**file; // имя файла
+	int		*redir;
+	char	**file;
 	int		fd[2];
 	int		redir_born[2];
-	int		num_arg; // не использовать
+	int		num_arg;
 	int		num_array_arg;
 	char	*way_cmd;
 	int		count_redir;
 	int		bad_file;
+	int		array_empty;
 	
 }				t_cmd;
 
@@ -102,6 +103,7 @@ void	ms_switch_qm(char c, int *qm_o, int *qm_d); // dlana
 int		ms_found_env_variable(t_data *data, t_cmd *cmd);
 void	ms_replase_key_to_value(char **str, int key, char *value, int start);
 void	ms_found_dollar(t_data *data, char **str, int q_m, int *i_orig);
+int		ms_record_value(t_data *data, char **str, int i);
 void	ms_record_array(t_data *data);
 void	ms_init_env(t_data *data, char ***env); // dlana
 
@@ -127,6 +129,8 @@ void	ms_record_str(char **file, char *str, int start, int size_str); // dlana
 void	ms_record_char(char **result, char *str, int *r, int *s);
 
 int		ms_error(int error, char *str);
+int		ms_err_export(int error, char *str);
+void	ms_err_argc_argv(int argc, char **argv, char **env);
 void	ms_check_first_arg(t_data *data, int n); // obeedril added for check a first agr
 
 void	ms_free_str(char **str);
@@ -149,6 +153,5 @@ int	ms_print_errors_chfa(char *str, int flag);
 void	ms_print_error_builtin(char *str, int flag);
 void	check_pwd_and_rewrite(t_data *data);
 void	ms_check_oldpwd_rewrite(t_data *data);
-//void ms_execution(t_data *data, t_cmd *cmd, char **env);
 
 #endif

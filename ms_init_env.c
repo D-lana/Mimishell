@@ -6,24 +6,23 @@
 /*   By: dlana <dlana@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 18:47:21 by dlana             #+#    #+#             */
-/*   Updated: 2022/03/08 16:02:58 by dlana            ###   ########.fr       */
+/*   Updated: 2022/03/09 20:03:51 by dlana            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ms_record_lvl(char **str_lvl, char ***env, int y)
+void	ms_record_lvl(char **str_lvl, char ***env, int y, int size)
 {
 	int i;
 	int num_lvl;
+	(void)size;
 	
 	i = 0;
 	num_lvl = ft_atoi(*str_lvl);
 	num_lvl++;
 	ms_free_str(str_lvl);
 	*str_lvl = ft_itoa(num_lvl);
-	//ms_free_str((*env)[y]);
-	//ms_malloc_str((*env)[y], );
 	while ((*str_lvl)[i] != '\0')
 	{
 		(*env)[y][i + 6] = (*str_lvl)[i];
@@ -33,7 +32,7 @@ void	ms_record_lvl(char **str_lvl, char ***env, int y)
 	ms_free_str(str_lvl);
 }
 
-int	ms_shell_lvl(char ***env, int y)
+int	ms_shell_lvl(char ***env, int y, int size)
 {
 	char	*str_lvl;
 	int		len_str_lvl;
@@ -45,13 +44,15 @@ int	ms_shell_lvl(char ***env, int y)
 		x++;
 	len_str_lvl = x - 6;
 	ms_malloc_str(&str_lvl, len_str_lvl);
+	printf("alloc str str_lvl\n");
 	x = 0;
 	while ((*env)[y][x + 6] != '\0')
 	{
 		str_lvl[x] = (*env)[y][x + 6];
 		x++;
 	}
-	ms_record_lvl(&str_lvl, env, y);
+	str_lvl[x] = '\0';
+	ms_record_lvl(&str_lvl, env, y, size);
 	return (0);
 }
 
@@ -74,28 +75,24 @@ int ms_check_slvl(char **env, int y, int x)
 int ms_record_env(t_data *data, char ***env, int y, int shell_lvl)
 {
 	int x;
+	int size;
 	
 	x = 0;
-	while ((*env)[y][x] != '\0')
-		x++;
+	size = 0;
+	while ((*env)[y][size] != '\0')
+		size++;
 	if (shell_lvl == YES)
-		x = ms_check_slvl(*env, y, x);
-	ms_malloc_str(&data->our_env[y], x);
-	x = 0;
+		size = ms_check_slvl(*env, y, size);
+	ms_malloc_str(&data->our_env[y], size);
+	printf("alloc str in_mass data->our_env[y]\n");
 	while ((*env)[y][x] != '\0')
 	{
 		if (x == 6 && shell_lvl == YES)
-			ms_shell_lvl(env, y);
+			ms_shell_lvl(env, y, size);
 		data->our_env[y][x] = (*env)[y][x];
 		x++;
 	}
 	data->our_env[y][x] = '\0';
-	// if(shell_lvl == YES)
-	// {
-	// 	write(2, "str_lvl = ", 10);
-	// 	ft_putstr_fd(data->our_env[y], 2);
-	// 	write(2, "\n", 1);
-	// }
 	return (0);
 }
 
@@ -110,6 +107,7 @@ void	ms_init_env(t_data *data, char ***env)
 		y++;
 	data->num_env = y;
 	ms_malloc_array(&data->our_env, y);
+	printf("alloc massiv data->our_env\n");
 	y = 0;
 	while ((*env)[y] != 0)
 	{
@@ -120,5 +118,4 @@ void	ms_init_env(t_data *data, char ***env)
 		y++;
 	}
 	data->our_env[y] = NULL;
-	//ms_print_env(data);
 }
