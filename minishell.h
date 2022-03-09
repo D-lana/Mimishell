@@ -123,7 +123,7 @@ int		ms_unset(t_data *data, int i_cmd); // dlana
 void	ms_execve(t_cmd *cmd, t_data *data, int i);
 
 int		ms_get_signal(void); // obeedril for signal
-void	ms_signal_ctrl_d(t_data *data, char *line); // dlana relocate
+void	ms_signal_ctrl_d(t_data *data, char **line); // dlana relocate
 
 void	ms_record_str(char **file, char *str, int start, int size_str); // dlana
 void	ms_record_char(char **result, char *str, int *r, int *s);
@@ -149,7 +149,9 @@ void	rl_replace_line (const char *text, int clear_undo); // obeedril for readlin
 
 void	ms_execution(t_data *data); //obeedril added
 
-void	ms_print_errors_chfa(char *str, int flag);
-void	ms_print_error_cd(char *str, int flag);
+int	ms_print_errors_chfa(char *str, int flag);
+void	ms_print_error_builtin(char *str, int flag);
+void	check_pwd_and_rewrite(t_data *data);
+void	ms_check_oldpwd_rewrite(t_data *data);
 
 #endif

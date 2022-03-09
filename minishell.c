@@ -72,7 +72,5 @@ int	main(int argc, char **argv, char **env)
 		}
 	}
 	// ms_free_all(&data);
-	// free (data->prev_dir) ???? // obeedril for ms_cd.c
-	// free (data->cur_dir) ???? // obeedril for ms_cd.c
 	// free data->cmd[n].way_cmd (check_first_arg.c)
 }

@@ -1,20 +1,8 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ms_print_errors_utils.c                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: dlana <dlana@student.42.fr>                +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/07 19:25:30 by obeedril          #+#    #+#             */
-/*   Updated: 2022/03/09 14:03:46 by dlana            ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
-void	ms_print_errors_chfa(char *str, int flag)
+int	ms_print_errors_chfa(char *str, int flag)
 {
-	if (flag == 1)
+	if (flag == 1 || flag == ERR_CMD)
 	{
 		ft_putstr_fd("MiMishell: ", 2);
 		ft_putstr_fd(str, 2);
@@ -38,9 +26,10 @@ void	ms_print_errors_chfa(char *str, int flag)
 		ft_putstr_fd(str, 2);
 		ft_putstr_fd(": no such file or directory\n", 2);
 	}
+	return (-1);
 }
 
-void	ms_print_error_cd(char *str, int flag)
+void	ms_print_error_builtin(char *str, int flag)
 {
 	if (flag == 1)
 		ft_putstr_fd("Mimishell: cd: OLDPWD not set\n", 2);
@@ -57,6 +46,15 @@ void	ms_print_error_cd(char *str, int flag)
 		ft_putstr_fd(str, 2);
 		ft_putstr_fd(": no such file or directory\n", 2);
 	}
+  if (flag == 4)
+	{
+		ft_putstr_fd("\bexit\n", 2);
+		ft_putstr_fd("Mimishell: exit: ", 2);
+		ft_putstr_fd(str, 2);
+		ft_putstr_fd(": numeric argument required\n", 2);
+	}
+	if (flag == 5)
+		ft_putstr_fd("\bexit\nMimishell: exit: too many arguments\n", 2);
 }
 
 int	ms_error(int error, char *str)
