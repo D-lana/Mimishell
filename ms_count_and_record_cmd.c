@@ -19,6 +19,7 @@ int ms_record_one_str(char **str, char *line, int *start, int *num)
 		size++;
 	}
 	ms_malloc_str(str, size);
+	printf("alloc str data->cmd[num].str\n");
 	while(i < size)
 	{
 		(*str)[i] = line[(*start) + i];
@@ -30,6 +31,35 @@ int ms_record_one_str(char **str, char *line, int *start, int *num)
 		i++;
 	(*start) = (*start) + i;
 	return(0);
+}
+
+int	ms_count_pipe(t_data *data, char *line, int qm_d, int qm_o)
+{
+	int	i;
+
+	i = 0;
+	while (line[i] != '\0')
+	{
+		ms_switch_qm(line[i], &qm_o, &qm_d);
+		if (line[i] == '|' &&  qm_o == 1 && qm_d == 1)
+		{
+			i++;
+			if (line[i] == ' ')
+			{
+				while (line[i] == ' ')
+					i++;
+			}
+			if (line[i] == '\0')
+			{
+				data->num_error = ERR_TOKEN;
+				data->num_cmd = 0;
+				return(ms_error(data->num_error, "|"));
+			} 
+			data->num_cmd++;
+		}
+		i++;
+	}
+	return (0);
 }
 
 int ms_count_and_record_cmd(t_data *data, char *line)
@@ -50,29 +80,13 @@ int ms_count_and_record_cmd(t_data *data, char *line)
 	if (line[i] == '|')
 	{
 		data->num_error = ERR_TOKEN;
+		data->num_cmd = 0;
 		return(ms_error(data->num_error, "|"));
 	}
-	while (line[i] != '\0')
-	{
-		ms_switch_qm(line[i], &qm_o, &qm_d);
-		if (line[i] == '|' &&  qm_o == 1 && qm_d == 1)
-		{
-			i++;
-			if (line[i] == ' ')
-			{
-				while (line[i] == ' ')
-					i++;
-			}
-			if (line[i] == '\0')
-			{
-				data->num_error = ERR_TOKEN;
-				return(ms_error(data->num_error, "|")); //// возможно сюда нужно добавить предложение для ввода > и чтение с командной строки
-			} 
-			data->num_cmd++;
-		}
-		i++;
-	}
+	if (ms_count_pipe(data, line, 1, 1) == -1)
+		return (-1);
 	ms_malloc_cmd(&data->cmd, data->num_cmd); /// free cmd +
+	printf("alloc massiv data->cmd\n");
 	i = 0;
 	while (data->num_cmd > i)
 	{
@@ -83,7 +97,6 @@ int ms_count_and_record_cmd(t_data *data, char *line)
 	num = 0;
 	while (line[i] != '\0')
 		ms_record_one_str(&data->cmd[num].str, line, &i, &num);
-	//printf("data->num_cmd = %d\n", data->num_cmd);
 	//i = 0;
 	// while (i < data->num_cmd) ////////////// распечатка, убрать)
 	// {

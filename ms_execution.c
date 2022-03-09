@@ -27,7 +27,7 @@ int ms_heredoc(t_cmd *cmd, t_data *data, int i)
 	int status;
 	int termsig;
 
-	if(data->num_error == 0 && data->empty_str == NO)
+	if(data->num_error == 0)
 	{
 		if ((pid = fork()) == -1)
 			perror("fork error");
@@ -228,6 +228,8 @@ void ms_execution(t_data *data)
 	i = 0;
 	j = 0;
 	last = -1;
+	if (data->num_error != 0)
+		return ;
 	stdio[0] = dup(0);
 	stdio[1] = dup(1);
 	while (i < data->num_cmd)

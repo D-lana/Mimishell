@@ -24,7 +24,7 @@ void	ms_signal_ctrl_d(t_data *data, char *line)
 
 	if (line == NULL)
 	{
-		printf("\033[1;36m\bMiMiShell >\033[0A"); 
+		printf("\033[1;35m\bMiMiShell >\033[0A"); 
 		printf("\033[1;0m exit\n\033[0m");
 		//ms_free_cycle(data, &line);
 		//ms_free_all(data);
