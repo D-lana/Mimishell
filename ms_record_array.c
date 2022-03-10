@@ -41,7 +41,7 @@ int	ms_record_arg(t_cmd *cmd, char **str, int *i, int size_str)
 	x = 0;
 	size_copy = 0;
 	ms_malloc_str(str, size_str);
-	printf("alloc str cmd->array_arg[y_arr]\n");
+	//printf("alloc str cmd->array_arg[y_arr]\n");
 	while (size_copy < size_str)
 	{
 		while (cmd->arg[(*i)].str[x] != '\0')
@@ -71,7 +71,7 @@ void	ms_connect_arg_for_array(t_cmd *cmd)
 	len = 0;
 	start = 0;
 	ms_malloc_array(&cmd->array_arg, cmd->num_array_arg);
-	printf("alloc cmd->array_arg\n");
+	//printf("alloc cmd->array_arg\n");
 	cmd->array_empty = NO;
 	//write(2, "empty.str in arr\n", 18);
 	while (y < cmd->num_arg)

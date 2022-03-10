@@ -8,7 +8,7 @@ void	ms_env(t_data *data);
 void	ms_build_in_or_no(t_data *data, int i)
 {
 	
-	if(ft_strncmp(data->cmd[i].array_arg[0], "pwd\0", 3) == 0)
+	if(ft_strncmp(data->cmd[i].array_arg[0], "pwd\0", 4) == 0)
 		data->build_in = YES;
 	else if(ft_strncmp(data->cmd[i].array_arg[0], "cd\0", 3) == 0)
 		data->build_in = YES;
@@ -29,7 +29,7 @@ void	ms_build_in_or_no(t_data *data, int i)
 
 int	ms_build_in_cmd(t_data *data, int i)
 {
-	if(ft_strncmp(data->cmd[i].array_arg[0], "pwd\0", 3) == 0)
+	if(ft_strncmp(data->cmd[i].array_arg[0], "pwd\0", 4) == 0)
 		ms_pwd(data); // obeedril changes
 	else if(ft_strncmp(data->cmd[i].array_arg[0], "cd\0", 3) == 0)
 		ms_cd(data->cmd[i].array_arg[1], data, 0);
