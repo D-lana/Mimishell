@@ -34,8 +34,8 @@ void	ms_free_arr(char ***arr) // ms_free_arr(&arr);
 			free((*arr)[i]);
 			(*arr)[i] = NULL;
 		}
-		free(**arr);
 		//printf("free array!\n");
+		free(**arr);
 		**arr = NULL;
 	}
 }

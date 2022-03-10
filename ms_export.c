@@ -119,15 +119,18 @@ void	ms_export(t_data *data, int i)
 	y = 0;
 	if (data->cmd[i].array_arg[1] != NULL)
 	{
-		ms_add_env_variable(data, i);
+		if (i == 0)
+			ms_add_env_variable(data, i);
 		return ;
 	}
-	*sort = *ms_malloc_arr_int(&sort, data->num_env);
-	while (sort[y] < data->num_env)
+	ms_malloc_arr_int(&sort, data->num_env);
+	//printf("alloc data->num_env = %d\n", data->num_env);
+	while (y < data->num_env)
 	{
 		sort[y] = NO;
 		y++;
 	}
+	sort[y] = 0;
 	ms_recurs_sort(data, &sort);
 	ms_free_int_arr(&sort);
 }

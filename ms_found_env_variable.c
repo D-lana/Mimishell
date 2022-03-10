@@ -6,7 +6,7 @@
 /*   By: dlana <dlana@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 12:51:48 by dlana             #+#    #+#             */
-/*   Updated: 2022/03/09 20:48:49 by dlana            ###   ########.fr       */
+/*   Updated: 2022/03/10 14:54:44 by dlana            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ void	ms_found_dollar(t_data *data, char **str, int q_m, int *i_orig)
 	else if ((*str)[i] == '$' && (*str)[i + 1] != ' '
 		&& ((*str)[i + 1] != '\0' && q_m != 39))
 	{
-		i++;
 		ms_record_value(data, str, i);
 		if ((*str)[0] == '\0')
 			return ;
@@ -57,12 +56,16 @@ int	ms_found_env_variable(t_data *data, t_cmd *cmd)
 	{
 		cmd->arg[y].empty_key = NO;
 		while (cmd->arg[y].str[i] != '\0')
+		{
 			ms_found_dollar(data, &cmd->arg[y].str, cmd->arg[y].q_m, &i);
+		}
 		if (ft_strlen(cmd->arg[y].str) == 0)
+		{
 			cmd->arg[y].empty_key = YES;
+			printf("empty key = YES\n");
+		}
 		y++;
 		i = 0;
-		
 	}
 	return (0);
 }

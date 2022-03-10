@@ -61,10 +61,11 @@ int	main(int argc, char **argv, char **env)
 		ms_get_signal();
 		ms_init_data(&data, &env, NO);
 		line = readline("\033[1;35mMiMiShell > \033[0m");
-		ms_signal_ctrl_d(&data, line);
+		ms_signal_ctrl_d(&data, &line);
 		ms_separator(&data, line);
 		if (data.empty_str == NO)
 		{
+			//printf("Record array\n");
 			ms_record_array(&data);
 			ms_execution(&data);
 			add_history(line);

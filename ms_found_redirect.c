@@ -6,7 +6,9 @@ int	ms_error_parse_redir(t_data *data, char *s, int i)
 	{
 		data->num_error = ERR_TOKEN;
 		if (s[i] == '\0')
+		{
 			ms_error(data->num_error, "newline");
+		}
 		if (s[i] == '>')
 		{
 			if (s[i + 1] == '>')

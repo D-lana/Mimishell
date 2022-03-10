@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ms_our_cmd.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dlana <dlana@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/10 15:45:38 by dlana             #+#    #+#             */
+/*   Updated: 2022/03/10 16:26:55 by dlana            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int		ms_our_cmd(t_data *data, int i);
@@ -8,7 +20,7 @@ void	ms_env(t_data *data);
 void	ms_build_in_or_no(t_data *data, int i)
 {
 	
-	if(ft_strncmp(data->cmd[i].array_arg[0], "pwd\0", 3) == 0)
+	if(ft_strncmp(data->cmd[i].array_arg[0], "pwd\0", 4) == 0)
 		data->build_in = YES;
 	else if(ft_strncmp(data->cmd[i].array_arg[0], "cd\0", 3) == 0)
 		data->build_in = YES;
@@ -29,7 +41,7 @@ void	ms_build_in_or_no(t_data *data, int i)
 
 int	ms_build_in_cmd(t_data *data, int i)
 {
-	if(ft_strncmp(data->cmd[i].array_arg[0], "pwd\0", 3) == 0)
+	if(ft_strncmp(data->cmd[i].array_arg[0], "pwd\0", 4) == 0)
 		ms_pwd(data); // obeedril changes
 	else if(ft_strncmp(data->cmd[i].array_arg[0], "cd\0", 3) == 0)
 		ms_cd(data->cmd[i].array_arg[1], data, 0);
@@ -107,9 +119,19 @@ void	ms_echo(t_data *data, int i)
 			n = YES;
 			j++;
 		}
-		if (data->cmd[i].array_arg[j] != NULL)
-			printf("%s ", data->cmd[i].array_arg[j]);
+		if (data->cmd[i].array_arg[j] != NULL) // empty key
+		{
+			if (ft_strncmp(data->cmd[i].array_arg[j], "~\0", 2) == 0)
+				ft_putstr_fd(data->home_dir, 1);
+			else
+			{
+				ft_putstr_fd(data->cmd[i].array_arg[j], 1);
+				//write(1, "\n ", 1);
+			}
+		}
 		j++;
+		if (j < data->cmd[i].num_array_arg)
+			write(1, " ", 1);
 	}
 	if (n != YES)
 		printf("\n");

@@ -19,7 +19,7 @@ int ms_record_one_str(char **str, char *line, int *start, int *num)
 		size++;
 	}
 	ms_malloc_str(str, size);
-	printf("alloc str data->cmd[num].str\n");
+	//printf("alloc str data->cmd[num].str\n");
 	while(i < size)
 	{
 		(*str)[i] = line[(*start) + i];
@@ -44,12 +44,18 @@ int	ms_count_pipe(t_data *data, char *line, int qm_d, int qm_o)
 		if (line[i] == '|' &&  qm_o == 1 && qm_d == 1)
 		{
 			i++;
+			if (line[i] == '|')
+			{
+				data->num_error = ERR_TOKEN;
+				data->num_cmd = 0;
+				return(ms_error(data->num_error, "||"));
+			}
 			if (line[i] == ' ')
 			{
 				while (line[i] == ' ')
 					i++;
 			}
-			if (line[i] == '\0')
+			if (line[i] == '\0' || line[i] == '|')
 			{
 				data->num_error = ERR_TOKEN;
 				data->num_cmd = 0;
@@ -81,12 +87,14 @@ int ms_count_and_record_cmd(t_data *data, char *line)
 	{
 		data->num_error = ERR_TOKEN;
 		data->num_cmd = 0;
+		if (line[i + 1] == '|')
+			return(ms_error(data->num_error, "||"));
 		return(ms_error(data->num_error, "|"));
 	}
 	if (ms_count_pipe(data, line, 1, 1) == -1)
 		return (-1);
 	ms_malloc_cmd(&data->cmd, data->num_cmd); /// free cmd +
-	printf("alloc massiv data->cmd\n");
+	//printf("alloc massiv data->cmd\n");
 	i = 0;
 	while (data->num_cmd > i)
 	{

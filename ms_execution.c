@@ -201,8 +201,14 @@ static void exe_signal(t_data *data)
 	}
 	waitpid(-1, &status, 0);
 	exit_st = WEXITSTATUS(status);
-	// if (exit_st > 0)
-	// 	data->num_error = exit_st;
+	termsig = WTERMSIG(status);
+	if (exit_st > 0)
+	{
+		data->num_error = exit_st;
+		if (exit_st != 1 && exit_st != 2 && exit_st != 126
+			&& exit_st != 128 && exit_st != 258 && exit_st != 130)
+			data->num_error = 127;
+	}
 	if (WIFSIGNALED(status) > 0)
 	{
 		termsig = WTERMSIG(status);

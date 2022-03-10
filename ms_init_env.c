@@ -6,7 +6,7 @@
 /*   By: dlana <dlana@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 18:47:21 by dlana             #+#    #+#             */
-/*   Updated: 2022/03/09 20:03:51 by dlana            ###   ########.fr       */
+/*   Updated: 2022/03/10 14:09:54 by dlana            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	ms_shell_lvl(char ***env, int y, int size)
 		x++;
 	len_str_lvl = x - 6;
 	ms_malloc_str(&str_lvl, len_str_lvl);
-	printf("alloc str str_lvl\n");
+	//printf("alloc str str_lvl\n");
 	x = 0;
 	while ((*env)[y][x + 6] != '\0')
 	{
@@ -84,7 +84,7 @@ int ms_record_env(t_data *data, char ***env, int y, int shell_lvl)
 	if (shell_lvl == YES)
 		size = ms_check_slvl(*env, y, size);
 	ms_malloc_str(&data->our_env[y], size);
-	printf("alloc str in_mass data->our_env[y]\n");
+	//printf("alloc str in_mass data->our_env[y]\n");
 	while ((*env)[y][x] != '\0')
 	{
 		if (x == 6 && shell_lvl == YES)
@@ -107,7 +107,7 @@ void	ms_init_env(t_data *data, char ***env)
 		y++;
 	data->num_env = y;
 	ms_malloc_array(&data->our_env, y);
-	printf("alloc massiv data->our_env\n");
+	//printf("alloc massiv data->our_env\n");
 	y = 0;
 	while ((*env)[y] != 0)
 	{
