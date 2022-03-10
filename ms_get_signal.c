@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ms_get_signal.c                                    :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/09 18:13:10 by obeedril          #+#    #+#             */
-/*   Updated: 2022/03/10 19:02:58 by obeedril         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
 static void	sighandler(int signum)
@@ -32,11 +20,12 @@ int	ms_get_signal(void)
 
 void	ms_signal_ctrl_d(t_data *data, char **line)
 {
+	(void)data;
 	if (*line == NULL)
 	{
 		printf("\033[1;35m\bMiMiShell >\033[0A"); 
 		printf("\033[1;0m exit\n\033[0m");
-		ms_free_all(data, line);
+		//ms_free_all(data, line);
 		exit(EXIT_SUCCESS);
 	}
 }

@@ -36,11 +36,6 @@ void	ms_replase_key_to_value(char **str, int key, char *value, int start)
 	}
 	ms_malloc_str(&tmp, size);
 	//printf("alloc new cmd->arg[y].str\n");
-	// printf("(*str) = %s, %zu\n", (*str), ft_strlen(*str));
-	// printf("start = %d\n", start);
-	// printf("key = %d\n", key);
-	// printf("size = %d\n", size);
-	// printf("value = %s, %zu\n", value, ft_strlen(value));
 	while (s < start)
 		ms_record_char(&tmp, (*str), &t, &s);
 	s = 0;
@@ -61,20 +56,45 @@ int	ms_record_key(char *s, int i, char **key)
 
 	n = 0;
 	while (s[i] != '\0' && s[i] != ' ' && s[i] != 34
-		&& s[i] != '$' && s[i] != ONE_Q_MARK )
+		&& s[i] != '$' && s[i] != ONE_Q_MARK && s[i] != '=')
 	{
 		i++;
 		n++;
 	}
 	ms_malloc_str(key, n);
-//	printf("alloc str key\n");
+  //printf("alloc str key\n");
 	i = (i - n);
 	n = 0;
 	while (s[i] != '\0' && s[i] != ' ' && s[i] != 34
-		&& s[i] != '$' && s[i] != ONE_Q_MARK)
+		&& s[i] != '$' && s[i] != ONE_Q_MARK && s[i] != '=')
 		ms_record_char(key, s, &n, &i);
 	(*key)[n] = '\0';
 	return (n);
+}
+
+int ms_search_var(t_data *data, char **value, char *key)
+{
+	int y;
+	int size_key;
+	int start;
+
+	y = 0;
+	size_key = ft_strlen(key);
+	start = ft_strlen(key) + 1;
+	write(1, "!!!YES SEARCH!!!!\n", 19);
+	printf("KEY = %s\n", key);
+	while (y < data->num_env)
+	{
+		if (ft_strncmp(key, data->our_env[y], size_key) == 0
+		&& (data->our_env[y][size_key] == '=' || data->our_env[y][size_key] == '\0'))
+		{
+			write(1, "!!!YES!!!\n", 11);
+			(*value) = ft_strdup_start(data->our_env[y], start);
+			return (0);
+		}
+		y++;
+	}
+	return (-1);
 }
 
 int	ms_record_value(t_data *data, char **str, int i)
@@ -82,15 +102,26 @@ int	ms_record_value(t_data *data, char **str, int i)
 	int		n;
 	char	*key;
 	char	*value;
+	int		digit_key;
 
-	n = 0;
+	i++;
+	n = 1;
+	digit_key = NO;
+	value = NULL;
 	if (ft_isdigit((*str)[i]) == 1)
+	{
 		key = "1\0";
+		digit_key = YES;
+	}
 	else
 		n = ms_record_key(*str, i, &key);
-	value = getenv(key);
-	value = ft_strdup(value);
-	ms_free_str(&key);
+	//value = getenv(key);
+	//value = ft_strdup(value);
+	if (digit_key == NO)
+	{
+		ms_search_var(data, &value, key);
+		ms_free_str(&key);
+	}
 	if (value == NULL && data->name_file == YES)
 		return (i);
 	ms_replase_key_to_value(str, 1, NULL, (i - 1));

@@ -1,23 +1,26 @@
 #include "minishell.h"
 
-// void ms_printf_array(t_data *data)
-// {
-// 	int	i;
-// 	int y;
+void ms_printf_array(t_data *data)
+{
+	int	i;
+	int y;
 
-// 	i = 0;
-// 	y = 0;
-// 	while (y < data->num_cmd)
-// 	{
-// 		while (i < data->cmd->num_array_arg)
-// 		{
-// 			printf("%s ", data->cmd[y].array_arg[i]);
-// 			i++;
-// 		}	
-// 		y++;
-// 	}
-// 	printf("\n");
-// }
+	i = 0;
+	y = 0;
+	printf("data->num_cmd = %d\n", data->num_cmd);
+	printf("data->cmd[y].num_array_arg = %d\n", data->cmd[y].num_array_arg);
+	while (y < data->num_cmd)
+	{
+		while (i < data->cmd[y].num_array_arg)
+		{
+			printf("in arr |%s| \n", data->cmd[y].array_arg[i]);
+			i++;
+		}	
+		y++;
+		i = 0;
+	}
+	//printf("\n");
+}
 
 void	ms_count_arg_for_array(t_cmd *cmd)
 {
@@ -27,10 +30,12 @@ void	ms_count_arg_for_array(t_cmd *cmd)
 	cmd->num_array_arg = 1;
 	while (i < cmd->num_arg)
 	{
-		if (cmd->arg[i].space == YES)
+		if (cmd->arg[i].space == YES) // && cmd->arg[i].empty_key == NO)
 			cmd->num_array_arg++;
 		i++;
 	}
+	printf("i = %d\n", i);
+	printf("cmd->num_array_arg = %d\n", cmd->num_array_arg);
 }
 
 int	ms_record_arg(t_cmd *cmd, char **str, int *i, int size_str)
@@ -41,7 +46,7 @@ int	ms_record_arg(t_cmd *cmd, char **str, int *i, int size_str)
 	x = 0;
 	size_copy = 0;
 	ms_malloc_str(str, size_str);
-	//printf("alloc str cmd->array_arg[y_arr]\n");
+	//printf("alloc str cmd->array_arg[y]\n");
 	while (size_copy < size_str)
 	{
 		while (cmd->arg[(*i)].str[x] != '\0')
@@ -80,13 +85,15 @@ void	ms_connect_arg_for_array(t_cmd *cmd)
 			x++;
 		len += x;
 		x = 0;
-		if ((cmd->arg[y].space == YES && cmd->arg[y].empty_key == NO) || (y + 1) == cmd->num_arg)
+
+		if ((cmd->arg[y].space == YES) || (y + 1) == cmd->num_arg) // && cmd->arg[y].empty_key == NO)
 		{
 			len = ms_record_arg(cmd, &cmd->array_arg[y_arr], &start, len);
 			y_arr++;
 		}
 		y++;
 	}
+	printf("y_arr = %d\n", y_arr);
 	cmd->array_arg[y_arr] = NULL;
 }
 
@@ -116,7 +123,7 @@ void	ms_record_array(t_data *data)
 		}
 		i++;
 	}
-	//ms_printf_array(data); ///// распечатка убрать
+	ms_printf_array(data); ///// распечатка убрать
 	if(data->num_error == 0 && data->cmd[0].str != NULL)
 		ms_found_variable(data);
 }

@@ -28,13 +28,22 @@ int	ms_cut_quotation_marks(char *str, t_arg *arg, int i)
 	c = 0;
 	while (str[i] != q_m && str[i] != '\0')
 		ms_record_char(&arg->str, str, &c, &i);
+	arg->str[c] = '\0';
 	if (str[i] == q_m)
 	{
 		i++;
 		if (str[i] == ' ')
-			arg->space = YES;
+		{
+			c = i;
+			while (str[c] != '\0' && str[c] == ' ')
+				c++;
+			if (str[c] != '\0')
+				arg->space = YES;
+		}
 	}
-	arg->str[c] = '\0';
+	printf("arg->str= |%s|\n", arg->str);
+	if (arg->space == YES)
+		printf("arg->space == YES\n");
 	return (i);
 }
 
@@ -44,22 +53,36 @@ int	ms_record_args_without_qm(char *str, t_arg *arg, int i, int *num_arg)
 
 	c = 0;
 	arg->q_m = NO;
-	if (str[i] != ' ')
+	if (str[i] != ' ') // || (str[i] == ' ' && str[i + 1] != ' '))
 	{
+		// if (str[i] == ' ')
+		// {
+		// 	c++;
+		// 	i++;
+		// }
 		while (str[i] != 39 && str[i] != 34 && str[i] != '\0' && str[i] != ' ')
 		{
 			c++;
 			i++;
 		}
 		ms_malloc_str(&arg->str, c);
-	//	printf("alloc str cmd->arg->str\n");
+	  //printf("alloc str cmd->arg->str\n");
 		i = i - c;
 		c = 0;
 		while (str[i] != 39 && str[i] != 34 && str[i] != '\0' && str[i] != ' ')
 			ms_record_char(&arg->str, str, &c, &i);
 		arg->str[c] = '\0';
+		printf("arg->str= |%s|\n", arg->str);
 		if (str[i] == ' ')
-			arg->space = YES;
+		{
+			c = i;
+			while (str[c] != '\0' && str[c] == ' ')
+				c++;
+			if (str[c] != '\0')
+				arg->space = YES;
+		}
+		if (arg->space == YES)
+			printf("arg->space == YES\n");
 		(*num_arg)++;
 		return (i);
 	}
@@ -78,7 +101,6 @@ void	ms_create_struct_without_qm(t_cmd *cmd)
 	while (cmd->str[i] != '\0')
 	{
 		cmd->arg[num_arg].space = NO;
-		cmd->arg[num_arg].empty_key = NO;
 		if (cmd->str[i] == 34 || cmd->str[i] == 39)
 		{
 			i = ms_cut_quotation_marks(cmd->str, &cmd->arg[num_arg], i);

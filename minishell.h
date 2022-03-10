@@ -145,7 +145,7 @@ void	ms_malloc_str(char **name, int size);
 void	ms_malloc_arg(t_arg **arg, int size);
 void	ms_malloc_cmd(t_cmd **cmd, int size);
 void	ms_malloc_array(char ***array, int size);
-int		*ms_malloc_arr_int(int **arr_int, int size);
+void	ms_malloc_arr_int(int **arr_int, int size);
 
 void	rl_replace_line (const char *text, int clear_undo);
 

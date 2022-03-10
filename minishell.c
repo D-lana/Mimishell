@@ -65,6 +65,7 @@ int	main(int argc, char **argv, char **env)
 		ms_separator(&data, line);
 		if (data.empty_str == NO)
 		{
+			//printf("Record array\n");
 			ms_record_array(&data);
 			ms_execution(&data);
 			add_history(line);
