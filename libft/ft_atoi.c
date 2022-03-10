@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlana <dlana@student.42.fr>                +#+  +:+       +#+        */
+/*   By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 19:55:00 by dlana             #+#    #+#             */
-/*   Updated: 2022/01/22 13:42:34 by dlana            ###   ########.fr       */
+/*   Updated: 2022/03/10 19:19:41 by obeedril         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	ft_atoi(const char *str)
 {
 	int			i;
 	int			c;
-	long int	rezult;
+	long long	rezult;
 
 	i = 0;
 	c = 1;

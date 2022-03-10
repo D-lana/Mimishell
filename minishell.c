@@ -69,7 +69,7 @@ int	main(int argc, char **argv, char **env)
 			ms_record_array(&data);
 			ms_execution(&data);
 			add_history(line);
-			ms_free_cycle(&data, &line);
+			//ms_free_cycle(&data, &line);
 		}
 	}
 	// ms_free_all(&data);

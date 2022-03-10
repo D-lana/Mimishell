@@ -66,7 +66,7 @@ int	ms_record_args_without_qm(char *str, t_arg *arg, int i, int *num_arg)
 			i++;
 		}
 		ms_malloc_str(&arg->str, c);
-		//printf("alloc str cmd->arg->str!\n");
+	  //printf("alloc str cmd->arg->str\n");
 		i = i - c;
 		c = 0;
 		while (str[i] != 39 && str[i] != 34 && str[i] != '\0' && str[i] != ' ')

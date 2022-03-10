@@ -6,7 +6,7 @@
 /*   By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 15:15:18 by obeedril          #+#    #+#             */
-/*   Updated: 2022/03/09 19:46:36 by obeedril         ###   ########.fr       */
+/*   Updated: 2022/03/10 20:16:35 by obeedril         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,9 @@ static int	ft_isnum(char *str)
 
 static void	exit_with_args(t_data *data, int num_array_arg, char *exit_arg)
 {
-	int	error_code;
+	long long int	exit_code;
 
-	error_code = 0;
+	exit_code = 0;
 	if (ft_isnum(exit_arg) == 1)
 	{
 		ms_print_error_builtin(exit_arg, 4);
@@ -49,9 +49,17 @@ static void	exit_with_args(t_data *data, int num_array_arg, char *exit_arg)
 		}
 		else
 		{
-			error_code = ft_atoi(exit_arg);
-			printf("\bexit\n");
-			exit (error_code);
+			exit_code = ft_ll_atoi(exit_arg);
+			if (exit_code == -1)
+			{
+				ms_print_error_builtin(exit_arg, 4);
+				exit (255);
+			}
+			else
+			{
+				printf("\bexit\n");
+				exit (exit_code);
+			}
 		}
 	}
 }

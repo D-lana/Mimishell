@@ -24,8 +24,6 @@ int ms_heredoc(t_cmd *cmd, t_data *data, int i)
 {
 	char *str;
 	pid_t pid;
-	int status;
-	int termsig;
 
 	if(data->num_error == 0)
 	{
@@ -54,23 +52,14 @@ int ms_heredoc(t_cmd *cmd, t_data *data, int i)
 			}
 			exit (0);
 		}
-		if (pid != 0)
-			signal(SIGINT, SIG_IGN);
-		signal(SIGQUIT, SIG_IGN);
-		waitpid(0, &status, 0);
-		if (WIFSIGNALED(status) > 0)
-		{
-			termsig = WTERMSIG(status);
-			if (termsig == 2)
-				write(1, ">   \b\b\b\n", 8);
-		}
+		ms_heredoc_signal(pid);
 		cmd->fd[0] = open(cmd->file[i], O_RDONLY, 0644);
 		 close(cmd->fd[1]);
 	}
 	return (0);
 }
 
-int check_file(t_cmd *cmd, int i)
+int ms_check_file(t_cmd *cmd, int i)
 {
 	int		j;
 	char	*str;
@@ -106,7 +95,7 @@ void	ms_open_file(t_cmd *cmd, t_data *data)
 			cmd->fd[1] = open(cmd->file[i], O_CREAT | O_WRONLY  | O_APPEND, 0644);
 		if (cmd->redir[i] == 2)
 		{
-			if (check_file(cmd, i) == 1)
+			if (ms_check_file(cmd, i) == 1)
 				cmd->fd[0] = open(cmd->file[i], O_RDONLY, 0644);
 			else
 			{
@@ -183,42 +172,6 @@ void ms_pipe(t_data *data, int i, int last)
 	}
 }
 
-static void exe_signal(t_data *data)
-{
-	int status;
-	int termsig;
-	int	exit_st;
-	int	i;
-
-	i = 0;
-	termsig = 0;
-	signal(SIGINT, SIG_IGN);
-	signal(SIGQUIT, SIG_IGN);
-	while (data->num_cmd > i)
-	{
-		waitpid(-1, &status, 0);
-		i++;
-	}
-	waitpid(-1, &status, 0);
-	exit_st = WEXITSTATUS(status);
-	termsig = WTERMSIG(status);
-	if (exit_st > 0)
-	{
-		data->num_error = exit_st;
-		if (exit_st != 1 && exit_st != 2 && exit_st != 126
-			&& exit_st != 128 && exit_st != 258 && exit_st != 130)
-			data->num_error = 127;
-	}
-	if (WIFSIGNALED(status) > 0)
-	{
-		termsig = WTERMSIG(status);
-		if (termsig == 2)
-			write(1, "\n", 1);
-		if (termsig == 3)
-			printf("Quit: %d\n", status);
-	}
-}
-
 int find_last_redir(int last, t_data *data)
 {
 	int i;
@@ -277,7 +230,7 @@ void ms_execution(t_data *data)
 	}
 	//write(2, "End while\n", 11);
 	if (data->num_cmd > 1 || (data->build_in == NO && data->num_cmd == 1))
-		exe_signal(data);
+		ms_exe_signal(data);
 	if (dup2(stdio[1], 1) == -1)
 		perror("dup2 ");
 	if (dup2(stdio[0], 0) == -1)
