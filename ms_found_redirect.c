@@ -104,9 +104,9 @@ int	ms_found_redirect(t_cmd *cmd, t_data *data)
 	if (ms_count_redirect(cmd, data, qm_o, qm_d) <= 0)
 		return (-1);
 	ms_malloc_arr_int(&cmd->redir, cmd->count_redir); // free +
-	printf("alloc massiv cmd->redir\n");
+	//printf("alloc massiv cmd->redir\n");
 	ms_malloc_array(&cmd->file, cmd->count_redir); // free +
-	printf("alloc massiv cmd->file\n");
+//	printf("alloc massiv cmd->file\n");
 	ms_cycle_of_record_redir(cmd, data, qm_o, qm_d);
 	return (0);
 }

@@ -35,7 +35,7 @@ void	ms_replase_key_to_value(char **str, int key, char *value, int start)
 		return ;
 	}
 	ms_malloc_str(&tmp, size);
-	printf("alloc new cmd->arg[y].str\n");
+	//printf("alloc new cmd->arg[y].str\n");
 	// printf("(*str) = %s, %zu\n", (*str), ft_strlen(*str));
 	// printf("start = %d\n", start);
 	// printf("key = %d\n", key);
@@ -67,7 +67,7 @@ int	ms_record_key(char *s, int i, char **key)
 		n++;
 	}
 	ms_malloc_str(key, n);
-	printf("alloc str key\n");
+//	printf("alloc str key\n");
 	i = (i - n);
 	n = 0;
 	while (s[i] != '\0' && s[i] != ' ' && s[i] != 34

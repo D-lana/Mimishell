@@ -23,7 +23,7 @@ int	ms_cut_quotation_marks(char *str, t_arg *arg, int i)
 		i++;
 	}
 	ms_malloc_str(&arg->str, c);
-	printf("alloc str cmd->arg->str\n");
+	//printf("alloc str cmd->arg->str\n");
 	i = i - c;
 	c = 0;
 	while (str[i] != q_m && str[i] != '\0')
@@ -52,7 +52,7 @@ int	ms_record_args_without_qm(char *str, t_arg *arg, int i, int *num_arg)
 			i++;
 		}
 		ms_malloc_str(&arg->str, c);
-		printf("alloc str cmd->arg->str\n");
+	//	printf("alloc str cmd->arg->str\n");
 		i = i - c;
 		c = 0;
 		while (str[i] != 39 && str[i] != 34 && str[i] != '\0' && str[i] != ' ')
@@ -74,7 +74,7 @@ void	ms_create_struct_without_qm(t_cmd *cmd)
 	i = 0;
 	num_arg = 0;
 	ms_malloc_arg(&cmd->arg, cmd->num_arg); // free +
-	printf("alloc massiv cmd->arg\n");
+	//printf("alloc massiv cmd->arg\n");
 	while (cmd->str[i] != '\0')
 	{
 		cmd->arg[num_arg].space = NO;

@@ -19,7 +19,7 @@ int ms_record_one_str(char **str, char *line, int *start, int *num)
 		size++;
 	}
 	ms_malloc_str(str, size);
-	printf("alloc str data->cmd[num].str\n");
+	//printf("alloc str data->cmd[num].str\n");
 	while(i < size)
 	{
 		(*str)[i] = line[(*start) + i];
@@ -86,7 +86,7 @@ int ms_count_and_record_cmd(t_data *data, char *line)
 	if (ms_count_pipe(data, line, 1, 1) == -1)
 		return (-1);
 	ms_malloc_cmd(&data->cmd, data->num_cmd); /// free cmd +
-	printf("alloc massiv data->cmd\n");
+	//printf("alloc massiv data->cmd\n");
 	i = 0;
 	while (data->num_cmd > i)
 	{
