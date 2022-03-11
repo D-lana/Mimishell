@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ms_check_first_arg.c                               :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: dlana <dlana@student.42.fr>                +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/23 17:48:49 by obeedril          #+#    #+#             */
-/*   Updated: 2022/03/11 13:56:22 by dlana            ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
 static char	*add_slesh(char **arr_p, int i, int j)
@@ -67,8 +55,8 @@ static int	check_str(t_data *data, char **arr_p, int i, int n)
 	find_cmd = 0;
 	str_way = NULL;
 	str_slesh = NULL;
-	if ((data->cmd[n].array_arg[0][0] == '.'
-		&& data->cmd[n].array_arg[0][1] == '/'))
+	if (data->cmd[n].array_arg[0][0] == '.'
+		&& data->cmd[n].array_arg[0][1] == '/')
 		find_cmd = ms_check_way_itself(data, find_cmd, n);
 	else
 		find_cmd = look_for_way(data, arr_p, i, n);
@@ -77,6 +65,7 @@ static int	check_str(t_data *data, char **arr_p, int i, int n)
 
 static void	check_find_cmd(t_data *data, int find_cmd, int n)
 {
+	find_cmd = ms_way(data, find_cmd, n);
 	if (find_cmd > 0)
 	{
 		data->num_error = ERR_CMD;

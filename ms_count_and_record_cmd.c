@@ -53,7 +53,7 @@ int	ms_record_one_str(char **str, char *line, int *start, int *num)
 	return (0);
 }
 
-int	ms_count_pipe(t_data *data, char *line, int qm_d, int qm_o)
+static int	ms_count_pipe(t_data *data, char *line, int qm_d, int qm_o)
 {
 	int	i;
 

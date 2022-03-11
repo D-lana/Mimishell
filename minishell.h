@@ -139,7 +139,6 @@ void	ms_env(t_data *data);
 int		ms_get_signal(void);
 void	ms_signal_ctrl_d(t_data *data, char **line);
 void	ms_exe_signal(t_data *data);
-void	ms_heredoc_signal(pid_t pid);
 
 void	ms_record_str(char **file, char *str, int start, int size_str);
 void	ms_record_char(char **result, char *str, int *r, int *s);
@@ -162,7 +161,7 @@ void	ms_malloc_cmd(t_cmd **cmd, int size);
 void	ms_malloc_array(char ***array, int size);
 void	ms_malloc_arr_int(int **arr_int, int size);
 
-void	rl_replace_line (const char *text, int clear_undo);
+void	rl_replace_line(const char *text, int clear_undo);
 
 void	ms_execution(t_data *data);
 
@@ -170,6 +169,13 @@ int		ms_print_errors_chfa(char *str, int flag);
 void	ms_print_error_builtin(char *str, int flag);
 void	check_pwd_and_rewrite(t_data *data);
 void	ms_check_oldpwd_rewrite(t_data *data);
+int		ms_check_way_itself(t_data *data, int find_cmd, int n);
+int		ms_way(t_data *data, int find_cmd, int n);
+int		ms_heredoc(t_cmd *cmd, t_data *data, int i);
+int		ms_check_file(t_cmd *cmd, int i);
+void	ms_pipe(t_data *data, int i, int last);
+int		ms_redirect(t_cmd *cmd);
+void	ms_open_file(t_cmd *cmd, t_data *data);
 int		ms_check_way_itself(t_data *data, int find_cmd, int n);
 
 #endif

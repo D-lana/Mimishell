@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ms_found_env_variable.c                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: dlana <dlana@student.42.fr>                +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/19 12:51:48 by dlana             #+#    #+#             */
-/*   Updated: 2022/03/11 17:36:21 by dlana            ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
 void	ms_put_num_error(int err, char **str, int *start)
@@ -26,7 +14,7 @@ void	ms_put_num_error(int err, char **str, int *start)
 
 void	ms_found_dollar(t_data *data, char **str, int q_m, int *i_orig)
 {
-	int i;
+	int	i;
 
 	i = (*i_orig);
 	if ((*str)[i] == '$' && (*str)[i + 1] == '$')

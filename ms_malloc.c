@@ -40,7 +40,7 @@ void	ms_malloc_cmd(t_cmd **cmd, int size)
 	}
 }
 
-void ms_malloc_arr_int(int **arr_int, int size)
+void	ms_malloc_arr_int(int **arr_int, int size)
 {
 	(*arr_int) = (int *)malloc(sizeof(int) * (size + 1));
 	if ((*arr_int) == NULL)

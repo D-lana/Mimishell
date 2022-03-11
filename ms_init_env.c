@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void	ms_record_lvl(char **str_lvl, char ***env, int y)
+static void	ms_record_lvl(char **str_lvl, char ***env, int y)
 {
 	int	i;
 	int	num_lvl;
@@ -31,7 +31,7 @@ void	ms_record_lvl(char **str_lvl, char ***env, int y)
 	ms_free_str(str_lvl);
 }
 
-int	ms_shell_lvl(char ***env, int y)
+static int	ms_shell_lvl(char ***env, int y)
 {
 	char	*str_lvl;
 	int		len_str_lvl;
@@ -54,7 +54,7 @@ int	ms_shell_lvl(char ***env, int y)
 	return (0);
 }
 
-int	ms_check_slvl(char **env, int y, int x)
+static int	ms_check_slvl(char **env, int y, int x)
 {
 	int	i;
 
@@ -66,11 +66,11 @@ int	ms_check_slvl(char **env, int y, int x)
 		i++;
 	}
 	if (env[y][i - 1] == 57)
- 		x++;
+		x++;
 	return (x);
 }
 
-int	ms_record_env(t_data *data, char ***env, int y, int shell_lvl)
+static int	ms_record_env(t_data *data, char ***env, int y, int shell_lvl)
 {
 	int	x;
 	int	size;

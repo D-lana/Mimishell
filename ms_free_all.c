@@ -9,7 +9,6 @@ void	ms_free_all(t_data *data, char **line)
 		ms_free_arr(&data->tmp_var);
 	ms_free_str(&data->prev_dir);
 	ms_free_str(&data->cur_dir);
-
 }
 
 void	ms_free_arg(t_data *data, int y)

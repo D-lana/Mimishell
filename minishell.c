@@ -1,6 +1,5 @@
 #include "minishell.h"
 
-// добавить расшифровку по $ в имени файла +
 // > $PWD -
 //bash: /Users/dlana/git_mimi: Is a directory -
 
@@ -55,7 +54,7 @@ int	main(int argc, char **argv, char **env)
 {
 	t_data	data;
 	char	*line;
-  
+
 	ms_err_argc_argv(argc, argv, env);
 	ms_init_data(&data, &env, YES);
 	while (1)
@@ -73,6 +72,4 @@ int	main(int argc, char **argv, char **env)
 			ms_free_cycle(&data, &line);
 		}
 	}
-	// ms_free_all(&data);
-	// free data->cmd[n].way_cmd (check_first_arg.c)
 }

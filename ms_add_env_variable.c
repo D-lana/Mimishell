@@ -100,7 +100,8 @@ int	ms_add_env_variable(t_data *data, int i_cmd)
 		if (valid == ERR_NUM_ONE)
 		{
 			data->num_error = ERR_NUM_ONE;
-			ms_err_export(data->num_error, data->cmd[i_cmd].array_arg[i]);
+			ms_err_export(data->num_error,
+				data->cmd[i_cmd].array_arg[i]);
 		}
 		else
 			ms_add_var(data, &data->cmd[i_cmd].array_arg[i]);
