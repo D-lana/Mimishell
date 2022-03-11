@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ms_quotation_marks.c                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dlana <dlana@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/11 17:48:02 by dlana             #+#    #+#             */
+/*   Updated: 2022/03/11 17:51:52 by dlana            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	ms_switch_qm(char c, int *qm_o, int *qm_d)
@@ -6,6 +18,21 @@ void	ms_switch_qm(char c, int *qm_o, int *qm_d)
 		(*qm_d) = (*qm_d) * (-1);
 	if (c == ONE_Q_MARK && (*qm_d) == 1)
 		(*qm_o) = (*qm_o) * (-1);
+}
+
+void	ms_search_space_after_arg(char *str, t_arg *arg, int i)
+{
+	int	c;
+
+	c = 0;
+	if (str[i] == ' ')
+	{
+		c = i;
+		while (str[c] != '\0' && str[c] == ' ')
+			c++;
+		if (str[c] != '\0')
+			arg->space = YES;
+	}
 }
 
 int	ms_cut_quotation_marks(char *str, t_arg *arg, int i)
@@ -23,7 +50,6 @@ int	ms_cut_quotation_marks(char *str, t_arg *arg, int i)
 		i++;
 	}
 	ms_malloc_str(&arg->str, c);
-	//printf("alloc str cmd->arg->str\n");
 	i = i - c;
 	c = 0;
 	while (str[i] != q_m && str[i] != '\0')
@@ -32,18 +58,8 @@ int	ms_cut_quotation_marks(char *str, t_arg *arg, int i)
 	if (str[i] == q_m)
 	{
 		i++;
-		if (str[i] == ' ')
-		{
-			c = i;
-			while (str[c] != '\0' && str[c] == ' ')
-				c++;
-			if (str[c] != '\0')
-				arg->space = YES;
-		}
+		ms_search_space_after_arg(str, arg, i);
 	}
-	printf("arg->str= |%s|\n", arg->str);
-	if (arg->space == YES)
-		printf("arg->space == YES\n");
 	return (i);
 }
 
@@ -53,36 +69,20 @@ int	ms_record_args_without_qm(char *str, t_arg *arg, int i, int *num_arg)
 
 	c = 0;
 	arg->q_m = NO;
-	if (str[i] != ' ') // || (str[i] == ' ' && str[i + 1] != ' '))
+	if (str[i] != ' ')
 	{
-		// if (str[i] == ' ')
-		// {
-		// 	c++;
-		// 	i++;
-		// }
 		while (str[i] != 39 && str[i] != 34 && str[i] != '\0' && str[i] != ' ')
 		{
 			c++;
 			i++;
 		}
 		ms_malloc_str(&arg->str, c);
-	  //printf("alloc str cmd->arg->str\n");
 		i = i - c;
 		c = 0;
 		while (str[i] != 39 && str[i] != 34 && str[i] != '\0' && str[i] != ' ')
 			ms_record_char(&arg->str, str, &c, &i);
 		arg->str[c] = '\0';
-		printf("arg->str= |%s|\n", arg->str);
-		if (str[i] == ' ')
-		{
-			c = i;
-			while (str[c] != '\0' && str[c] == ' ')
-				c++;
-			if (str[c] != '\0')
-				arg->space = YES;
-		}
-		if (arg->space == YES)
-			printf("arg->space == YES\n");
+		ms_search_space_after_arg(str, arg, i);
 		(*num_arg)++;
 		return (i);
 	}
@@ -96,8 +96,7 @@ void	ms_create_struct_without_qm(t_cmd *cmd)
 
 	i = 0;
 	num_arg = 0;
-	ms_malloc_arg(&cmd->arg, cmd->num_arg); // free +
-	//printf("alloc massiv cmd->arg\n");
+	ms_malloc_arg(&cmd->arg, cmd->num_arg);
 	while (cmd->str[i] != '\0')
 	{
 		cmd->arg[num_arg].space = NO;

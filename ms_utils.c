@@ -12,7 +12,7 @@ void	ms_record_str(char **file, char *str, int start, int size_str)
 	int	i;
 
 	i = 0;
-	while(i < size_str)
+	while (i < size_str)
 	{
 		(*file)[i] = str[start + i];
 		i++;
@@ -52,3 +52,17 @@ int	ms_check_way_itself(t_data *data, int find_cmd, int n)
 	return (find_cmd);
 }
 
+int	ms_err_token(t_data *data, int pipe)
+{
+	if (pipe == 2)
+	{
+		data->num_error = ERR_TOKEN;
+		data->num_cmd = 0;
+		ms_error(data->num_error, "||");
+		return (-1);
+	}
+	data->num_error = ERR_TOKEN;
+	data->num_cmd = 0;
+	ms_error(data->num_error, "|");
+	return (-1);
+}

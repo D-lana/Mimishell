@@ -1,24 +1,24 @@
 #include "minishell.h"
 
-void	ms_replace_value(t_data *data, int y, char *var, int x)
+void	ms_replace_value(t_data *data, int y, char **var, int x)
 {
 	char	*tmp;
 
 	tmp = data->our_env[y];
-	if (var[x] == '=')
+	if ((*var)[x] == '=')
 	{
 		ms_free_str(&data->our_env[y]);
-		data->our_env[y] = ft_strdup(var);
+		data->our_env[y] = ft_strdup((*var));
 	}
-	else if (var[x] == '+')
+	else if ((*var)[x] == '+')
 	{
-		ms_replase_key_to_value(&var, x + 2, NULL, 0);
-		data->our_env[y] = ft_strjoin(data->our_env[y], var);
+		ms_replase_key_to_value(var, x + 2, NULL, 0);
+		data->our_env[y] = ft_strjoin(data->our_env[y], (*var));
 		ms_free_str(&tmp);
 	}
 }
 
-void	ms_add_new_variable(t_data *data, char *var)
+void	ms_add_new_variable(t_data *data, char **var)
 {
 	int		i;
 	char	**tmp_arr;
@@ -32,7 +32,7 @@ void	ms_add_new_variable(t_data *data, char *var)
 		data->our_env[i] = ft_strdup(tmp_arr[i]);
 		i++;
 	}
-	data->our_env[i] = ft_strdup(var);
+	data->our_env[i] = ft_strdup((*var));
 	i++;
 	data->our_env[i] = NULL;
 	ms_free_arr(&tmp_arr);
@@ -55,13 +55,13 @@ void	ms_add_var(t_data *data, char **var)
 		if (ft_strncmp((*var), data->our_env[y], x) == 0
 			&& (data->our_env[y][x] == '=' || data->our_env[y][x] == '\0'))
 		{
-			ms_replace_value(data, y, (*var), x);
+			ms_replace_value(data, y, var, x);
 			new_key = NO;
 		}
 		y++;
 	}
 	if (new_key == YES)
-		ms_add_new_variable(data, (*var));
+		ms_add_new_variable(data, var);
 }
 
 int	ms_valid_export(char *var)
@@ -100,7 +100,6 @@ int	ms_add_env_variable(t_data *data, int i_cmd)
 		if (valid == ERR_NUM_ONE)
 		{
 			data->num_error = ERR_NUM_ONE;
-			//return (ms_err_export(data->num_error, data->cmd[i_cmd].array_arg[i]));
 			ms_err_export(data->num_error, data->cmd[i_cmd].array_arg[i]);
 		}
 		else

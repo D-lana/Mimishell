@@ -4,7 +4,7 @@ void	ms_free_str(char **tmp_str);
 void	ms_free_arr(char ***arr);
 void	ms_free_int_arr(int **int_arr);
 
-void	ms_free_str(char **str) // ms_free_str(&str);
+void	ms_free_str(char **str)
 {
 	if (*str)
 	{
@@ -14,7 +14,7 @@ void	ms_free_str(char **str) // ms_free_str(&str);
 	}
 }
 
-void	ms_free_arr(char ***arr) // ms_free_arr(&arr);
+void	ms_free_arr(char ***arr)
 {
 	int i;
 
@@ -35,18 +35,19 @@ void	ms_free_arr(char ***arr) // ms_free_arr(&arr);
 			(*arr)[i] = NULL;
 		}
 		//printf("free array!\n");
-		free(**arr);
-		**arr = NULL;
+		free(*arr);
+		*arr = NULL;
 	}
 }
 
-void ms_free_int_arr(int **int_arr) // ms_free_int_arr(&int_arr);
+void ms_free_int_arr(int **int_arr)
 {
 	int i;
 
 	i = 0;
 	if (*int_arr)
 	{
+		//printf("free num in_arr: %d\n", (*int_arr)[i]);
 		free(*int_arr);
 		*int_arr = NULL;
 	}

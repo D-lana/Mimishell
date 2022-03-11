@@ -1,20 +1,35 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ms_record_value.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dlana <dlana@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/11 16:19:01 by dlana             #+#    #+#             */
+/*   Updated: 2022/03/11 18:14:52 by dlana            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-void	ms_record_tail(char **tmp, char *str, int t, int start_tail)
+void	ms_record_tail(char **tmp, char **str, int t, int start_tail)
 {
 	int	s;
-	
+
 	s = 0;
-	while (str[s] != '\0')
+	while ((*str)[s] != '\0')
 	{
 		if (s >= start_tail)
 		{
-			(*tmp)[t] = str[s];
+			(*tmp)[t] = (*str)[s];
 			t++;
 		}
 		s++;
 	}
 	(*tmp)[t] = '\0';
+	ms_free_str(str);
+	*str = ft_strdup((*tmp));
+	ms_free_str(tmp);
 }
 
 void	ms_replase_key_to_value(char **str, int key, char *value, int start)
@@ -35,7 +50,6 @@ void	ms_replase_key_to_value(char **str, int key, char *value, int start)
 		return ;
 	}
 	ms_malloc_str(&tmp, size);
-	//printf("alloc new cmd->arg[y].str\n");
 	while (s < start)
 		ms_record_char(&tmp, (*str), &t, &s);
 	s = 0;
@@ -44,17 +58,20 @@ void	ms_replase_key_to_value(char **str, int key, char *value, int start)
 		while (value[s] != '\0')
 			ms_record_char(&tmp, value, &t, &s);
 	}
-	ms_record_tail(&tmp, (*str), t, start + key);
-	ms_free_str(str);
-	*str = ft_strdup(tmp);
-	ms_free_str(&tmp);
+	ms_record_tail(&tmp, str, t, start + key);
 }
 
-int	ms_record_key(char *s, int i, char **key)
+int	ms_record_key(char *s, int i, char **key, int *digit_key)
 {
 	int	n;
 
 	n = 0;
+	if (ft_isdigit(s[i]) == 1)
+	{
+		(*key) = "1\0";
+		(*digit_key) = YES;
+		return (1);
+	}
 	while (s[i] != '\0' && s[i] != ' ' && s[i] != 34
 		&& s[i] != '$' && s[i] != ONE_Q_MARK && s[i] != '=')
 	{
@@ -62,7 +79,6 @@ int	ms_record_key(char *s, int i, char **key)
 		n++;
 	}
 	ms_malloc_str(key, n);
-  //printf("alloc str key\n");
 	i = (i - n);
 	n = 0;
 	while (s[i] != '\0' && s[i] != ' ' && s[i] != 34
@@ -72,23 +88,21 @@ int	ms_record_key(char *s, int i, char **key)
 	return (n);
 }
 
-int ms_search_var(t_data *data, char **value, char *key)
+int	ms_search_var(t_data *data, char **value, char *key)
 {
-	int y;
-	int size_key;
-	int start;
+	int	y;
+	int	size_key;
+	int	start;
 
 	y = 0;
 	size_key = ft_strlen(key);
 	start = ft_strlen(key) + 1;
-	write(1, "!!!YES SEARCH!!!!\n", 19);
-	printf("KEY = %s\n", key);
 	while (y < data->num_env)
 	{
 		if (ft_strncmp(key, data->our_env[y], size_key) == 0
-		&& (data->our_env[y][size_key] == '=' || data->our_env[y][size_key] == '\0'))
+			&& (data->our_env[y][size_key] == '='
+			|| data->our_env[y][size_key] == '\0'))
 		{
-			write(1, "!!!YES!!!\n", 11);
 			(*value) = ft_strdup_start(data->our_env[y], start);
 			return (0);
 		}
@@ -108,15 +122,7 @@ int	ms_record_value(t_data *data, char **str, int i)
 	n = 1;
 	digit_key = NO;
 	value = NULL;
-	if (ft_isdigit((*str)[i]) == 1)
-	{
-		key = "1\0";
-		digit_key = YES;
-	}
-	else
-		n = ms_record_key(*str, i, &key);
-	//value = getenv(key);
-	//value = ft_strdup(value);
+	n = ms_record_key(*str, i, &key, &digit_key);
 	if (digit_key == NO)
 	{
 		ms_search_var(data, &value, key);

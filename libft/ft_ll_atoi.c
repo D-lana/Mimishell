@@ -36,7 +36,6 @@ long int	ft_ll_atoi(const char *str)
 			return (-1);
 		rezult = rezult * 10 + (str[i] - '0');
 		i++;
-		//printf ("rezult = %lld\n", rezult);
 	}
 	return (rezult * c);
 }
