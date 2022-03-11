@@ -139,7 +139,6 @@ int	ms_redirect(t_cmd *cmd)
 
 void ms_pipe(t_data *data, int i, int last)
 {
-	//(void)last;
 	if (i > 0 && !data->cmd[i].redir_born[0])
 	{
 		if (last != -1 && (data->cmd[i - 1].redir[last] == 3 
@@ -150,10 +149,8 @@ void ms_pipe(t_data *data, int i, int last)
 				perror("fd[0]");
 			if (close(data->cmd[i].fd[0]) == -1)
 				perror("fd[0]");
-			//close(0);
 			return ;
 		}
-		//write(2, "pipe i > 0\n", 11);
 		if (dup2(data->fd_pipe[0], 0) == -1)
 			perror("fd[0]");
 		if (close(data->fd_pipe[0]) == -1)
@@ -164,7 +161,6 @@ void ms_pipe(t_data *data, int i, int last)
 		if (last != -1 && (data->cmd[i].redir[last] == 3
 			|| data->cmd[i].redir[last] == 4))
 			return ;
-		//write(2, "pipe i = 0\n", 11);
 		if (pipe(data->fd_pipe) == -1)
 			perror("fd[1]");
 		dup2(data->fd_pipe[1], 1);
@@ -213,7 +209,6 @@ void ms_execution(t_data *data)
 			ms_pipe(data, i, last);
 		if (data->cmd[i].bad_file == NO)
 			ms_our_cmd(data, i);
-	 	//write(2, "Afrer cmd\n", 11);
 		if (data->cmd[i].count_redir != 0)
 		{
 			while (data->cmd[i].file[j])
@@ -225,10 +220,8 @@ void ms_execution(t_data *data)
 		}
 		if (data->num_cmd > 1)
 			dup2(stdio[1], STDOUT_FILENO);
-		//write(2, "End while\n", 11);
 		i++;
 	}
-	//write(2, "End while\n", 11);
 	if (data->num_cmd > 1 || (data->build_in == NO && data->num_cmd == 1))
 		ms_exe_signal(data);
 	if (dup2(stdio[1], 1) == -1)

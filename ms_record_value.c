@@ -115,8 +115,6 @@ int	ms_record_value(t_data *data, char **str, int i)
 	}
 	else
 		n = ms_record_key(*str, i, &key);
-	//value = getenv(key);
-	//value = ft_strdup(value);
 	if (digit_key == NO)
 	{
 		ms_search_var(data, &value, key);

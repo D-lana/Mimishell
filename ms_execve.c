@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_execve.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dlana <dlana@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 15:39:51 by obeedril          #+#    #+#             */
-/*   Updated: 2022/03/08 12:41:28 by obeedril         ###   ########.fr       */
+/*   Updated: 2022/03/11 14:02:46 by dlana            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@ void	ms_execve(t_cmd *cmd, t_data *data, int i)
 {
 	pid_t pid;
 
-	// if (data->num_error != 0 || data->empty_str == YES)
-	// 	return ;
 	ms_check_first_arg(data, i);
 	if (data->num_error != 0)
 	{

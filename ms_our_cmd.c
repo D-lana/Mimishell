@@ -6,7 +6,7 @@
 /*   By: dlana <dlana@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 15:45:38 by dlana             #+#    #+#             */
-/*   Updated: 2022/03/10 16:26:55 by dlana            ###   ########.fr       */
+/*   Updated: 2022/03/11 14:04:09 by dlana            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,13 @@ void	ms_build_in_or_no(t_data *data, int i)
 int	ms_build_in_cmd(t_data *data, int i)
 {
 	if(ft_strncmp(data->cmd[i].array_arg[0], "pwd\0", 4) == 0)
-		ms_pwd(data); // obeedril changes
+		ms_pwd(data);
 	else if(ft_strncmp(data->cmd[i].array_arg[0], "cd\0", 3) == 0)
 		ms_cd(data->cmd[i].array_arg[1], data, 0);
 	else if(ft_strncmp(data->cmd[i].array_arg[0], "echo\0", 5) == 0)
 		ms_echo(data, i);
 	else if(ft_strncmp(data->cmd[i].array_arg[0], "exit\0", 5) == 0)
-		ms_exit(data, data->cmd[i].num_array_arg, data->cmd[i].array_arg[1]); // obeedril 
+		ms_exit(data, data->cmd[i].num_array_arg, data->cmd[i].array_arg[1]);
 	else if(ft_strncmp(data->cmd[i].array_arg[0], "env\0", 4) == 0)
 		ms_env(data);
 	else if(ft_strncmp(data->cmd[i].array_arg[0], "export\0", 7) == 0)
@@ -58,7 +58,7 @@ int	ms_build_in_cmd(t_data *data, int i)
 	else
 	{
 		data->build_in = NO;
-		return(1); //ms_execve(data->cmd, data, i);
+		return(1);
 	}
 	return(0);
 }
@@ -68,10 +68,7 @@ int	ms_our_cmd(t_data *data, int i)
 	pid_t pid;
 
 	if (data->num_error != 0 || data->cmd[i].array_arg == NULL)
-	{
-		//ft_putstr_fd("MMMMs_our_cmd\n", 2);
 		return(-1);
-	}
 	ms_build_in_or_no(data, i);
 	if (i == 0 && data->build_in == YES)
 			ms_build_in_cmd(data, i);
@@ -114,20 +111,17 @@ void	ms_echo(t_data *data, int i)
 	n = NO;
 	while (j < data->cmd[i].num_array_arg)
 	{		
-		if (j == 1 && ms_found_minus_n(data->cmd[i].array_arg[j]) == 0) // ft_strncmp(data->cmd[i].array_arg[j], "-n\0", 3)
+		if (j == 1 && ms_found_minus_n(data->cmd[i].array_arg[j]) == 0)
 		{
 			n = YES;
 			j++;
 		}
-		if (data->cmd[i].array_arg[j] != NULL) // empty key
+		if (data->cmd[i].array_arg[j] != NULL)
 		{
 			if (ft_strncmp(data->cmd[i].array_arg[j], "~\0", 2) == 0)
 				ft_putstr_fd(data->home_dir, 1);
 			else
-			{
 				ft_putstr_fd(data->cmd[i].array_arg[j], 1);
-				//write(1, "\n ", 1);
-			}
 		}
 		j++;
 		if (j < data->cmd[i].num_array_arg)

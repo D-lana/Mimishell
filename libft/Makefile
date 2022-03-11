@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+         #
+#    By: dlana <dlana@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/03/02 21:56:09 by dlana             #+#    #+#              #
-#    Updated: 2022/03/10 17:01:50 by obeedril         ###   ########.fr        #
+#    Updated: 2022/03/10 22:02:41 by dlana            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,7 @@ OBJS		=	${SRCS:.c=.o}
 
 HEADER		=  -I libft.h
 
-.c.o:		=	libft.h
+.c.o:		= Makefile libft.h
 			${CC} ${CFLAGS} -c $< ${HEADER} -o ${<:.c=.o} 
 
 ${NAME}:	${OBJS}

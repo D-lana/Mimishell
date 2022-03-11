@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_check_first_arg.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dlana <dlana@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 17:48:49 by obeedril          #+#    #+#             */
-/*   Updated: 2022/03/10 19:09:03 by obeedril         ###   ########.fr       */
+/*   Updated: 2022/03/11 13:56:22 by dlana            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ static int	look_for_way(t_data *data, char **str, int i, int n)
 	find_cmd = 0;
 	str_way = NULL;
 	str_slesh = NULL;
+	data->cmd[n].way_cmd = NULL;
 	while (str[i])
 	{
 		str_slesh = add_slesh(str, i, 0);

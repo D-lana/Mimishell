@@ -74,8 +74,6 @@ int	ms_cycle_of_record_redir(t_cmd *cmd, t_data *data, int qm_o, int qm_d)
 		{
 			if (ms_record_redir_and_file(cmd, i, num_redir, data) == -1)
 				return (-1);
-			printf("data->tmp.size_cut = %d\n", data->tmp.size_cut);
-			printf("i = %d\n", i);
 			ms_replase_key_to_value(&cmd->str, data->tmp.size_cut, NULL, i);
 			num_redir++;
 			if (cmd->str[0] == '\0')
@@ -105,10 +103,10 @@ int	ms_found_redirect(t_cmd *cmd, t_data *data)
 	qm_d = 1;
 	if (ms_count_redirect(cmd, data, qm_o, qm_d) <= 0)
 		return (-1);
-	ms_malloc_arr_int(&cmd->redir, cmd->count_redir); // free +
+	ms_malloc_arr_int(&cmd->redir, cmd->count_redir);
 	//printf("alloc massiv cmd->redir\n");
-	ms_malloc_array(&cmd->file, cmd->count_redir); // free +
-//	printf("alloc massiv cmd->file\n");
+	ms_malloc_array(&cmd->file, cmd->count_redir);
+	//printf("alloc massiv cmd->file\n");
 	ms_cycle_of_record_redir(cmd, data, qm_o, qm_d);
 	return (0);
 }

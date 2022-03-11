@@ -58,6 +58,5 @@ int	ms_count_arg_divided_qm(t_cmd *cmd, t_data *data)
 		if (i == -1)
 			return (-1);
 	}
-	printf("cmd->num_arg= %d\n", cmd->num_arg);
 	return (0);
 }

@@ -27,7 +27,7 @@ int ms_unset(t_data *data, int i_cmd)
 			{
 				if(ft_strncmp(data->cmd[i_cmd].array_arg[y], "OLDPWD=", 6) == 0)
 					data->flag_old = 0;
-				ms_cut_env_variable(data, y_env); ////////////////////
+				ms_cut_env_variable(data, y_env);
 			}
 			y_env++;
 		}

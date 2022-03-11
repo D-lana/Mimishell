@@ -93,7 +93,7 @@ int ms_count_and_record_cmd(t_data *data, char *line)
 	}
 	if (ms_count_pipe(data, line, 1, 1) == -1)
 		return (-1);
-	ms_malloc_cmd(&data->cmd, data->num_cmd); /// free cmd +
+	ms_malloc_cmd(&data->cmd, data->num_cmd);
 	//printf("alloc massiv data->cmd\n");
 	i = 0;
 	while (data->num_cmd > i)
@@ -105,12 +105,5 @@ int ms_count_and_record_cmd(t_data *data, char *line)
 	num = 0;
 	while (line[i] != '\0')
 		ms_record_one_str(&data->cmd[num].str, line, &i, &num);
-	//i = 0;
-	// while (i < data->num_cmd) ////////////// распечатка, убрать)
-	// {
-	// 	printf("%s", data->cmd[i].str);
-	// 	printf("\n");
-	// 	i++;
-	// }
 	return (0);
 }

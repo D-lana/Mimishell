@@ -1,26 +1,26 @@
 #include "minishell.h"
 
-void ms_printf_array(t_data *data)
-{
-	int	i;
-	int y;
+// void ms_printf_array(t_data *data)
+// {
+// 	int	i;
+// 	int y;
 
-	i = 0;
-	y = 0;
-	printf("data->num_cmd = %d\n", data->num_cmd);
-	printf("data->cmd[y].num_array_arg = %d\n", data->cmd[y].num_array_arg);
-	while (y < data->num_cmd)
-	{
-		while (i < data->cmd[y].num_array_arg)
-		{
-			printf("in arr |%s| \n", data->cmd[y].array_arg[i]);
-			i++;
-		}	
-		y++;
-		i = 0;
-	}
-	//printf("\n");
-}
+// 	i = 0;
+// 	y = 0;
+// 	printf("data->num_cmd = %d\n", data->num_cmd);
+// 	printf("data->cmd[y].num_array_arg = %d\n", data->cmd[y].num_array_arg);
+// 	while (y < data->num_cmd)
+// 	{
+// 		while (i < data->cmd[y].num_array_arg)
+// 		{
+// 			printf("in arr |%s| \n", data->cmd[y].array_arg[i]);
+// 			i++;
+// 		}	
+// 		y++;
+// 		i = 0;
+// 	}
+// 	//printf("\n");
+// }
 
 void	ms_count_arg_for_array(t_cmd *cmd)
 {
@@ -34,8 +34,6 @@ void	ms_count_arg_for_array(t_cmd *cmd)
 			cmd->num_array_arg++;
 		i++;
 	}
-	printf("i = %d\n", i);
-	printf("cmd->num_array_arg = %d\n", cmd->num_array_arg);
 }
 
 int	ms_record_arg(t_cmd *cmd, char **str, int *i, int size_str)
@@ -78,7 +76,6 @@ void	ms_connect_arg_for_array(t_cmd *cmd)
 	ms_malloc_array(&cmd->array_arg, cmd->num_array_arg);
 	//printf("alloc cmd->array_arg\n");
 	cmd->array_empty = NO;
-	//write(2, "empty.str in arr\n", 18);
 	while (y < cmd->num_arg)
 	{
 		while (cmd->arg[y].str[x] != '\0')
@@ -93,7 +90,6 @@ void	ms_connect_arg_for_array(t_cmd *cmd)
 		}
 		y++;
 	}
-	printf("y_arr = %d\n", y_arr);
 	cmd->array_arg[y_arr] = NULL;
 }
 
@@ -102,20 +98,15 @@ void	ms_record_array(t_data *data)
 	int	i;
 
 	i = 0;
-	//printf ("new str %s\n", data->cmd[i].str);
 	if (data->num_error != 0)
-	{
-		//write(2, "return record_array\n", 21);
 		return ;
-	}
 	while (i < data->num_cmd)
 	{
 		data->cmd[i].array_empty = YES;
-		if (data->cmd[i].str == NULL)
-		{
-			//data->cmd[i].array_empty = YES;
-			write(2, "empty.str\n", 11);
-		}
+		// if (data->cmd[i].str == NULL)
+		// {
+		// 	//write(2, "empty.str\n", 11);
+		// }
 		if (data->cmd[i].str != NULL)
 		{
 			ms_count_arg_for_array(&data->cmd[i]);
@@ -123,7 +114,7 @@ void	ms_record_array(t_data *data)
 		}
 		i++;
 	}
-	ms_printf_array(data); ///// распечатка убрать
+	//ms_printf_array(data); ///// распечатка убрать
 	if(data->num_error == 0 && data->cmd[0].str != NULL)
 		ms_found_variable(data);
 }
