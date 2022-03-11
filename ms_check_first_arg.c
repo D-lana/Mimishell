@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ms_check_first_arg.c                               :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/23 17:48:49 by obeedril          #+#    #+#             */
-/*   Updated: 2022/03/11 17:55:39 by obeedril         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
 static char	*add_slesh(char **arr_p, int i, int j)
@@ -37,6 +25,7 @@ static int	look_for_way(t_data *data, char **str, int i, int n)
 	find_cmd = 0;
 	str_way = NULL;
 	str_slesh = NULL;
+	data->cmd[n].way_cmd = NULL;
 	while (str[i])
 	{
 		str_slesh = add_slesh(str, i, 0);

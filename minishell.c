@@ -1,5 +1,8 @@
 #include "minishell.h"
 
+// > $PWD -
+//bash: /Users/dlana/git_mimi: Is a directory -
+
 int	ms_separator(t_data *data, char *line)
 {
 	int	i;
@@ -34,6 +37,8 @@ void	ms_init_data(t_data *data, char ***env, int first)
 		data->num_prev_error = 0;
 		data->num_error = 0;
 		data->num_tmp_var = 0;
+		data->tmp_var = NULL;
+		
 		ms_init_env(data, env);
 		data->name_file = NO;
 	}
@@ -42,6 +47,7 @@ void	ms_init_data(t_data *data, char ***env, int first)
 	data->empty_str = NO;
 	data->home_dir = getenv("HOME");
 	data->build_in = YES;
+	data->num_cmd = 0;
 }
 
 int	main(int argc, char **argv, char **env)

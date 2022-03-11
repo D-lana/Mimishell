@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ms_count_arg_divided_qm.c                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dlana <dlana@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/11 18:16:19 by dlana             #+#    #+#             */
+/*   Updated: 2022/03/11 18:16:20 by dlana            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	ms_check_quotation_marks(t_cmd *cmd, int i, t_data *data)
@@ -58,6 +70,5 @@ int	ms_count_arg_divided_qm(t_cmd *cmd, t_data *data)
 		if (i == -1)
 			return (-1);
 	}
-	printf("cmd->num_arg= %d\n", cmd->num_arg);
 	return (0);
 }

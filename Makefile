@@ -7,7 +7,8 @@ SRCS		=	minishell.c ms_count_and_record_cmd.c ms_our_cmd.c ms_malloc.c \
 				ms_execution.c ms_add_env_variable.c ms_free.c ms_unset.c ms_found_variable.c \
 				ms_count_arg_divided_qm.c ms_free_all.c ms_utils.c ms_redirect_utils.c \
 				ms_print_errors_utils.c ms_record_value.c  ms_builtin_utils.c \
-				ms_heredoc.c ms_pipe_and_redirect.c ms_open_file.c ms_check_way_itself.c
+				ms_heredoc.c ms_pipe_and_redirect.c ms_open_file.c ms_check_way_itself.c \
+			  ms_echo.c ms_env.c \
 
 OBJS		=	${SRCS:.c=.o}
 

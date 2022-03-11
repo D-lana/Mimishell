@@ -55,3 +55,18 @@ int	ms_check_file(t_cmd *cmd, int i)
 	ms_free_str(&str_way);
 	return (mistake);
 }
+
+int	ms_err_token(t_data *data, int pipe)
+{
+	if (pipe == 2)
+	{
+		data->num_error = ERR_TOKEN;
+		data->num_cmd = 0;
+		ms_error(data->num_error, "||");
+		return (-1);
+	}
+	data->num_error = ERR_TOKEN;
+	data->num_cmd = 0;
+	ms_error(data->num_error, "|");
+	return (-1);
+}

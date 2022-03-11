@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ms_found_env_variable.c                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/19 12:51:48 by dlana             #+#    #+#             */
-/*   Updated: 2022/03/11 17:58:29 by obeedril         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
 void	ms_put_num_error(int err, char **str, int *start)
@@ -60,10 +48,7 @@ int	ms_found_env_variable(t_data *data, t_cmd *cmd)
 			ms_found_dollar(data, &cmd->arg[y].str, cmd->arg[y].q_m, &i);
 		}
 		if (ft_strlen(cmd->arg[y].str) == 0)
-		{
 			cmd->arg[y].empty_key = YES;
-			printf("empty key = YES\n");
-		}
 		y++;
 		i = 0;
 	}

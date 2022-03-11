@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dlana <dlana@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/11 18:54:49 by dlana             #+#    #+#             */
+/*   Updated: 2022/03/11 18:57:19 by dlana            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -114,13 +126,15 @@ int		ms_valid_export(char *var);
 int		ms_cut_array_arg(char ***arr, int *count_arr, int y);
 
 int		ms_our_cmd(t_data *data, int i);
+void	ms_execve(t_cmd *cmd, t_data *data, int i);
 
 void	ms_cd(char *arg_way, t_data *data, int i);
 void	ms_pwd(t_data *data);
 void	ms_exit(t_data *data, int num_array_arg, char *exit_arg);
 void	ms_export(t_data *data, int i);
 int		ms_unset(t_data *data, int i_cmd);
-void	ms_execve(t_cmd *cmd, t_data *data, int i);
+void	ms_echo(t_data *data, int i);
+void	ms_env(t_data *data);
 
 int		ms_get_signal(void);
 void	ms_signal_ctrl_d(t_data *data, char **line);
@@ -132,6 +146,7 @@ void	ms_record_char(char **result, char *str, int *r, int *s);
 int		ms_error(int error, char *str);
 int		ms_err_export(int error, char *str);
 void	ms_err_argc_argv(int argc, char **argv, char **env);
+int		ms_err_token(t_data *data, int pipe);
 void	ms_check_first_arg(t_data *data, int n);
 
 void	ms_free_str(char **str);

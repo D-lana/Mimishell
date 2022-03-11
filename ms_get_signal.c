@@ -37,6 +37,7 @@ void	ms_signal_ctrl_d(t_data *data, char **line)
 	{
 		printf("\033[1;35m\bMiMiShell >\033[0A");
 		printf("\033[1;0m exit\n\033[0m");
+		ms_free_all(data, line);
 		exit(EXIT_SUCCESS);
 	}
 }
@@ -70,8 +71,12 @@ void	ms_exe_signal(t_data *data)
 	waitpid(-1, &status, 0);
 	exit_st = WEXITSTATUS(status);
 	if (exit_st > 0)
+	{
 		data->num_error = exit_st;
+		if(exit_st != 1 && exit_st != 2 && exit_st != 126
+			&& exit_st != 128 && exit_st != 130 && exit_st != 258)
+			data->num_error = 127;
+	}
 	if (WIFSIGNALED(status) > 0)
 		ms_exe_signal_2(status);
 }
-

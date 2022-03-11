@@ -1,37 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
+/*   ms_env.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dlana <dlana@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/11 18:06:29 by dlana             #+#    #+#             */
-/*   Updated: 2022/03/11 18:06:30 by dlana            ###   ########.fr       */
+/*   Created: 2022/03/11 18:57:08 by dlana             #+#    #+#             */
+/*   Updated: 2022/03/11 18:57:10 by dlana            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-void	ft_putnbr_fd(int nb, int fd)
+void	ms_env(t_data *data)
 {
-	if (nb == -2147483648)
+	int	y;
+
+	y = 0;
+	while (y < data->num_env)
 	{
-		write(fd, "-2147483648", 11);
-		return ;
-	}
-	if (nb < 0)
-	{
-		write(fd, "-", 1);
-		nb = -nb;
-	}
-	if (nb >= 10)
-	{
-		ft_putnbr_fd(nb / 10, fd);
-		ft_putnbr_fd(nb % 10, fd);
-	}
-	else
-	{
-		nb = nb + '0';
-		write(fd, &nb, 1);
+		if (ft_strncmp(data->our_env[y], "OLDPWD", 6) == 0)
+		{
+			if (data->prev_dir != NULL)
+				printf("%s\n", data->our_env[y]);
+		}
+		else if (ft_strchr(data->our_env[y], 61) != NULL)
+			printf("%s\n", data->our_env[y]);
+		y++;
 	}
 }

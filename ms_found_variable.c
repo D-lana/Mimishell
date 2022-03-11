@@ -29,26 +29,6 @@ void	ms_add_tmp_variable(t_data *data, char *var)
 	}
 }
 
-char	*ms_found_tmp_var(t_data *data, char **var, int x)
-{
-	int	y;
-
-	y = 0;
-	while (y < data->num_tmp_var)
-	{
-		if (ft_strncmp((*var), data->tmp_var[y], x) == 0
-			&& (data->tmp_var[y][x] == '=' || data->tmp_var[y][x] == '\0'))
-		{
-			ms_free_str(var);
-			(*var) = ft_strdup(data->tmp_var[y]);
-			ms_cut_array_arg(&data->tmp_var, &data->num_tmp_var, y);
-			return ((*var));
-		}
-		y++;
-	}
-	return ((*var));
-}
-
 int	ms_cut_array_arg(char ***arr, int *count_arr, int y)
 {
 	int		i;
@@ -76,6 +56,26 @@ int	ms_cut_array_arg(char ***arr, int *count_arr, int y)
 	(*arr)[i] = NULL;
 	ms_free_arr(&arr_tmp);
 	return (NO);
+}
+
+char	*ms_found_tmp_var(t_data *data, char **var, int x)
+{
+	int	y;
+
+	y = 0;
+	while (y < data->num_tmp_var)
+	{
+		if (ft_strncmp((*var), data->tmp_var[y], x) == 0
+			&& (data->tmp_var[y][x] == '=' || data->tmp_var[y][x] == '\0'))
+		{
+			ms_free_str(var);
+			(*var) = ft_strdup(data->tmp_var[y]);
+			ms_cut_array_arg(&data->tmp_var, &data->num_tmp_var, y);
+			return ((*var));
+		}
+		y++;
+	}
+	return ((*var));
 }
 
 void	ms_found_variable(t_data *data)
