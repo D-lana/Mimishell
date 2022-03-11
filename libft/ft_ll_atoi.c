@@ -1,5 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_ll_atoi.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/11 17:43:13 by obeedril          #+#    #+#             */
+/*   Updated: 2022/03/11 17:43:38 by obeedril         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
-#include "stdio.h"
 
 static int	ft_space(const char *str)
 {
@@ -36,7 +47,6 @@ long int	ft_ll_atoi(const char *str)
 			return (-1);
 		rezult = rezult * 10 + (str[i] - '0');
 		i++;
-		//printf ("rezult = %lld\n", rezult);
 	}
 	return (rezult * c);
 }

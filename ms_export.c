@@ -80,7 +80,7 @@ void	ms_sort_env(t_data *data, int y, int **sort)
 int	ms_check_sorted(int **sort, t_data *data)
 {
 	int	i;
-	
+
 	i = 0;
 	while (i < data->num_env)
 	{
@@ -124,7 +124,6 @@ void	ms_export(t_data *data, int i)
 		return ;
 	}
 	ms_malloc_arr_int(&sort, data->num_env);
-	//printf("alloc data->num_env = %d\n", data->num_env);
 	while (y < data->num_env)
 	{
 		sort[y] = NO;

@@ -1,10 +1,5 @@
 #include "minishell.h"
 
-// добавить расшифровку по $ в имени файла
-
-//MiMiShell > ""
-//execve : Permission denied
-
 int	ms_separator(t_data *data, char *line)
 {
 	int	i;
@@ -34,7 +29,7 @@ void	ms_init_data(t_data *data, char ***env, int first)
 	if (first == YES)
 	{
 		data->flag_old = 1;
-		data->prev_dir = NULL; // for ft_cd.c
+		data->prev_dir = NULL;
 		data->cur_dir = getcwd(NULL, 0);
 		data->num_prev_error = 0;
 		data->num_error = 0;
@@ -53,7 +48,7 @@ int	main(int argc, char **argv, char **env)
 {
 	t_data	data;
 	char	*line;
-  
+
 	ms_err_argc_argv(argc, argv, env);
 	ms_init_data(&data, &env, YES);
 	while (1)
@@ -65,13 +60,10 @@ int	main(int argc, char **argv, char **env)
 		ms_separator(&data, line);
 		if (data.empty_str == NO)
 		{
-			//printf("Record array\n");
 			ms_record_array(&data);
 			ms_execution(&data);
 			add_history(line);
-			//ms_free_cycle(&data, &line);
+			ms_free_cycle(&data, &line);
 		}
 	}
-	// ms_free_all(&data);
-	// free data->cmd[n].way_cmd (check_first_arg.c)
 }

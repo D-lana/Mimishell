@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ms_get_signal.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/11 18:01:52 by obeedril          #+#    #+#             */
+/*   Updated: 2022/03/11 19:08:12 by obeedril         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static void	sighandler(int signum)
@@ -23,22 +35,31 @@ void	ms_signal_ctrl_d(t_data *data, char **line)
 	(void)data;
 	if (*line == NULL)
 	{
-		printf("\033[1;35m\bMiMiShell >\033[0A"); 
+		printf("\033[1;35m\bMiMiShell >\033[0A");
 		printf("\033[1;0m exit\n\033[0m");
-		//ms_free_all(data, line);
 		exit(EXIT_SUCCESS);
 	}
+}
+
+static void	ms_exe_signal_2(int status)
+{
+	int	termsig;
+
+	termsig = 0;
+	termsig = WTERMSIG(status);
+	if (termsig == 2)
+		write(1, "\n", 1);
+	if (termsig == 3)
+		printf("Quit: %d\n", status);
 }
 
 void	ms_exe_signal(t_data *data)
 {
 	int	status;
-	int	termsig;
 	int	exit_st;
 	int	i;
 
 	i = 0;
-	termsig = 0;
 	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
 	while (data->num_cmd > i)
@@ -51,28 +72,6 @@ void	ms_exe_signal(t_data *data)
 	if (exit_st > 0)
 		data->num_error = exit_st;
 	if (WIFSIGNALED(status) > 0)
-	{
-		termsig = WTERMSIG(status);
-		if (termsig == 2)
-			write(1, "\n", 1);
-		if (termsig == 3)
-			printf("Quit: %d\n", status);
-	}
+		ms_exe_signal_2(status);
 }
 
-void	ms_heredoc_signal(pid_t pid)
-{
-	int status;
-	int termsig;
-
-	if (pid != 0)
-			signal(SIGINT, SIG_IGN);
-		signal(SIGQUIT, SIG_IGN);
-		waitpid(0, &status, 0);
-	if (WIFSIGNALED(status) > 0)
-	{
-		termsig = WTERMSIG(status);
-		if (termsig == 2)
-			write(1, ">   \b\b\b\n", 8);
-	}
-}

@@ -1,11 +1,11 @@
 #include "minishell.h"
 
-void	ms_record_lvl(char **str_lvl, char ***env, int y, int size)
+static void	ms_record_lvl(char **str_lvl, char ***env, int y, int size)
 {
-	int i;
-	int num_lvl;
+	int	i;
+	int	num_lvl;
+
 	(void)size;
-	
 	i = 0;
 	num_lvl = ft_atoi(*str_lvl);
 	num_lvl++;
@@ -20,19 +20,18 @@ void	ms_record_lvl(char **str_lvl, char ***env, int y, int size)
 	ms_free_str(str_lvl);
 }
 
-int	ms_shell_lvl(char ***env, int y, int size)
+static int	ms_shell_lvl(char ***env, int y, int size)
 {
 	char	*str_lvl;
 	int		len_str_lvl;
 	int		x;
-	
+
 	x = 0;
 	str_lvl = NULL;
 	while ((*env)[y][x] != '\0')
 		x++;
 	len_str_lvl = x - 6;
 	ms_malloc_str(&str_lvl, len_str_lvl);
-	//printf("alloc str str_lvl\n");
 	x = 0;
 	while ((*env)[y][x + 6] != '\0')
 	{
@@ -44,10 +43,10 @@ int	ms_shell_lvl(char ***env, int y, int size)
 	return (0);
 }
 
-int ms_check_slvl(char **env, int y, int x)
+static int	ms_check_slvl(char **env, int y, int x)
 {
-	int i;
-	
+	int	i;
+
 	i = 6;
 	while (env[y][i] != '\0')
 	{
@@ -55,16 +54,16 @@ int ms_check_slvl(char **env, int y, int x)
 			return (7);
 		i++;
 	}
-	if(env[y][i - 1] == 57)
- 		x++;
+	if (env[y][i - 1] == 57)
+		x++;
 	return (x);
 }
 
-int ms_record_env(t_data *data, char ***env, int y, int shell_lvl)
+static int	ms_record_env(t_data *data, char ***env, int y, int shell_lvl)
 {
-	int x;
-	int size;
-	
+	int	x;
+	int	size;
+
 	x = 0;
 	size = 0;
 	while ((*env)[y][size] != '\0')
@@ -72,7 +71,6 @@ int ms_record_env(t_data *data, char ***env, int y, int shell_lvl)
 	if (shell_lvl == YES)
 		size = ms_check_slvl(*env, y, size);
 	ms_malloc_str(&data->our_env[y], size);
-	//printf("alloc str in_mass data->our_env[y]\n");
 	while ((*env)[y][x] != '\0')
 	{
 		if (x == 6 && shell_lvl == YES)
@@ -87,7 +85,7 @@ int ms_record_env(t_data *data, char ***env, int y, int shell_lvl)
 void	ms_init_env(t_data *data, char ***env)
 {
 	int	y;
-	int shell_lvl;
+	int	shell_lvl;
 
 	y = 0;
 	shell_lvl = NO;
@@ -95,11 +93,10 @@ void	ms_init_env(t_data *data, char ***env)
 		y++;
 	data->num_env = y;
 	ms_malloc_array(&data->our_env, y);
-	//printf("alloc massiv data->our_env\n");
 	y = 0;
 	while ((*env)[y] != 0)
 	{
-		if(ft_strncmp((*env)[y], "SHLVL=", 6) == 0)
+		if (ft_strncmp((*env)[y], "SHLVL=", 6) == 0)
 			shell_lvl = YES;
 		ms_record_env(data, env, y, shell_lvl);
 		shell_lvl = NO;

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ms_print_errors_utils.c                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/11 18:22:14 by obeedril          #+#    #+#             */
+/*   Updated: 2022/03/11 18:24:24 by obeedril         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	ms_print_errors_chfa(char *str, int flag)
@@ -46,7 +58,7 @@ void	ms_print_error_builtin(char *str, int flag)
 		ft_putstr_fd(str, 2);
 		ft_putstr_fd(": no such file or directory\n", 2);
 	}
-  if (flag == 4)
+	if (flag == 4)
 	{
 		ft_putstr_fd("\bexit\n", 2);
 		ft_putstr_fd("Mimishell: exit: ", 2);
@@ -63,7 +75,8 @@ int	ms_error(int error, char *str)
 		printf("Mimishell: %s: command not found\n", str);
 	else if (error == ERR_TOKEN && (str[0] == 34 || str[0] == 39))
 	{
-		ft_putstr_fd("Mimishell: unexpected EOF while looking for matching '", 2);
+		ft_putstr_fd("Mimishell: unexpected EOF while ", 2);
+		ft_putstr_fd("looking for matching '", 2);
 		ft_putstr_fd(str, 2);
 		ft_putstr_fd("'\n", 2);
 	}

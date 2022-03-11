@@ -2,12 +2,9 @@
 
 void	ms_free_all(t_data *data, char **line)
 {
-	//ms_free_arr(&data->our_env);
 	ms_free_cycle(data, line);
-	//ms_free_arr(&data->tmp_var);
 	ms_free_str(&data->prev_dir);
 	ms_free_str(&data->cur_dir);
-
 }
 
 void	ms_free_cycle(t_data *data, char **line)
@@ -22,7 +19,7 @@ void	ms_free_cycle(t_data *data, char **line)
 	{
 		while (y < data->num_cmd)
 		{
-			ms_free_str(&data->cmd[y].str); // fsanitize=address при выходе из мимишелл
+			ms_free_str(&data->cmd[y].str);
 			if (data->cmd[y].num_arg > 0)
 			{
 				while (x < data->cmd[y].num_arg)
@@ -31,7 +28,6 @@ void	ms_free_cycle(t_data *data, char **line)
 					x++;
 				}
 				free(data->cmd[y].arg);
-				//printf("free data->cmd.arg!\n");
 				data->cmd[y].arg = NULL;
 			}
 			if (data->cmd[y].array_empty == NO)
@@ -41,10 +37,11 @@ void	ms_free_cycle(t_data *data, char **line)
 				ms_free_int_arr(&data->cmd[y].redir);
 				ms_free_arr(&data->cmd[y].file);
 			}
+			if (data->cmd[y].way_cmd)
+				ms_free_str(&data->cmd[y].way_cmd);
 			y++;
 		}
 		free(data->cmd);
-		//printf("free data->cmd!\n");
 		data->cmd = NULL;
 	}
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_found_env_variable.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlana <dlana@student.42.fr>                +#+  +:+       +#+        */
+/*   By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 12:51:48 by dlana             #+#    #+#             */
-/*   Updated: 2022/03/10 14:54:44 by dlana            ###   ########.fr       */
+/*   Updated: 2022/03/11 17:58:29 by obeedril         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	ms_put_num_error(int err, char **str, int *start)
 
 void	ms_found_dollar(t_data *data, char **str, int q_m, int *i_orig)
 {
-	int i;
+	int	i;
 
 	i = (*i_orig);
 	if ((*str)[i] == '$' && (*str)[i + 1] == '$')

@@ -86,7 +86,7 @@ int	ms_cycle_of_record_redir(t_cmd *cmd, t_data *data, int qm_o, int qm_d)
 	if (cmd->str[0] == '\0' || cmd->str[0] == ' ')
 	{
 		i = 0;
-		while(cmd->str[i] == ' ')
+		while (cmd->str[i] == ' ')
 			i++;
 		if (cmd->str[i] == '\0')
 			ms_free_str(&cmd->str);
@@ -105,10 +105,8 @@ int	ms_found_redirect(t_cmd *cmd, t_data *data)
 	qm_d = 1;
 	if (ms_count_redirect(cmd, data, qm_o, qm_d) <= 0)
 		return (-1);
-	ms_malloc_arr_int(&cmd->redir, cmd->count_redir); // free +
-	//printf("alloc massiv cmd->redir\n");
-	ms_malloc_array(&cmd->file, cmd->count_redir); // free +
-//	printf("alloc massiv cmd->file\n");
+	ms_malloc_arr_int(&cmd->redir, cmd->count_redir);
+	ms_malloc_array(&cmd->file, cmd->count_redir);
 	ms_cycle_of_record_redir(cmd, data, qm_o, qm_d);
 	return (0);
 }

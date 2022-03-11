@@ -3,7 +3,7 @@
 void	ms_record_tail(char **tmp, char *str, int t, int start_tail)
 {
 	int	s;
-	
+
 	s = 0;
 	while (str[s] != '\0')
 	{
@@ -35,7 +35,6 @@ void	ms_replase_key_to_value(char **str, int key, char *value, int start)
 		return ;
 	}
 	ms_malloc_str(&tmp, size);
-	//printf("alloc new cmd->arg[y].str\n");
 	while (s < start)
 		ms_record_char(&tmp, (*str), &t, &s);
 	s = 0;
@@ -62,7 +61,6 @@ int	ms_record_key(char *s, int i, char **key)
 		n++;
 	}
 	ms_malloc_str(key, n);
-  //printf("alloc str key\n");
 	i = (i - n);
 	n = 0;
 	while (s[i] != '\0' && s[i] != ' ' && s[i] != 34
@@ -72,11 +70,11 @@ int	ms_record_key(char *s, int i, char **key)
 	return (n);
 }
 
-int ms_search_var(t_data *data, char **value, char *key)
+int	ms_search_var(t_data *data, char **value, char *key)
 {
-	int y;
-	int size_key;
-	int start;
+	int	y;
+	int	size_key;
+	int	start;
 
 	y = 0;
 	size_key = ft_strlen(key);
@@ -115,8 +113,6 @@ int	ms_record_value(t_data *data, char **str, int i)
 	}
 	else
 		n = ms_record_key(*str, i, &key);
-	//value = getenv(key);
-	//value = ft_strdup(value);
 	if (digit_key == NO)
 	{
 		ms_search_var(data, &value, key);

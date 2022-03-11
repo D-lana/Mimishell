@@ -6,7 +6,7 @@
 /*   By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 17:48:49 by obeedril          #+#    #+#             */
-/*   Updated: 2022/03/10 19:09:03 by obeedril         ###   ########.fr       */
+/*   Updated: 2022/03/11 17:55:39 by obeedril         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,8 @@ static int	check_str(t_data *data, char **arr_p, int i, int n)
 	find_cmd = 0;
 	str_way = NULL;
 	str_slesh = NULL;
-	if ((data->cmd[n].array_arg[0][0] == '.'
-		&& data->cmd[n].array_arg[0][1] == '/'))
+	if (data->cmd[n].array_arg[0][0] == '.'
+		&& data->cmd[n].array_arg[0][1] == '/')
 		find_cmd = ms_check_way_itself(data, find_cmd, n);
 	else
 		find_cmd = look_for_way(data, arr_p, i, n);
@@ -76,6 +76,7 @@ static int	check_str(t_data *data, char **arr_p, int i, int n)
 
 static void	check_find_cmd(t_data *data, int find_cmd, int n)
 {
+	find_cmd = ms_way(data, find_cmd, n);
 	if (find_cmd > 0)
 	{
 		data->num_error = ERR_CMD;

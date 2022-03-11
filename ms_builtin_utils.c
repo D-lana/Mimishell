@@ -6,7 +6,7 @@
 /*   By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 18:24:54 by obeedril          #+#    #+#             */
-/*   Updated: 2022/03/09 18:27:46 by obeedril         ###   ########.fr       */
+/*   Updated: 2022/03/10 21:01:33 by obeedril         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	check_pwd_and_rewrite(t_data *data)
 	int		i;
 
 	i = 0;
-	while(data->our_env[i])
+	while (data->our_env[i])
 	{
 		if ((data->our_env[i][0] == 'P') && (data->our_env[i][1] == 'W')
 			&& (data->our_env[i][2] == 'D') && (data->our_env[i][3] == '='))
@@ -35,7 +35,7 @@ void	ms_check_oldpwd_rewrite(t_data *data)
 	int		i;
 
 	i = 0;
-	while(data->our_env[i])
+	while (data->our_env[i])
 	{
 		if ((data->our_env[i][0] == 'O') && (data->our_env[i][1] == 'L')
 			&& (data->our_env[i][2] == 'D') && (data->our_env[i][3] == 'P')
