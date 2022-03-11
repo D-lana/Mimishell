@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ms_found_redirect.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dlana <dlana@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/11 17:53:03 by dlana             #+#    #+#             */
+/*   Updated: 2022/03/11 18:17:17 by dlana            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	ms_error_parse_redir(t_data *data, char *s, int i)
@@ -6,26 +18,23 @@ int	ms_error_parse_redir(t_data *data, char *s, int i)
 	{
 		data->num_error = ERR_TOKEN;
 		if (s[i] == '\0')
-		{
-			ms_error(data->num_error, "newline");
-		}
+			return (ms_error(data->num_error, "newline"));
 		if (s[i] == '>')
 		{
 			if (s[i + 1] == '>')
-				ms_error(data->num_error, ">>");
+				return (ms_error(data->num_error, ">>"));
 			else
-				ms_error(data->num_error, ">");
+				return (ms_error(data->num_error, ">"));
 		}
 		if (s[i] == '<')
 		{
 			if (s[i + 1] == '<')
-				ms_error(data->num_error, "<<");
+				return (ms_error(data->num_error, "<<"));
 			else if (s[i + 1] == '>')
-				ms_error(data->num_error, "<>");
+				return (ms_error(data->num_error, "<>"));
 			else
-				ms_error(data->num_error, "<");
+				return (ms_error(data->num_error, "<"));
 		}
-		return (-1);
 	}
 	return (0);
 }
@@ -59,6 +68,22 @@ int	ms_count_redirect(t_cmd *cmd, t_data *data, int qm_o, int qm_d)
 	return (cmd->count_redir);
 }
 
+void	ms_check_empty_str(t_cmd *cmd)
+{
+	int	i;
+
+	i = 0;
+	if (cmd->str[i] == '\0')
+		ms_free_str(&cmd->str);
+	else if (cmd->str[i] == ' ')
+	{
+		while (cmd->str[i] == ' ' && cmd->str[i] != '\0')
+			i++;
+		if (cmd->str[i] == '\0')
+			ms_free_str(&cmd->str);
+	}
+}
+
 int	ms_cycle_of_record_redir(t_cmd *cmd, t_data *data, int qm_o, int qm_d)
 {
 	int	i;
@@ -81,14 +106,7 @@ int	ms_cycle_of_record_redir(t_cmd *cmd, t_data *data, int qm_o, int qm_d)
 		}
 		i++;
 	}
-	if (cmd->str[0] == '\0' || cmd->str[0] == ' ')
-	{
-		i = 0;
-		while(cmd->str[i] == ' ')
-			i++;
-		if (cmd->str[i] == '\0')
-			ms_free_str(&cmd->str);
-	}
+	ms_check_empty_str(cmd);
 	cmd->file[num_redir] = NULL;
 	cmd->redir[num_redir] = 0;
 	return (0);
@@ -104,9 +122,7 @@ int	ms_found_redirect(t_cmd *cmd, t_data *data)
 	if (ms_count_redirect(cmd, data, qm_o, qm_d) <= 0)
 		return (-1);
 	ms_malloc_arr_int(&cmd->redir, cmd->count_redir);
-	//printf("alloc massiv cmd->redir\n");
 	ms_malloc_array(&cmd->file, cmd->count_redir);
-	//printf("alloc massiv cmd->file\n");
 	ms_cycle_of_record_redir(cmd, data, qm_o, qm_d);
 	return (0);
 }

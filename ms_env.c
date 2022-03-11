@@ -1,25 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   ms_env.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dlana <dlana@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/19 14:29:07 by dlana             #+#    #+#             */
-/*   Updated: 2022/03/11 16:10:00 by dlana            ###   ########.fr       */
+/*   Created: 2022/03/11 18:57:08 by dlana             #+#    #+#             */
+/*   Updated: 2022/03/11 18:57:10 by dlana            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-size_t	ft_strlen(const char *s)
+void	ms_env(t_data *data)
 {
-	size_t	i;
+	int	y;
 
-	i = 0;
-	if (s == NULL)
-		return (0);
-	while (s[i] != '\0')
-		i++;
-	return (i);
+	y = 0;
+	while (y < data->num_env)
+	{
+		if (ft_strncmp(data->our_env[y], "OLDPWD", 6) == 0)
+		{
+			if (data->prev_dir != NULL)
+				printf("%s\n", data->our_env[y]);
+		}
+		else if (ft_strchr(data->our_env[y], 61) != NULL)
+			printf("%s\n", data->our_env[y]);
+		y++;
+	}
 }
