@@ -6,7 +6,7 @@
 /*   By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 19:41:25 by obeedril          #+#    #+#             */
-/*   Updated: 2022/03/12 17:00:11 by obeedril         ###   ########.fr       */
+/*   Updated: 2022/03/12 21:44:29 by obeedril         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ static void	ms_pipe_2(t_data *data, int last, int i)
 		perror("fd[1]");
 	dup2(data->fd_pipe[1], 1);
 	close(data->fd_pipe[1]);
+	//close(data->fd_pipe[0]);
 }
 
 void	ms_pipe(t_data *data, int i, int last)

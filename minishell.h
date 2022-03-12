@@ -6,7 +6,7 @@
 /*   By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 18:54:49 by dlana             #+#    #+#             */
-/*   Updated: 2022/03/11 23:37:47 by obeedril         ###   ########.fr       */
+/*   Updated: 2022/03/12 19:54:00 by obeedril         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include "libft.h"
 # include <fcntl.h>
 # include <dirent.h>
+# include <signal.h>
 
 typedef enum e_value
 {
@@ -100,6 +101,7 @@ typedef struct s_data
 	int		fd_pipe[2];
 	int		name_file;
 	int		build_in;
+	int		*pid;
 }				t_data;
 
 void	ms_exe(t_data *data);
