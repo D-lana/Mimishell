@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_found_redirect.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlana <dlana@student.42.fr>                +#+  +:+       +#+        */
+/*   By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 17:53:03 by dlana             #+#    #+#             */
-/*   Updated: 2022/03/11 18:17:17 by dlana            ###   ########.fr       */
+/*   Updated: 2022/03/12 14:40:19 by obeedril         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,8 @@ int	ms_cycle_of_record_redir(t_cmd *cmd, t_data *data, int qm_o, int qm_d)
 			if (ms_record_redir_and_file(cmd, i, num_redir, data) == -1)
 				return (-1);
 			ms_replase_key_to_value(&cmd->str, data->tmp.size_cut, NULL, i);
+			if (cmd->str[i] == '\0')
+				i--;
 			num_redir++;
 			if (cmd->str[0] == '\0')
 				break ;

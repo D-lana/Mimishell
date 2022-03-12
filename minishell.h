@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlana <dlana@student.42.fr>                +#+  +:+       +#+        */
+/*   By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 18:54:49 by dlana             #+#    #+#             */
-/*   Updated: 2022/03/11 18:57:19 by dlana            ###   ########.fr       */
+/*   Updated: 2022/03/11 23:37:47 by obeedril         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,12 +125,12 @@ char	*ms_found_tmp_var(t_data *data, char **var, int x);
 int		ms_valid_export(char *var);
 int		ms_cut_array_arg(char ***arr, int *count_arr, int y);
 
-int		ms_our_cmd(t_data *data, int i);
+int		ms_our_cmd(t_data *data, int i, char **line);
 void	ms_execve(t_cmd *cmd, t_data *data, int i);
 
 void	ms_cd(char *arg_way, t_data *data, int i);
 void	ms_pwd(t_data *data);
-void	ms_exit(t_data *data, int num_array_arg, char *exit_arg);
+void	ms_exit(t_data *data, int num_array_arg, char *exit_arg, char **line);
 void	ms_export(t_data *data, int i);
 int		ms_unset(t_data *data, int i_cmd);
 void	ms_echo(t_data *data, int i);
@@ -148,6 +148,7 @@ int		ms_err_export(int error, char *str);
 void	ms_err_argc_argv(int argc, char **argv, char **env);
 int		ms_err_token(t_data *data, int pipe);
 void	ms_check_first_arg(t_data *data, int n);
+int		ms_error_2(int error, int qm);
 
 void	ms_free_str(char **str);
 void	ms_free_arr(char ***arr);
@@ -163,7 +164,7 @@ void	ms_malloc_arr_int(int **arr_int, int size);
 
 void	rl_replace_line(const char *text, int clear_undo);
 
-void	ms_execution(t_data *data);
+void	ms_execution(t_data *data, char **line);
 
 int		ms_print_errors_chfa(char *str, int flag);
 void	ms_print_error_builtin(char *str, int flag);
@@ -177,5 +178,9 @@ void	ms_pipe(t_data *data, int i, int last);
 int		ms_redirect(t_cmd *cmd);
 void	ms_open_file(t_cmd *cmd, t_data *data);
 int		ms_check_way_itself(t_data *data, int find_cmd, int n);
+int		ms_measure_size_file_name(t_data *d, char *str, int *i);
+void	ms_print_sort_export(t_data *data, int y);
+int		ms_check_name(t_data *data, int i);
+int		ms_search_var(t_data *data, char **value, char *key);
 
 #endif

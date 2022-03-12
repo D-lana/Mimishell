@@ -6,7 +6,7 @@
 /*   By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 19:06:50 by obeedril          #+#    #+#             */
-/*   Updated: 2022/03/11 19:28:32 by obeedril         ###   ########.fr       */
+/*   Updated: 2022/03/11 23:50:48 by obeedril         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,6 @@ int	ms_heredoc(t_cmd *cmd, t_data *data, int i)
 		{
 			while (1)
 			{
-				printf("cmd->file = %s\n", cmd->file[i]);
 				if (ms_heredoc_2(cmd, i) == -1)
 					break ;
 			}

@@ -6,7 +6,7 @@
 /*   By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 15:15:18 by obeedril          #+#    #+#             */
-/*   Updated: 2022/03/10 22:14:32 by obeedril         ###   ########.fr       */
+/*   Updated: 2022/03/11 22:31:28 by obeedril         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,12 @@ static int	ft_isnum(char *str)
 	return (0);
 }
 
-static void	exit_with_args_2(t_data *data, int num_array_arg, char *exit_arg)
+static void	exit_with_args_2(t_data *data, int num, char *exit_arg, char **line)
 {
 	long long int	exit_code;
 
 	exit_code = 0;
-	if (num_array_arg > 2)
+	if (num > 2)
 	{
 		data->num_error = 1;
 		ms_print_error_builtin(NULL, 5);
@@ -46,17 +46,19 @@ static void	exit_with_args_2(t_data *data, int num_array_arg, char *exit_arg)
 		if (exit_code == -1)
 		{
 			ms_print_error_builtin(exit_arg, 4);
+			ms_free_all(data, line);
 			exit (255);
 		}
 		else
 		{
 			printf("\bexit\n");
+			ms_free_all(data, line);
 			exit (exit_code);
 		}
 	}
 }
 
-static void	exit_with_args(t_data *data, int num_array_arg, char *exit_arg)
+static void	exit_with_args(t_data *data, int num, char *exit_arg, char **line)
 {
 	long long int	exit_code;
 
@@ -64,19 +66,21 @@ static void	exit_with_args(t_data *data, int num_array_arg, char *exit_arg)
 	if (ft_isnum(exit_arg) == 1)
 	{
 		ms_print_error_builtin(exit_arg, 4);
+		ms_free_all(data, line);
 		exit (255);
 	}
 	else
-		exit_with_args_2(data, num_array_arg, exit_arg);
+		exit_with_args_2(data, num, exit_arg, line);
 }
 
-void	ms_exit(t_data *data, int num_array_arg, char *exit_arg)
+void	ms_exit(t_data *data, int num, char *exit_arg, char **line)
 {
 	if (!exit_arg)
 	{
 		printf("exit\n");
+		ms_free_all(data, line);
 		exit (0);
 	}
 	else
-		exit_with_args(data, num_array_arg, exit_arg);
+		exit_with_args(data, num, exit_arg, line);
 }

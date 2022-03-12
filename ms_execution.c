@@ -6,7 +6,7 @@
 /*   By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 13:00:12 by obeedril          #+#    #+#             */
-/*   Updated: 2022/03/11 20:01:11 by obeedril         ###   ########.fr       */
+/*   Updated: 2022/03/12 17:25:53 by obeedril         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static int	find_last_redir(int last, t_data *data)
 	return (last);
 }
 
-static void	ms_execution_2(t_data *data, int i)
+static void	ms_execution_2(t_data *data, int i, char **line)
 {
 	int	last;
 	int	j;
@@ -43,7 +43,7 @@ static void	ms_execution_2(t_data *data, int i)
 	if (data->num_cmd > 1)
 		ms_pipe(data, i, last);
 	if (data->cmd[i].bad_file == NO)
-		ms_our_cmd(data, i);
+		ms_our_cmd(data, i, line);
 	if (data->cmd[i].count_redir != 0)
 	{
 		while (data->cmd[i].file[j])
@@ -55,7 +55,7 @@ static void	ms_execution_2(t_data *data, int i)
 	}
 }
 
-void	ms_execution(t_data *data)
+void	ms_execution(t_data *data, char **line)
 {
 	int		i;
 	int		stdio[2];
@@ -67,7 +67,9 @@ void	ms_execution(t_data *data)
 	stdio[1] = dup(1);
 	while (i < data->num_cmd)
 	{
-		ms_execution_2(data, i);
+		if (ms_check_name(data, i) == -1)
+			return ;
+		ms_execution_2(data, i, line);
 		if (data->num_cmd > 1)
 			dup2(stdio[1], STDOUT_FILENO);
 		i++;

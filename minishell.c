@@ -1,7 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/11 20:58:55 by dlana             #+#    #+#             */
+/*   Updated: 2022/03/11 23:58:31 by obeedril         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-// > $PWD -
-//bash: /Users/dlana/git_mimi: Is a directory -
+// cat < test1 
 
 int	ms_separator(t_data *data, char *line)
 {
@@ -38,7 +49,6 @@ void	ms_init_data(t_data *data, char ***env, int first)
 		data->num_error = 0;
 		data->num_tmp_var = 0;
 		data->tmp_var = NULL;
-		
 		ms_init_env(data, env);
 		data->name_file = NO;
 	}
@@ -67,7 +77,7 @@ int	main(int argc, char **argv, char **env)
 		if (data.empty_str == NO)
 		{
 			ms_record_array(&data);
-			ms_execution(&data);
+			ms_execution(&data, &line);
 			add_history(line);
 			ms_free_cycle(&data, &line);
 		}

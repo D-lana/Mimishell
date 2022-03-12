@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ms_redirect_utils.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/11 20:57:39 by obeedril          #+#    #+#             */
+/*   Updated: 2022/03/11 23:51:24 by obeedril         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	ms_init_emum_redir(t_cmd *cmd, int *i_orig, int num_redir)
@@ -26,20 +38,6 @@ void	ms_init_emum_redir(t_cmd *cmd, int *i_orig, int num_redir)
 	}
 	i++;
 	(*i_orig) = i;
-}
-
-int	ms_err_name_file(t_data *data, int qm_o, int qm_d)
-{
-	char	qmd[2];
-
-	qmd[0] = DOUBLE_Q_MARK;
-	qmd[1] = '\0';
-	data->num_error = ERR_TOKEN;
-	if (qm_o != 1)
-		ms_error(ERR_TOKEN, "'");
-	else if (qm_d != 1)
-		ms_error(ERR_TOKEN, qmd);
-	return (-1);
 }
 
 int	ms_cut_qm_in_name_file(char **file)
@@ -88,28 +86,6 @@ void	ms_found_dollar_in_name_file(t_data *data, char **file)
 		else
 			i++;
 	}
-}
-
-int	ms_measure_size_file_name(t_data *d, char *str, int *i)
-{
-	int	qm_o;
-	int	qm_d;
-	int	size_str;
-
-	size_str = 0;
-	qm_o = 1;
-	qm_d = 1;
-	while (str[(*i)] != '\0')
-	{
-		ms_switch_qm(str[(*i)], &qm_o, &qm_d);
-		if (str[(*i)] == ' ' && qm_o == 1 && qm_d == 1)
-			break ;
-		size_str++;
-		(*i)++;
-	}
-	if (qm_o != 1 || qm_d != 1)
-		return (ms_err_name_file(d, qm_o, qm_d));
-	return (size_str);
 }
 
 int	ms_record_redir_and_file(t_cmd *cmd, int i, int num_redir, t_data *d)
