@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dlana <dlana@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 18:54:49 by dlana             #+#    #+#             */
-/*   Updated: 2022/03/13 15:44:02 by obeedril         ###   ########.fr       */
+/*   Updated: 2022/03/13 19:26:22 by dlana            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ typedef struct s_cmd
 	char	**file;
 	int		fd[2];
 	int		redir_born[2];
+	int		last_redir;
 	int		num_arg;
 	int		num_array_arg;
 	char	*way_cmd;
@@ -141,13 +142,13 @@ void	ms_env(t_data *data);
 
 int		ms_get_signal(void);
 void	ms_signal_ctrl_d(t_data *data, char **line);
-void	ms_exe_signal(t_data *data, int *stdio);
+void	ms_exe_signal(t_data *data);
 
 void	ms_record_str(char **file, char *str, int start, int size_str);
 void	ms_record_char(char **result, char *str, int *r, int *s);
 
 int		ms_error(int error, char *str);
-int		ms_err_export(int error, char *str);
+int		ms_err_export(int error, char *str, char *cmd);
 void	ms_err_argc_argv(int argc, char **argv, char **env);
 int		ms_err_token(t_data *data, int pipe);
 void	ms_check_first_arg(t_data *data, int n);
@@ -177,7 +178,7 @@ int		ms_check_way_itself(t_data *data, int find_cmd, int n);
 int		ms_way(t_data *data, int find_cmd, int n);
 int		ms_heredoc(t_cmd *cmd, t_data *data, int i);
 int		ms_check_file(t_cmd *cmd, int i);
-void	ms_pipe(t_data *data, int i, int last);
+void	ms_pipe(t_data *data, int i);
 int		ms_redirect(t_cmd *cmd);
 void	ms_open_file(t_cmd *cmd, t_data *data);
 int		ms_check_way_itself(t_data *data, int find_cmd, int n);

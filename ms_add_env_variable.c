@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_add_env_variable.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dlana <dlana@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 21:00:01 by dlana             #+#    #+#             */
-/*   Updated: 2022/03/11 21:07:45 by obeedril         ###   ########.fr       */
+/*   Updated: 2022/03/13 19:45:23 by dlana            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ int	ms_valid_export(char *var)
 		if (var[i] == '=' || (var[i] == '+' && var[i + 1] == '='))
 			break ;
 		else if (ft_isalpha(var[i]) != 1 && ft_isdigit(var[i]) != 1
-			&& var[i] != 92 && var[i] != 95)
+			&& var[i] != 95)
 			return (ERR_NUM_ONE);
 		i++;
 	}
@@ -113,7 +113,7 @@ int	ms_add_env_variable(t_data *data, int i_cmd)
 		{
 			data->num_error = ERR_NUM_ONE;
 			ms_err_export(data->num_error,
-				data->cmd[i_cmd].array_arg[i]);
+				data->cmd[i_cmd].array_arg[i], "export\0");
 		}
 		else
 			ms_add_var(data, &data->cmd[i_cmd].array_arg[i]);

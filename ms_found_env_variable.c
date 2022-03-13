@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_found_env_variable.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dlana <dlana@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 21:10:47 by obeedril          #+#    #+#             */
-/*   Updated: 2022/03/11 21:10:50 by obeedril         ###   ########.fr       */
+/*   Updated: 2022/03/13 20:09:58 by dlana            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,13 @@ void	ms_found_dollar(t_data *data, char **str, int q_m, int *i_orig)
 	int	i;
 
 	i = (*i_orig);
+	if (i == 0 && (*str)[i] == '~' && (*str)[i + 1] == '\0'
+		&& q_m != 39 && q_m != 34)
+	{
+		ms_free_str(str);
+		(*str) = ft_strdup(data->home_dir);
+		i = ft_strlen(data->home_dir) - 1;
+	}
 	if ((*str)[i] == '$' && (*str)[i + 1] == '$')
 		i += 2;
 	else if ((*str)[i] == '$' && (*str)[i + 1] == '?')

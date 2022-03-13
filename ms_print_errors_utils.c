@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_print_errors_utils.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dlana <dlana@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 18:22:14 by obeedril          #+#    #+#             */
-/*   Updated: 2022/03/13 16:33:33 by obeedril         ###   ########.fr       */
+/*   Updated: 2022/03/13 19:30:29 by dlana            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,11 +117,17 @@ int	ms_error_2(int error, int qm)
 	return (-1);
 }
 
-int	ms_err_export(int error, char *str)
+int	ms_err_export(int error, char *str, char *cmd)
 {
-	if (error == ERR_NUM_ONE)
+	if (error == ERR_NUM_ONE && cmd[0] == 'e')
 	{
 		ft_putstr_fd("Mimishell: export: '", 2);
+		ft_putstr_fd(str, 2);
+		ft_putstr_fd("': not a valid identifier\n", 2);
+	}
+	if (error == ERR_NUM_ONE && cmd[0] == 'u')
+	{
+		ft_putstr_fd("Mimishell: unset: '", 2);
 		ft_putstr_fd(str, 2);
 		ft_putstr_fd("': not a valid identifier\n", 2);
 	}

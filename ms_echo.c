@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dlana <dlana@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 18:23:17 by dlana             #+#    #+#             */
-/*   Updated: 2022/03/13 16:29:05 by obeedril         ###   ########.fr       */
+/*   Updated: 2022/03/13 20:09:48 by dlana            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,7 @@ int ms_echo_print(t_data *data, int i, int *n, int j)
     else
     {
 		data->n_end = YES;
-		if (ft_strncmp(data->cmd[i].array_arg[j], "~\0", 2) == 0)
-			ft_putstr_fd(data->home_dir, 1);
-		else
-			ft_putstr_fd(data->cmd[i].array_arg[j], 1);
+		ft_putstr_fd(data->cmd[i].array_arg[j], 1);
 		j++;
     }
     if (j < data->cmd[i].num_array_arg && data->n_end == YES)

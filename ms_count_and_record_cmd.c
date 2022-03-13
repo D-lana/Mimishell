@@ -6,7 +6,7 @@
 /*   By: dlana <dlana@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 16:05:51 by dlana             #+#    #+#             */
-/*   Updated: 2022/03/11 16:09:03 by dlana            ###   ########.fr       */
+/*   Updated: 2022/03/13 20:24:55 by dlana            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,11 @@ int	ms_get_size_one_cmd_str(char *line, int *start, int size)
 	i = 0;
 	qm_o = 1;
 	qm_d = 1;
-	while (line[(*start) + size] != '\0' && line[(*start) + size] != '|')
+	while (line[(*start) + size] != '\0')
 	{
 		ms_switch_qm(line[(*start) + size], &qm_o, &qm_d);
-		if (line[(*start) + size + 1] == '|' && (qm_o == -1 || qm_d == -1))
-			size++;
+		if (line[(*start) + size] == '|' && qm_o == 1 && qm_d == 1)
+			break ;
 		size++;
 	}
 	return (size);

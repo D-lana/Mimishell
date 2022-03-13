@@ -3,51 +3,52 @@
 /*                                                        :::      ::::::::   */
 /*   ms_execution.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dlana <dlana@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 13:00:12 by obeedril          #+#    #+#             */
-/*   Updated: 2022/03/13 15:05:45 by obeedril         ###   ########.fr       */
+/*   Updated: 2022/03/13 20:24:01 by dlana            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	find_last_redir(int last, t_data *data)
+static int	find_last_redir(t_data *data, int i)
 {
-	int	i;
+	int	j;
 
-	i = 0;
-	while (data->cmd->redir[i])
+	j = 0;
+	
+	while (data->cmd[i].redir[j] != 0)
 	{
-		if (data->cmd->redir[i] == 3 || data->cmd->redir[i] == 4)
-			last = i;
-		i++;
+		if (data->cmd[i].redir[j] == 3 || data->cmd[i].redir[j] == 4)
+			data->cmd[i].last_redir = j;
+		j++;
 	}
-	return (last);
+	return (data->cmd[i].last_redir);
 }
 
 static void	ms_execution_2(t_data *data, int i, char **line)
 {
-	int	last;
 	int	j;
 
-	last = -1;
 	j = 0;
+	data->cmd[i].last_redir = -1;
 	data->cmd[i].bad_file = NO;
 	if (data->cmd[i].count_redir != 0)
 	{
 		ms_open_file(&data->cmd[i], data);
 		ms_redirect(&data->cmd[i]);
-		last = find_last_redir(last, data);
+		find_last_redir(data, i);
 	}
 	if (data->num_cmd > 1)
-		ms_pipe(data, i, last);
+		ms_pipe(data, i);
 	if (data->cmd[i].bad_file == NO)
 		ms_our_cmd(data, i, line);
 	if (data->cmd[i].count_redir != 0)
 	{
-		while (data->cmd[i].file[j])
+		while (j < data->cmd[i].count_redir)
 		{
+			
 			if (data->cmd[i].redir[j] == 5)
 				unlink(data->cmd[i].file[j]);
 			j++;
@@ -55,15 +56,15 @@ static void	ms_execution_2(t_data *data, int i, char **line)
 	}
 }
 
-// void	ms_return_stdio(int *stdio)
-// {
-// 	if (dup2(stdio[1], 1) == -1)
-// 		perror("dup2 ");
-// 	if (dup2(stdio[0], 0) == -1)
-// 		perror("dup2 ");
-// 	close(stdio[0]);
-// 	close(stdio[1]);
-// }
+void	ms_return_stdio(int *stdio)
+{
+	if (dup2(stdio[1], 1) == -1)
+		perror("dup2 ");
+	if (dup2(stdio[0], 0) == -1)
+		perror("dup2 ");
+	close(stdio[0]);
+	close(stdio[1]);
+}
 
 void	ms_execution(t_data *data, char **line)
 {
@@ -87,17 +88,9 @@ void	ms_execution(t_data *data, char **line)
 		i++;
 	}
 	data->pid[i] = 0;
-	if (data->num_cmd > 1 || (data->build_in == NO && data->num_cmd == 1 && !data->num_error))
-	{
-		ms_exe_signal(data, stdio);
-	}
+	ms_return_stdio(stdio);
+	if (data->num_cmd > 1 || (data->build_in == NO && data->num_cmd == 1
+		&& !data->num_error))
+		ms_exe_signal(data);
 	ms_free_int_arr(&data->pid);
-	
-	if (dup2(stdio[1], 1) == -1)
-		perror("dup2 ");
-	
-	if (dup2(stdio[0], 0) == -1)
-		perror("dup2 ");
-	close(stdio[0]);
-	close(stdio[1]);
 }

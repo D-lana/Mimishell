@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dlana <dlana@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 15:15:18 by obeedril          #+#    #+#             */
-/*   Updated: 2022/03/13 14:55:05 by obeedril         ###   ########.fr       */
+/*   Updated: 2022/03/13 17:53:57 by dlana            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ static void	exit_with_args_2(t_data *data, int num, char *exit_arg, char **line)
 		else
 		{
 			ft_putstr_fd("\bexit\n", 2);
-			//printf("\bexit\n");
 			ms_free_all(data, line);
 			exit (exit_code);
 		}
@@ -79,7 +78,6 @@ void	ms_exit(t_data *data, int num, char *exit_arg, char **line)
 	if (!exit_arg)
 	{
 		ft_putstr_fd("\bexit\n", 2);
-		//printf("exit\n");
 		ms_free_all(data, line);
 		exit(data->num_prev_error);
 	}

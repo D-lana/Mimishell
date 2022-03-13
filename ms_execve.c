@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_execve.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dlana <dlana@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 21:10:20 by obeedril          #+#    #+#             */
-/*   Updated: 2022/03/13 13:23:22 by obeedril         ###   ########.fr       */
+/*   Updated: 2022/03/13 17:44:49 by dlana            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,7 @@ void	ms_execve(t_cmd *cmd, t_data *data, int i)
 		{
 			if (close(data->fd_pipe[0]) == -1)
 				perror("fd_pipe[0]ch");
-			//close(1);
-			// if (close(data->fd_pipe[1]) == -1)
-			// 	perror("fd_pipe[1]ch");
 		}
-		// if (close(stdio[1]) == -1)
-		// 	perror("stdio[1]c");
-		//close(5);
-		//close(6);
 		if (execve(cmd[i].way_cmd, cmd[i].array_arg, data->our_env) == -1)
 			perror("execve ");
 		exit (0);
