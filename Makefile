@@ -48,7 +48,11 @@ clean:
 fclean:		clean 
 			make fclean -C $(LIBDIR)
 			$(RM) $(NAME)
+test:
+		make
+		bash ./test/test.sh all
+
 
 re:			fclean all
 
-.PHONY:		all clean fclean re tools
+.PHONY:		all clean fclean re tools test

@@ -6,7 +6,7 @@
 /*   By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 15:15:18 by obeedril          #+#    #+#             */
-/*   Updated: 2022/03/11 22:31:28 by obeedril         ###   ########.fr       */
+/*   Updated: 2022/03/13 14:55:05 by obeedril         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,8 @@ static void	exit_with_args_2(t_data *data, int num, char *exit_arg, char **line)
 		}
 		else
 		{
-			printf("\bexit\n");
+			ft_putstr_fd("\bexit\n", 2);
+			//printf("\bexit\n");
 			ms_free_all(data, line);
 			exit (exit_code);
 		}
@@ -77,9 +78,10 @@ void	ms_exit(t_data *data, int num, char *exit_arg, char **line)
 {
 	if (!exit_arg)
 	{
-		printf("exit\n");
+		ft_putstr_fd("\bexit\n", 2);
+		//printf("exit\n");
 		ms_free_all(data, line);
-		exit (0);
+		exit(data->num_prev_error);
 	}
 	else
 		exit_with_args(data, num, exit_arg, line);

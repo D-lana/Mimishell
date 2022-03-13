@@ -6,7 +6,7 @@
 /*   By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 18:01:52 by obeedril          #+#    #+#             */
-/*   Updated: 2022/03/12 21:32:24 by obeedril         ###   ########.fr       */
+/*   Updated: 2022/03/13 15:59:18 by obeedril         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ int	ms_get_signal(void)
 
 void	ms_signal_ctrl_d(t_data *data, char **line)
 {
-	(void)data;
 	if (*line == NULL)
 	{
 		printf("\033[1;35m\bMiMiShell >\033[0A");
@@ -77,26 +76,38 @@ void	ms_child_sig_3(int sig)
 	exit(4);
 }
 
-void ms_exe_signal(t_data *data)
+void ms_exe_signal(t_data *data, int *stdio)
 {
 	int status;
 	int termsig;
 	int	exit_st;
 	int	i;
+	(void)stdio;
 
 	i = 0;
 	termsig = 0;
 	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
+	close(0);
 	while (data->num_cmd > i)
 	{
+		// if (i == 0)
+		// {
+		// 	if (close(stdio[0]) == -1)
+		// 		perror("stdio_par");
+		// }
 		waitpid(-1, &status, 0);
 		i++;
 	}
 	//ms_yes(data, &status);
 	exit_st = WEXITSTATUS(status);
 	if (exit_st > 0)
-		data->num_error = exit_st;
+    {
+        data->num_error = exit_st;
+        if(exit_st != 1 && exit_st != 2 && exit_st != 126
+            && exit_st != 128 && exit_st != 130 && exit_st != 258)
+            data->num_error = 127;
+    }
 	if (WIFSIGNALED(status) > 0)
 		ms_exe_signal_2(status);
 }

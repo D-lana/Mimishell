@@ -6,7 +6,7 @@
 /*   By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 20:57:24 by obeedril          #+#    #+#             */
-/*   Updated: 2022/03/11 20:57:27 by obeedril         ###   ########.fr       */
+/*   Updated: 2022/03/13 15:38:51 by obeedril         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,18 @@ int	ms_way(t_data *data, int find_cmd, int n)
 	if (data->cmd[n].array_arg[0][0] == '/')
 	{
 		data->cmd[n].way_cmd = ft_strdup(data->cmd[n].array_arg[0]);
-		if (!access (data->cmd[n].way_cmd, 1))
+		if (opendir(data->cmd[n].way_cmd) != 0)
+			find_cmd = -2;
+		else if (!access (data->cmd[n].way_cmd, 1))
 			find_cmd = -4;
 		else
 			find_cmd = 0;
+	}
+	else if (data->cmd[n].array_arg[0][0] == '~')
+	{
+		ms_free_str(&data->cmd[n].array_arg[0]);
+		data->cmd[n].array_arg[0] = ft_strdup(data->home_dir);
+		find_cmd = -2;
 	}
 	return (find_cmd);
 }

@@ -6,7 +6,7 @@
 /*   By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 20:59:20 by obeedril          #+#    #+#             */
-/*   Updated: 2022/03/11 23:52:53 by obeedril         ###   ########.fr       */
+/*   Updated: 2022/03/13 15:06:54 by obeedril         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ static void	check_find_cmd(t_data *data, int find_cmd, int n)
 	}
 	if (find_cmd == 0)
 	{
-		data->num_error = ERR_CMD;
+		data->num_error = ERR_FILE_OR_DIR;
 		ms_print_errors_chfa(data->cmd[n].array_arg[0], 4);
 	}
 }

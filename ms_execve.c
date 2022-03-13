@@ -6,7 +6,7 @@
 /*   By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 21:10:20 by obeedril          #+#    #+#             */
-/*   Updated: 2022/03/12 21:47:02 by obeedril         ###   ########.fr       */
+/*   Updated: 2022/03/13 13:23:22 by obeedril         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,18 @@ void	ms_execve(t_cmd *cmd, t_data *data, int i)
 	else if (data->pid[i] == 0)
 	{
 		signal(SIGQUIT, SIG_DFL);
-		if (close(data->fd_pipe[0]) == -1)
-			perror("fd[0]c");
-		if (close(data->fd_pipe[1]) == -1)
-			perror("fd[1]c");
+		if (i == 0)
+		{
+			if (close(data->fd_pipe[0]) == -1)
+				perror("fd_pipe[0]ch");
+			//close(1);
+			// if (close(data->fd_pipe[1]) == -1)
+			// 	perror("fd_pipe[1]ch");
+		}
+		// if (close(stdio[1]) == -1)
+		// 	perror("stdio[1]c");
+		//close(5);
+		//close(6);
 		if (execve(cmd[i].way_cmd, cmd[i].array_arg, data->our_env) == -1)
 			perror("execve ");
 		exit (0);

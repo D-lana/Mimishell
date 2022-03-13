@@ -6,7 +6,7 @@
 /*   By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 20:58:55 by dlana             #+#    #+#             */
-/*   Updated: 2022/03/11 23:58:31 by obeedril         ###   ########.fr       */
+/*   Updated: 2022/03/13 13:34:55 by obeedril         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ int	main(int argc, char **argv, char **env)
 	t_data	data;
 	char	*line;
 
+	rl_outstream = stderr; //test
 	ms_err_argc_argv(argc, argv, env);
 	ms_init_data(&data, &env, YES);
 	while (1)

@@ -6,7 +6,7 @@
 /*   By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 17:53:03 by dlana             #+#    #+#             */
-/*   Updated: 2022/03/12 14:40:19 by obeedril         ###   ########.fr       */
+/*   Updated: 2022/03/13 15:48:27 by obeedril         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,10 @@ int	ms_found_redirect(t_cmd *cmd, t_data *data)
 	qm_o = 1;
 	qm_d = 1;
 	if (ms_count_redirect(cmd, data, qm_o, qm_d) <= 0)
+	{
+		cmd->count_redir = 0;
 		return (-1);
+	}
 	ms_malloc_arr_int(&cmd->redir, cmd->count_redir);
 	ms_malloc_array(&cmd->file, cmd->count_redir);
 	ms_cycle_of_record_redir(cmd, data, qm_o, qm_d);

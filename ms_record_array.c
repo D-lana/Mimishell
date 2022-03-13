@@ -6,7 +6,7 @@
 /*   By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 17:43:48 by dlana             #+#    #+#             */
-/*   Updated: 2022/03/11 20:55:53 by obeedril         ###   ########.fr       */
+/*   Updated: 2022/03/13 15:19:43 by obeedril         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,14 @@ void	ms_record_array(t_data *data)
 
 	i = 0;
 	if (data->num_error != 0)
+	{
+		while (i < data->num_cmd)
+		{
+			data->cmd[i].array_empty = YES;
+			i++;
+		}
 		return ;
+	}
 	while (i < data->num_cmd)
 	{
 		data->cmd[i].array_empty = YES;

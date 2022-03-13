@@ -6,7 +6,7 @@
 /*   By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 18:54:49 by dlana             #+#    #+#             */
-/*   Updated: 2022/03/12 19:54:00 by obeedril         ###   ########.fr       */
+/*   Updated: 2022/03/13 15:44:02 by obeedril         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,7 @@ typedef struct s_data
 	int		name_file;
 	int		build_in;
 	int		*pid;
+	int		n_end;
 }				t_data;
 
 void	ms_exe(t_data *data);
@@ -140,7 +141,7 @@ void	ms_env(t_data *data);
 
 int		ms_get_signal(void);
 void	ms_signal_ctrl_d(t_data *data, char **line);
-void	ms_exe_signal(t_data *data);
+void	ms_exe_signal(t_data *data, int *stdio);
 
 void	ms_record_str(char **file, char *str, int start, int size_str);
 void	ms_record_char(char **result, char *str, int *r, int *s);

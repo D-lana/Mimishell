@@ -6,7 +6,7 @@
 /*   By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 13:00:12 by obeedril          #+#    #+#             */
-/*   Updated: 2022/03/12 21:39:45 by obeedril         ###   ########.fr       */
+/*   Updated: 2022/03/13 15:05:45 by obeedril         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,15 +86,16 @@ void	ms_execution(t_data *data, char **line)
 			dup2(stdio[1], STDOUT_FILENO);
 		i++;
 	}
-	// close(data->fd_pipe[0]);
-	// close(data->fd_pipe[1]);
 	data->pid[i] = 0;
-	if (data->num_cmd > 1 || (data->build_in == NO && data->num_cmd == 1))
-		ms_exe_signal(data);
+	if (data->num_cmd > 1 || (data->build_in == NO && data->num_cmd == 1 && !data->num_error))
+	{
+		ms_exe_signal(data, stdio);
+	}
 	ms_free_int_arr(&data->pid);
-	//ms_return_stdio(stdio);
+	
 	if (dup2(stdio[1], 1) == -1)
 		perror("dup2 ");
+	
 	if (dup2(stdio[0], 0) == -1)
 		perror("dup2 ");
 	close(stdio[0]);
