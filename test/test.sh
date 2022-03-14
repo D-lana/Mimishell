@@ -119,68 +119,43 @@ if [ "$2" == "leaks" ]; then
   rm -f leaks
 fi
 
-# MY TESTS
-# if [ "$1" == "my" ] || [ "$1" == "all" ]; then
-#   printf $BOLDMAGENTA"\n\tUTYGETT TESTS\n"$RESET
-#   exec_test 'pwd'
-#   exec_test 'ls'
-#   exec_test 'echo'
-#   exec_test ''
-#   exec_test '     '
-#   exec_test '     '
-#   exec_test '/bin/ls'
-#   exec_test '/bin/ls/lfkfh'
-#   exec_test '/bin/echo'
-#   exec_test '/bin/pwd'
-#   exec_test 'exit'
-#   exec_test 'exit q'
-#   exec_test 'exit 555'
-#   exec_test 'exit 54567878098765432987654321'
-#   exec_test 'exit 4567 5678'
-#   exec_test '/bin/ls retyu'
-#   exec_test 'cat test'
-#   exec_test 'pwd ghjk'
-#   exec_test 'export wewe'
-#   exec_test 'sdfghjk'
-#   exec_test '$? + $?'
-#   exec_test 'echo "cat lol.c | cat > lol.c"'
-#   exec_test '"pwd"'
-#   #exec_test '"env "'
-#   exec_test 'echo '$USER''
-#   exec_test 'unset ffff'
-#   #exec_test 'cd /bin/ls'
-#   exec_test 'cat file | grep bla | more'
-#   exec_test 'ls filethatdoesntexist | grep bla | more'
-#   exec_test 'cat | cat | ls'
-  #exec_test '$? + $?'
-  #exec_test 'echo "cat lol.c | cat > lol.c"'
-  # exec_test 'echo 1 | cat -e'
-  # exec_test 'echo 1 | cat -e'
-  # exec_test "/bin/ls && echo $?" 
-  # exec_test "/bin/ip || echo $?" 
-  # exec_test "/bin/aaaaaaaaaaaa || echo $?" 
-  # exec_test "./non_existing_file______pouette || echo $?"
-  # exec_test "./fail_bin/segfault || echo $?"
-  # exec_test "non_existing_command______pouette || echo $?"
-  # exec_test "./Makefile || echo $?"
-  # exec_test "/dev || echo $?"
-  # exec_test "../../../ls || echo $?"
-  # exec_test "'' || echo $?"
-  # exec_test '" 1" || echo $?'
-  # exec_test "' ' || echo $?"
-  # exec_test "/bin/ip"
-  # exec_test "/bin/ipaaaaaaaaaa"
-  # exec_test "/bin/ls aaaaaaabbbbbbbb"
-  # exec_test "/bin/ls aaaaaaaaaaa"
-  # exec_test "/bin/ls -x Makefile"
-  # exec_test "/bin/ls - Makefile"
-  # exec_test "/bin/ls -- Makefile"
-  # exec_test "/bin/ls"
-  # exec_test "/bin/df"
-  # exec_test "export A=1 && echo $A && unset A && echo $A"
-  # exec_test "export A=1 && echo $A && export A=2 && echo $A"
-  # exec_test "unset PATH && ls"
-# fi
+MY TESTS
+if [ "$1" == "my" ] || [ "$1" == "all" ]; then
+  printf $BOLDMAGENTA"\n\tUTYGETT TESTS\n"$RESET
+  exec_test 'pwd'
+  exec_test 'ls'
+  exec_test 'echo'
+  exec_test ''
+  exec_test '     '
+  exec_test '     '
+  exec_test '/bin/ls'
+  exec_test '/bin/ls/lfkfh'
+  exec_test '/bin/echo'
+  exec_test '/bin/pwd'
+  exec_test 'exit'
+  exec_test 'exit q'
+  exec_test 'exit 555'
+  exec_test 'exit 54567878098765432987654321'
+  exec_test 'exit 4567 5678'
+  exec_test '/bin/ls retyu'
+  exec_test 'cat test'
+  exec_test 'pwd ghjk'
+  exec_test 'export wewe'
+  exec_test 'sdfghjk'
+  exec_test '$? + $?'
+  exec_test 'echo "cat lol.c | cat > lol.c"'
+  exec_test '"pwd"'
+  exec_test '"env "'
+  exec_test 'echo '$USER''
+  exec_test 'unset ffff'
+  exec_test 'cd /bin/ls'
+  exec_test 'cat file | grep bla | more'
+  exec_test 'ls filethatdoesntexist | grep bla | more'
+  exec_test '$? + $?'
+  exec_test 'echo "cat lol.c | cat > lol.c"'
+  exec_test 'echo 1 | cat -e'
+  exec_test 'echo 1 | cat -e'
+fi
 
 # ECHO TESTS
 if [ "$1" == "echo" ] || [ "$1" == "all" ]; then
@@ -246,9 +221,7 @@ if [ "$1" == "echo" ] || [ "$1" == "all" ]; then
 	exec_test 'echo $?'
 	exec_test 'echo $USER213'
 	exec_test 'echo $USER$12USER$USER=4$USER12'
-	exec_test 'echo $USER $123456789USER $USER123456789'
 	exec_test 'echo $USER $9999USER $8888USER $7777USER'
-	exec_test 'echo $USER $USER9999 $USER8888 $USER7777'
 	exec_test 'echo "$USER=12$USER"'
 	exec_test 'echo "$9USER" "'$USER=12$SOMETHING'"'
 	exec_test 'echo "text" "text$USER" ... "$USER"'
@@ -359,8 +332,6 @@ if [ "$1" == "pipe" ] || [ "$1" == "all" ]; then
   exec_test 'ifconfig | grep ":"'
   exec_test 'ifconfig | grep nothing'
   exec_test 'whoami | grep $USER'
-  exec_test 'whoami | grep $USER > tmp/file'
-  exec_test 'whoami | cat -e | cat -e > tmp/file '
   exec_test 'cat Makefile | grep "FLAGS"'
   exec_test 'cat Makefile | cat -e | cat -e'
   exec_test 'cat Makefile | grep "FLAGS" | grep "FLAGS" | cat -e'
@@ -386,12 +357,10 @@ if [ "$1" == "env" ] || [ "$1" == "all" ]; then
 	exec_test 'echo " $TEST lol $TEST"'
 	exec_test 'echo $TEST$TEST$TEST'
 	exec_test 'echo $TEST$TEST=lol$TEST""lol'
-	exec_test 'echo $TEST lol $TEST'
+
 	exec_test 'echo test "$TEST" test "$TEST " test'
-	exec_test 'echo "$=TEST"'
 	exec_test 'echo "$"'
 	exec_test 'echo "$?TEST"'
-	exec_test 'echo $TEST $TEST'
 	exec_test 'echo "$1TEST"'
 	exec_test 'echo "$T1TEST"'
 fi

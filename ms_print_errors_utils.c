@@ -6,7 +6,7 @@
 /*   By: dlana <dlana@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 18:22:14 by obeedril          #+#    #+#             */
-/*   Updated: 2022/03/13 19:30:29 by dlana            ###   ########.fr       */
+/*   Updated: 2022/03/14 16:08:16 by dlana            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,13 +132,4 @@ int	ms_err_export(int error, char *str, char *cmd)
 		ft_putstr_fd("': not a valid identifier\n", 2);
 	}
 	return (-1);
-}
-
-void	ms_err_argc_argv(int argc, char **argv, char **env)
-{
-	if (argc != 1 || argv == NULL || env == NULL)
-	{
-		ft_putstr_fd("Mimishell: this programm complies without arguments\n", 2);
-		exit(127);
-	}
 }

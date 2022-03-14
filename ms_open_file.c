@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_open_file.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dlana <dlana@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 19:42:28 by obeedril          #+#    #+#             */
-/*   Updated: 2022/03/11 21:28:02 by obeedril         ###   ########.fr       */
+/*   Updated: 2022/03/14 16:11:37 by dlana            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,24 @@ static void	ms_open_redir_5(t_cmd *cmd, t_data *data, int i)
 	ms_heredoc(cmd, data, i);
 }
 
+static int	ms_check_directory(t_data *data, t_cmd *cmd, int i)
+{
+	if (opendir(cmd->file[i]) != NULL)
+	{
+		data->num_error = ERR_NUM_ONE;
+		ms_print_errors_chfa(cmd->file[i], 2);
+		return (-1);
+	}
+	return (0);
+}
+
 void	ms_open_file(t_cmd *cmd, t_data *data)
 {
 	int	i;
 
 	i = 0;
+	if (ms_check_directory(data, cmd, i) == -1)
+		return ;
 	while (cmd->file[i])
 	{
 		if (cmd->redir[i] == 3)

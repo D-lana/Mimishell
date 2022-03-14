@@ -6,7 +6,7 @@
 /*   By: dlana <dlana@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 16:18:24 by dlana             #+#    #+#             */
-/*   Updated: 2022/03/13 19:43:52 by dlana            ###   ########.fr       */
+/*   Updated: 2022/03/14 16:07:25 by dlana            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,18 +61,18 @@ void	ms_search_and_delete_env(t_data *data, int i_cmd, int y, int size_key)
 int	ms_valid_unset(char *var)
 {
 	int	i;
-	int slash;
+	int	slash;
 
 	i = 0;
 	slash = 0;
-	if (ft_isdigit(var[i]) == 1 || var[i] == '=') //'=' 92
+	if (ft_isdigit(var[i]) == 1 || var[i] == '=')
 		return (ERR_NUM_ONE);
 	while (var[i] != '\0')
 	{
 		if (var[i] == 92)
 			slash++;
 		if ((ft_isalpha(var[i]) != 1 && ft_isdigit(var[i]) != 1
-			&& var[i] != 95) || (var[i] == 92 && slash > 1))
+				&& var[i] != 95) || (var[i] == 92 && slash > 1))
 			return (ERR_NUM_ONE);
 		i++;
 	}
@@ -92,7 +92,7 @@ int	ms_unset(t_data *data, int i_cmd)
 		{
 			data->num_error = ERR_NUM_ONE;
 			return (ms_err_export(data->num_error,
-				data->cmd[i_cmd].array_arg[y], "unset\0"));
+					data->cmd[i_cmd].array_arg[y], "unset\0"));
 		}
 		size_key = ft_strlen(data->cmd[i_cmd].array_arg[y]);
 		ms_search_and_delete_env(data, i_cmd, y, size_key);

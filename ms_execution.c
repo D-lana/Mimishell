@@ -6,7 +6,7 @@
 /*   By: dlana <dlana@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/19 13:00:12 by obeedril          #+#    #+#             */
-/*   Updated: 2022/03/13 20:24:01 by dlana            ###   ########.fr       */
+/*   Updated: 2022/03/14 16:18:02 by dlana            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ static int	find_last_redir(t_data *data, int i)
 	int	j;
 
 	j = 0;
-	
 	while (data->cmd[i].redir[j] != 0)
 	{
 		if (data->cmd[i].redir[j] == 3 || data->cmd[i].redir[j] == 4)
@@ -47,8 +46,7 @@ static void	ms_execution_2(t_data *data, int i, char **line)
 	if (data->cmd[i].count_redir != 0)
 	{
 		while (j < data->cmd[i].count_redir)
-		{
-			
+		{	
 			if (data->cmd[i].redir[j] == 5)
 				unlink(data->cmd[i].file[j]);
 			j++;
@@ -90,7 +88,7 @@ void	ms_execution(t_data *data, char **line)
 	data->pid[i] = 0;
 	ms_return_stdio(stdio);
 	if (data->num_cmd > 1 || (data->build_in == NO && data->num_cmd == 1
-		&& !data->num_error))
+			&& !data->num_error))
 		ms_exe_signal(data);
 	ms_free_int_arr(&data->pid);
 }

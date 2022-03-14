@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_found_redirect.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dlana <dlana@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 17:53:03 by dlana             #+#    #+#             */
-/*   Updated: 2022/03/13 15:48:27 by obeedril         ###   ########.fr       */
+/*   Updated: 2022/03/14 16:17:04 by dlana            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ int	ms_cycle_of_record_redir(t_cmd *cmd, t_data *data, int qm_o, int qm_d)
 			if (ms_record_redir_and_file(cmd, i, num_redir, data) == -1)
 				return (-1);
 			ms_replase_key_to_value(&cmd->str, data->tmp.size_cut, NULL, i);
-			if (cmd->str[i] == '\0')
+			if (cmd->str[i] == '\0' && i > 0)
 				i--;
 			num_redir++;
 			if (cmd->str[0] == '\0')
@@ -109,8 +109,6 @@ int	ms_cycle_of_record_redir(t_cmd *cmd, t_data *data, int qm_o, int qm_d)
 		i++;
 	}
 	ms_check_empty_str(cmd);
-	cmd->file[num_redir] = NULL;
-	cmd->redir[num_redir] = 0;
 	return (0);
 }
 
@@ -129,5 +127,7 @@ int	ms_found_redirect(t_cmd *cmd, t_data *data)
 	ms_malloc_arr_int(&cmd->redir, cmd->count_redir);
 	ms_malloc_array(&cmd->file, cmd->count_redir);
 	ms_cycle_of_record_redir(cmd, data, qm_o, qm_d);
+	cmd->file[cmd->count_redir] = NULL;
+	cmd->redir[cmd->count_redir] = 0;
 	return (0);
 }

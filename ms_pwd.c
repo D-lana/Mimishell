@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_pwd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dlana <dlana@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 15:29:59 by obeedril          #+#    #+#             */
-/*   Updated: 2022/03/09 18:12:08 by obeedril         ###   ########.fr       */
+/*   Updated: 2022/03/14 15:58:16 by dlana            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,14 @@ void	ms_pwd(t_data *data)
 
 	cwd = getcwd(NULL, 0);
 	if (!cwd)
-		printf("%s\n", data->cur_dir);
+	{
+		ft_putstr_fd(data->cur_dir, 1);
+		write (1, "\n", 1);
+	}
 	else
 	{
-		printf("%s\n", cwd);
+		ft_putstr_fd(cwd, 1);
+		write (1, "\n", 1);
 		ms_free_str(&cwd);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: dlana <dlana@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 18:54:49 by dlana             #+#    #+#             */
-/*   Updated: 2022/03/13 19:26:22 by dlana            ###   ########.fr       */
+/*   Updated: 2022/03/14 16:08:46 by dlana            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,7 +149,6 @@ void	ms_record_char(char **result, char *str, int *r, int *s);
 
 int		ms_error(int error, char *str);
 int		ms_err_export(int error, char *str, char *cmd);
-void	ms_err_argc_argv(int argc, char **argv, char **env);
 int		ms_err_token(t_data *data, int pipe);
 void	ms_check_first_arg(t_data *data, int n);
 int		ms_error_2(int error, int qm);

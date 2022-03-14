@@ -3,16 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dlana <dlana@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 20:58:55 by dlana             #+#    #+#             */
-/*   Updated: 2022/03/13 13:34:55 by obeedril         ###   ########.fr       */
+/*   Updated: 2022/03/14 17:07:55 by dlana            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// cat < test1 
+static void	ms_err_argc_argv(int argc, char **argv, char **env)
+{
+	if (argc != 1 || argv == NULL || env == NULL)
+	{
+		ft_putstr_fd("Mimishell: this programm complies without arguments\n", 2);
+		exit(127);
+	}
+}
 
 int	ms_separator(t_data *data, char *line)
 {
@@ -58,6 +65,8 @@ void	ms_init_data(t_data *data, char ***env, int first)
 	data->home_dir = getenv("HOME");
 	data->build_in = YES;
 	data->num_cmd = 0;
+	data->fd_pipe[0] = 0;
+	data->fd_pipe[1] = 0;
 }
 
 int	main(int argc, char **argv, char **env)
@@ -65,7 +74,6 @@ int	main(int argc, char **argv, char **env)
 	t_data	data;
 	char	*line;
 
-	rl_outstream = stderr; //test
 	ms_err_argc_argv(argc, argv, env);
 	ms_init_data(&data, &env, YES);
 	while (1)

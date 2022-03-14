@@ -6,7 +6,7 @@
 /*   By: dlana <dlana@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 21:10:20 by obeedril          #+#    #+#             */
-/*   Updated: 2022/03/13 17:44:49 by dlana            ###   ########.fr       */
+/*   Updated: 2022/03/14 15:02:46 by dlana            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	ms_execve(t_cmd *cmd, t_data *data, int i)
 	else if (data->pid[i] == 0)
 	{
 		signal(SIGQUIT, SIG_DFL);
-		if (i == 0)
+		if (i == 0 && data->fd_pipe[0])
 		{
 			if (close(data->fd_pipe[0]) == -1)
 				perror("fd_pipe[0]ch");

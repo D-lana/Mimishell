@@ -6,7 +6,7 @@
 /*   By: dlana <dlana@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 19:41:25 by obeedril          #+#    #+#             */
-/*   Updated: 2022/03/13 20:30:33 by dlana            ###   ########.fr       */
+/*   Updated: 2022/03/14 16:08:57 by dlana            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static void	ms_pipe_2(t_data *data, int last, int i)
 void	ms_pipe(t_data *data, int i)
 {
 	int	last;
-	
+
 	last = -1;
 	if (i > 0)
 		last = data->cmd[i - 1].last_redir;
