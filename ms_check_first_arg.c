@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ms_check_first_arg.c                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/11 20:59:20 by obeedril          #+#    #+#             */
+/*   Updated: 2022/03/13 15:06:54 by obeedril         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static char	*add_slesh(char **arr_p, int i, int j)
@@ -25,7 +37,6 @@ static int	look_for_way(t_data *data, char **str, int i, int n)
 	find_cmd = 0;
 	str_way = NULL;
 	str_slesh = NULL;
-	data->cmd[n].way_cmd = NULL;
 	while (str[i])
 	{
 		str_slesh = add_slesh(str, i, 0);
@@ -55,17 +66,24 @@ static int	check_str(t_data *data, char **arr_p, int i, int n)
 	find_cmd = 0;
 	str_way = NULL;
 	str_slesh = NULL;
+	if (arr_p == NULL)
+		return (find_cmd);
 	if (data->cmd[n].array_arg[0][0] == '.'
 		&& data->cmd[n].array_arg[0][1] == '/')
 		find_cmd = ms_check_way_itself(data, find_cmd, n);
 	else
+	{
+		data->cmd[n].way_cmd = NULL;
 		find_cmd = look_for_way(data, arr_p, i, n);
+	}
 	return (find_cmd);
 }
 
 static void	check_find_cmd(t_data *data, int find_cmd, int n)
 {
 	find_cmd = ms_way(data, find_cmd, n);
+	if (data->cmd[n].array_arg[0][0] == '\0')
+		find_cmd = 1;
 	if (find_cmd > 0)
 	{
 		data->num_error = ERR_CMD;
@@ -83,7 +101,7 @@ static void	check_find_cmd(t_data *data, int find_cmd, int n)
 	}
 	if (find_cmd == 0)
 	{
-		data->num_error = ERR_CMD;
+		data->num_error = ERR_FILE_OR_DIR;
 		ms_print_errors_chfa(data->cmd[n].array_arg[0], 4);
 	}
 }
@@ -97,11 +115,15 @@ void	ms_check_first_arg(t_data *data, int n)
 
 	i = 0;
 	find_cmd = 0;
+	path = NULL;
+	arr_p = NULL;
 	if (data->num_error != 0 || data->empty_str == YES)
 		return ;
-	path = getenv("PATH");
+	ms_search_var(data, &path, "PATH");
 	arr_p = ft_split(path, ':');
+	ms_free_str(&path);
 	find_cmd = check_str(data, arr_p, i, n);
 	check_find_cmd(data, find_cmd, n);
-	ms_free_arr(&arr_p);
+	if (arr_p != NULL)
+		ms_free_arr(&arr_p);
 }

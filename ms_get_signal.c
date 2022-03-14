@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   ms_get_signal.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dlana <dlana@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 18:01:52 by obeedril          #+#    #+#             */
-/*   Updated: 2022/03/11 19:08:12 by obeedril         ###   ########.fr       */
+/*   Updated: 2022/03/13 20:20:21 by dlana            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <signal.h>
 
 static void	sighandler(int signum)
 {
@@ -32,7 +33,6 @@ int	ms_get_signal(void)
 
 void	ms_signal_ctrl_d(t_data *data, char **line)
 {
-	(void)data;
 	if (*line == NULL)
 	{
 		printf("\033[1;35m\bMiMiShell >\033[0A");
@@ -49,7 +49,7 @@ static void	ms_exe_signal_2(int status)
 	termsig = 0;
 	termsig = WTERMSIG(status);
 	if (termsig == 2)
-		write(1, "\n", 1);
+		write(1, "\n", 2);
 	if (termsig == 3)
 		printf("Quit: %d\n", status);
 }
@@ -57,10 +57,12 @@ static void	ms_exe_signal_2(int status)
 void	ms_exe_signal(t_data *data)
 {
 	int	status;
+	int	termsig;
 	int	exit_st;
 	int	i;
 
 	i = 0;
+	termsig = 0;
 	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
 	while (data->num_cmd > i)
@@ -68,12 +70,11 @@ void	ms_exe_signal(t_data *data)
 		waitpid(-1, &status, 0);
 		i++;
 	}
-	waitpid(-1, &status, 0);
 	exit_st = WEXITSTATUS(status);
 	if (exit_st > 0)
 	{
 		data->num_error = exit_st;
-		if(exit_st != 1 && exit_st != 2 && exit_st != 126
+		if (exit_st != 1 && exit_st != 2 && exit_st != 126
 			&& exit_st != 128 && exit_st != 130 && exit_st != 258)
 			data->num_error = 127;
 	}

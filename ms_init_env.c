@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_init_env.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlana <dlana@student.42.fr>                +#+  +:+       +#+        */
+/*   By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 18:08:34 by dlana             #+#    #+#             */
-/*   Updated: 2022/03/11 18:09:04 by dlana            ###   ########.fr       */
+/*   Updated: 2022/03/11 20:58:22 by obeedril         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ static int	ms_record_env(t_data *data, char ***env, int y, int shell_lvl)
 {
 	int	x;
 	int	size;
-	
+
 	x = 0;
 	size = 0;
 	while ((*env)[y][size] != '\0')

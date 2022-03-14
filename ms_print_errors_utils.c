@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_print_errors_utils.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dlana <dlana@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 18:22:14 by obeedril          #+#    #+#             */
-/*   Updated: 2022/03/11 18:24:24 by obeedril         ###   ########.fr       */
+/*   Updated: 2022/03/14 16:08:16 by dlana            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,9 +71,7 @@ void	ms_print_error_builtin(char *str, int flag)
 
 int	ms_error(int error, char *str)
 {
-	if (error == ERR_CMD)
-		printf("Mimishell: %s: command not found\n", str);
-	else if (error == ERR_TOKEN && (str[0] == 34 || str[0] == 39))
+	if (error == ERR_TOKEN && (str[0] == 34 || str[0] == 39))
 	{
 		ft_putstr_fd("Mimishell: unexpected EOF while ", 2);
 		ft_putstr_fd("looking for matching '", 2);
@@ -97,22 +95,41 @@ int	ms_error(int error, char *str)
 	return (-1);
 }
 
-int	ms_err_export(int error, char *str)
+int	ms_error_2(int error, int qm)
 {
-	if (error == ERR_NUM_ONE)
+	char	a;
+
+	a = qm;
+	if (error == ERR_TOKEN && qm == 34)
+	{
+		ft_putstr_fd("Mimishell: unexpected EOF while ", 2);
+		ft_putstr_fd("looking for matching '", 2);
+		write(2, &a, 1);
+		ft_putstr_fd("'\n", 2);
+	}
+	if (error == ERR_TOKEN && qm == 39)
+	{
+		ft_putstr_fd("Mimishell: unexpected EOF while ", 2);
+		ft_putstr_fd("looking for matching '", 2);
+		write(2, &a, 1);
+		ft_putstr_fd("'\n", 2);
+	}
+	return (-1);
+}
+
+int	ms_err_export(int error, char *str, char *cmd)
+{
+	if (error == ERR_NUM_ONE && cmd[0] == 'e')
 	{
 		ft_putstr_fd("Mimishell: export: '", 2);
 		ft_putstr_fd(str, 2);
 		ft_putstr_fd("': not a valid identifier\n", 2);
 	}
-	return (-1);
-}
-
-void	ms_err_argc_argv(int argc, char **argv, char **env)
-{
-	if (argc != 1 || argv == NULL || env == NULL)
+	if (error == ERR_NUM_ONE && cmd[0] == 'u')
 	{
-		printf("Mimishell: this programm complies without arguments\n");
-		exit(127);
+		ft_putstr_fd("Mimishell: unset: '", 2);
+		ft_putstr_fd(str, 2);
+		ft_putstr_fd("': not a valid identifier\n", 2);
 	}
+	return (-1);
 }

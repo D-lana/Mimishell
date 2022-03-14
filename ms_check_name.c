@@ -1,25 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   ms_check_name.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: obeedril <obeedril@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/11 20:56:49 by obeedril          #+#    #+#             */
-/*   Updated: 2022/03/11 20:56:52 by obeedril         ###   ########.fr       */
+/*   Created: 2022/03/11 21:27:28 by obeedril          #+#    #+#             */
+/*   Updated: 2022/03/11 21:47:48 by obeedril         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-size_t	ft_strlen(const char *s)
+int	ms_check_name(t_data *data, int i)
 {
-	size_t	i;
+	int	j;
 
-	i = 0;
-	if (s == NULL)
-		return (0);
-	while (s[i] != '\0')
-		i++;
-	return (i);
+	j = 0;
+	if (data->cmd[i].count_redir != 0)
+	{
+		while (data->cmd[i].file[j])
+		{
+			if (data->cmd[i].file[j][0] == '/')
+			{
+				if (opendir(data->cmd[i].file[j]) != 0)
+				{
+					data->num_error = ERR_FILE_OR_DIR;
+					ms_print_errors_chfa(data->cmd[i].file[j], 2);
+					return (-1);
+				}
+			}
+			j++;
+		}
+	}
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: dlana <dlana@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 18:16:19 by dlana             #+#    #+#             */
-/*   Updated: 2022/03/11 18:16:20 by dlana            ###   ########.fr       */
+/*   Updated: 2022/03/14 16:19:48 by dlana            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ int	ms_check_quotation_marks(t_cmd *cmd, int i, t_data *data)
 	{
 		data->num_error = ERR_TOKEN;
 		cmd->num_arg = 0;
-		return (ms_error(data->num_error, &cmd->str[i - 1]));
+		cmd->array_empty = YES;
+		return (ms_error_2(data->num_error, q_m));
 	}
 	return (i + 1);
 }
